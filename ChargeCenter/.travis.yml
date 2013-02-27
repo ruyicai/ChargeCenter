@@ -1,0 +1,9 @@
+language: java
+script: mvn clean package
+# whitelist
+branches:
+  only:
+    - master
+notifications:
+  email:
+    - zhangxiaofeng@ruyicai.com
