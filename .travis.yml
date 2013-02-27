@@ -1,5 +1,6 @@
 language: java
-script: mvn clean package
+script:
+   -(cd ChargeCenter; mvn clean package)
 # whitelist
 branches:
   only:
