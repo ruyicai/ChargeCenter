@@ -1,12 +1,10 @@
 package com.ruyicai.charge;
 
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.junit.Test;
@@ -16,9 +14,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ruyicai.charge.consts.TransactionState;
 import com.ruyicai.charge.domain.Nineteenpay;
-import com.ruyicai.charge.domain.Tcard;
-import com.ruyicai.charge.domain.Tchannelcard;
-import com.ruyicai.charge.util.ConfigUtil;
 
 
 
@@ -49,21 +44,6 @@ public class MailTest {
 		nineteenpay.persist();
 		System.out.println(nineteenpay.toString());
 	}
-	
-	@Test
-	public void testCreate2() throws Exception {
-		Tchannelcard tchannelcard = new Tchannelcard();
-		tchannelcard.setId("123456");
-		tchannelcard.setAgencyno("111");// ? agencyno?
-		tchannelcard.setCardamt(BigDecimal.ONE);
-		tchannelcard.setCardcode("9999999");
-		tchannelcard.setGettime(new Date());
-		tchannelcard.setCardcount(BigDecimal.ONE);// ? 设置购买数量
-		tchannelcard.setDecrptkey("111111");
-		tchannelcard.persist();
-		System.out.println(tchannelcard.toString());
-	}
-	
 	
 	@Test
 	public void testCreate4() throws Exception {

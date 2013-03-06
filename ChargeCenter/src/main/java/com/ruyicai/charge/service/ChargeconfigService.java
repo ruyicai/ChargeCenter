@@ -388,6 +388,18 @@ public class ChargeconfigService {
 		} else if (key.equals("lotteryModifyTdnabindState")) {
 			memo = "lottery修改DNA绑定状态";
 			value = ConfigUtil.getConfig("lottery.properties", key);
+		} else if (key.equals("batchpaysetbatchno")) {
+			memo = "lottery支付宝批量付款设置批次号";
+			value = ConfigUtil.getConfig("lottery.properties", key);
+		} else if (key.equals("batchpaysuccessprocess")) {
+			memo = "lottery支付宝批量付款成功处理";
+			value = ConfigUtil.getConfig("lottery.properties", key);
+		} else if (key.equals("checkcashdetailids")) {
+			memo = "lottery支付宝批量付款校验提现";
+			value = ConfigUtil.getConfig("lottery.properties", key);
+		} else if (key.equals("batchpayfailprocess")) {
+			memo = "lottery支付宝批量付款失败处理";
+			value = ConfigUtil.getConfig("lottery.properties", key);
 		} else {
 			logger.error("Chargeconfig key=" + key + "不存在");
 			return cc;

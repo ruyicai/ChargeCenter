@@ -55,8 +55,6 @@
 		</action>
 		<action name="dnanotify" class="com.ruyicai.charge.action.DNABankChargeNotifyAction">
 		</action>
-		<action name="ruyicaicardcharge" class="com.ruyicai.charge.action.RuyicaiCardChargeAction">		 
-		</action>
 		<action name="chinapaycharge" class="com.ruyicai.charge.action.ChinapayChargeAction">
 		<result name="order-commit">/order-commit.jsp</result>
 		<result name="test">/test.jsp</result>	 	 		   
@@ -87,8 +85,6 @@
 		<action name="chinaloyaltycharge" class="com.ruyicai.charge.action.ChinaloyaltyChargeAction">
 		</action>
 		<action name="chinaloyaltynotify" class="com.ruyicai.charge.action.ChinaloyaltyChargeNotifyAction">
-		</action>
-		<action name="account" class="com.ruyicai.charge.action.AccountAction">
 		</action>
 		<action name="tradequery" class="com.ruyicai.charge.action.TradeQueryAction">
 		</action>

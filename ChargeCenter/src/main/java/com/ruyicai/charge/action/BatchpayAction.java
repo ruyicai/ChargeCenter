@@ -1,7 +1,7 @@
 package com.ruyicai.charge.action;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,18 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ruyicai.charge.alipay.batchpay.Payment;
 import com.ruyicai.charge.alipay.tradequery.AlipayConfig;
-import com.ruyicai.charge.consts.CashDetailState;
-import com.ruyicai.charge.consts.CashDetailType;
 import com.ruyicai.charge.domain.Talibatchpay;
-import com.ruyicai.charge.domain.Tcashdetail;
 import com.ruyicai.charge.exception.RuyicaiException;
 import com.ruyicai.charge.service.ChargeconfigService;
-import com.ruyicai.charge.service.FundService;
-import com.ruyicai.charge.util.ConfigUtil;
 import com.ruyicai.charge.util.DateUtil;
 import com.ruyicai.charge.util.ErrorCode;
+import com.ruyicai.charge.util.HttpRequest;
 import com.ruyicai.charge.util.JsonUtil;
-import com.ruyicai.charge.util.StringUtil;
 
 public class BatchpayAction implements ServletRequestAware, ServletResponseAware {		
 	
@@ -36,8 +31,6 @@ public class BatchpayAction implements ServletRequestAware, ServletResponseAware
 	private String jsonString;
 	private Logger logger = Logger.getLogger(BatchpayAction.class);
 	
-	@Autowired
-	private FundService fundService;
 	@Autowired
 	ChargeconfigService chargeconfigService;
 	
@@ -151,17 +144,36 @@ public class BatchpayAction implements ServletRequestAware, ServletResponseAware
 		}
 		
 		try {
-			Map<String, String> map = this.check(ids);
+			String memo = chargeconfigService.getChargeconfig("batchpay.pay.memo");//ConfigUtil.getConfig("charge.properties", "batchpay.pay.memo");
+			Map<String, String> map = this.check(ids, memo);
 			String detailData = map.get("detailData");
 			String batchNum = map.get("batchNum");//付款总笔数
 			String batchFee = map.get("batchFee");//付款总金额
 			String batchNo = map.get("batchNo");//批次号
 			
+			logger.info("detailData=" + detailData);
+			logger.info("batchNum=" + batchNum);
+			logger.info("batchFee=" + batchFee);
+			logger.info("batchNo=" + batchNo);
+			
 			Date date = new Date();			
 			batchNo = Talibatchpay.checkBatchNo(batchNo, detailData, batchNum, batchFee, date);
 			
 			//设置批号
-			fundService.batchpaySetBatchNo(batchNo, detailData);
+			String url = chargeconfigService.getChargeconfig("batchpaysetbatchno");
+			StringBuffer param = new StringBuffer();
+			param.append("batchno=").append(batchNo).append("&detaildata=").append(detailData);
+			logger.info("支付宝批量付款->设置批次号：url=" + url + ", param=" + param.toString());
+			String result = HttpRequest.doPostRequest(url, param.toString());			
+			logger.info("支付宝批量付款->返回 result=" + result);
+			Map<String, Object> mapResult = JsonUtil.transferJson2Map(result);
+			errorCode = mapResult.containsKey("errorCode")? mapResult.get("errorCode").toString() : "";
+	
+			if (!"0".equals(errorCode)) {				
+				logger.info("支付宝批量付款->设置批次号出现错误 errorCode=" + errorCode);				
+				this.printErrorJson(errorCode);
+				return null;
+			}
 			
 			String notifyUrl = chargeconfigService.getChargeconfig("batchpay.bgreturl");//ConfigUtil.getConfig("charge.properties", "batchpay.bgreturl");
 			String accountName = chargeconfigService.getChargeconfig("batchpay.account.name");//ConfigUtil.getConfig("charge.properties", "batchpay.account.name");
@@ -226,194 +238,26 @@ public class BatchpayAction implements ServletRequestAware, ServletResponseAware
 		return null;
 	}
 	
-	private Map<String, String> check(String cashdetailIds) {
+	private Map<String, String> check(String cashdetailIds, String memo) throws Exception {
 		Map<String, String> map = new HashMap<String, String>();
-		
-		if (StringUtil.isEmpty(cashdetailIds)) {
-			logger.error("支付宝批量付款->提现Ids为空");
-			throw new RuyicaiException(ErrorCode.BatchPay_cashdetailIdsEmpty);
-		}
-		
-		String memo = chargeconfigService.getChargeconfig("batchpay.pay.memo");//ConfigUtil.getConfig("charge.properties", "batchpay.pay.memo");
-		String detailData = null;//
-		BigDecimal batchNum = BigDecimal.ZERO;//付款总笔数
-		BigDecimal batchFee = BigDecimal.ZERO;//付款总金额
-		String batchNo = null;
-		
-		BigDecimal batchFeeTemp = BigDecimal.ZERO;
-		StringBuffer sbDetailData = new StringBuffer();
-		int i = 0;
-		String[] ids = cashdetailIds.split(AlipayConfig.BATCHPAY_DELIMITER_1);
-		for (String id : ids) {
-			i++;
-			
-			Tcashdetail tcashdetail = Tcashdetail.findTcashdetail(id);
-			if (null == tcashdetail) {
-				logger.error("提现记录为空，提现id=" + id);
-				throw new RuyicaiException(ErrorCode.BatchPay_cashdetailNotExist);
-			}			
-			if (!tcashdetail.getState().equals(CashDetailState.Shenghezhong.value())) {
-				logger.info("该提现非已审核状态，提现id=" + id);
-				throw new RuyicaiException(ErrorCode.BatchPay_cashdetailStateNotShenghezhong);
-			}
-			if (!tcashdetail.getType().equals(CashDetailType.Zhifubao.value())){
-				logger.info("该提现类型为非支付宝提现，提现id=" + id);
-				throw new RuyicaiException(ErrorCode.BatchPay_cashdetailTypeNotAlipay);
-			}
-			
-			//流水号1^收款方账号1^收款账号姓名1^付款金额1^备注说明1|流水号2^收款方账号2^收款账号姓名2^付款金额2^备注说明2
-			if (i > 1) {
-				sbDetailData.append(AlipayConfig.BATCHPAY_DELIMITER_3);	
-				if (batchNo == null && tcashdetail.getBatchno() == null) {
-					//
-				} else if (batchNo == null && tcashdetail.getBatchno() != null){
-					throw new RuyicaiException(ErrorCode.BatchPay_batchnoDiscordant);
-				} else if (batchNo != null && tcashdetail.getBatchno() == null){
-					throw new RuyicaiException(ErrorCode.BatchPay_batchnoDiscordant);
-				} else {
-					if (!batchNo.equals(tcashdetail.getBatchno())) {
-						throw new RuyicaiException(ErrorCode.BatchPay_batchnoDiscordant);
-					}
-				}
-			} else {
-				batchNo = tcashdetail.getBatchno();
-			}
-					
-			BigDecimal amt = tcashdetail.getAmt().divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
-			
-			sbDetailData.append(id).append(AlipayConfig.BATCHPAY_DELIMITER_4)
-			.append(tcashdetail.getBankaccount().trim()).append(AlipayConfig.BATCHPAY_DELIMITER_4)
-			.append(tcashdetail.getName().trim()).append(AlipayConfig.BATCHPAY_DELIMITER_4)
-			.append(amt.toString()).append(AlipayConfig.BATCHPAY_DELIMITER_4)
-			.append(memo);
-			
-			batchFeeTemp = batchFeeTemp.add(tcashdetail.getAmt());
-		}
-		
-		detailData = sbDetailData.toString();
-		batchNum = new BigDecimal(i);
-		batchFee = batchFeeTemp.divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
-		
-		map.put("detailData", detailData);
-		map.put("batchNum", batchNum.toString());
-		map.put("batchFee", batchFee.toString());
-		map.put("batchNo", batchNo);
-		return map;
-	}
+		String url = chargeconfigService.getChargeconfig("checkcashdetailids");
+		StringBuffer param = new StringBuffer();
+		param.append("cashdetailids=").append(cashdetailIds).append("&memo=").append(memo);
+		logger.info("支付宝批量付款->校验提现：url=" + url + ", param=" + param.toString());
+		String result = HttpRequest.doPostRequest(url, param.toString());			
+		logger.info("支付宝批量付款->返回 result=" + result);
+		Map<String, Object> mapResult = JsonUtil.transferJson2Map(result);
+		String errorCode = mapResult.containsKey("errorCode")? mapResult.get("errorCode").toString() : "";
 
-	
-	public static void main(String[] args) {
-		BigDecimal  amt = new BigDecimal(2012);
-		BigDecimal  amt2 = amt.divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
-		System.out.println("amt=" + amt.toString());
-		System.out.println("amt2=" + amt2.toString());
-		
-		BigDecimal  amt3 = new BigDecimal(20.12);
-		BigDecimal  amt4 = amt3.multiply(new BigDecimal(100));
-		System.out.println("amt3=" + amt3.toString());
-		System.out.println("amt4=" + amt4.toString());
-		amt4 = amt4.setScale(0, BigDecimal.ROUND_HALF_UP);
-		System.out.println("amt3=" + amt3.toString());
-		System.out.println("amt4=" + amt4.toString());
-		
-		String str1 = null;
-		String str2 = null;
-		boolean ret = str1==null;//str1.equals(str2);
-		System.out.println("ret=" + ret);
-	}
-	
-	
-	public String bank() {
-		logger.info("支付宝批量付款到银行账户->开始");
-		String errorCode = ErrorCode.OK.value;
-		logger.info("支付宝批量付款到银行账户->得到参数：jsonString=" + jsonString);		
-				
-		String ids = null;//		
-		try {
-			Map<String, Object> map = JsonUtil.transferJson2Map(jsonString);
-			ids = map.containsKey("ids") ? map.get("ids").toString() : "";//提现ids		|分割	
-						
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("支付宝批量付款到银行账户->获取Json串参数异常", e);
-			errorCode = ErrorCode.ERROR.value;	
+		if (!"0".equals(errorCode)) {				
+			logger.info("支付宝批量付款->校验提现出现错误 errorCode=" + errorCode);				
 			this.printErrorJson(errorCode);
 			return null;
 		}
 		
-		try {
-			Map<String, String> map = this.check(ids);
-			String detailData = map.get("detailData");
-			String batchNum = map.get("batchNum");//付款总笔数
-			String batchFee = map.get("batchFee");//付款总金额
-			String batchNo = map.get("batchNo");//批次号
-			
-			Date date = new Date();			
-			batchNo = Talibatchpay.checkBatchNo(batchNo, detailData, batchNum, batchFee, date);
-			
-			//设置批号
-			fundService.batchpaySetBatchNo(batchNo, detailData);
-			
-			String notifyUrl = ConfigUtil.getConfig("charge.properties", "batchpay.bgreturl");
-			String accountName = ConfigUtil.getConfig("charge.properties", "batchpay.account.name");
-			String partner = ConfigUtil.getConfig("charge.properties", "batchpay.partner.id"); 
-			String payDate = DateUtil.formatDate(date);
-			//batchFee
-			String service = AlipayConfig.SERVICE_BATCHPAY;
-			String signType = AlipayConfig.SIGN_TYPE;
-			//batchNum
-			String email = ConfigUtil.getConfig("charge.properties", "batchpay.email");
-			//detailData
-			
-			String payGateway = ConfigUtil.getConfig("charge.properties", "batchpay.pay.gateway");
-			String payGateway2 = ConfigUtil.getConfig("charge.properties", "batchpay.pay.gateway2");
-			
-			String key = ConfigUtil.getConfig("charge.properties", "batchpay.key"); 
-			 
-			String inputCharset = AlipayConfig.INPUT_CHARSET;
-			
-			String sign = Payment.CreateUrl(payGateway, service, partner, signType, batchNo, accountName, email, payDate, notifyUrl, batchFee.toString(), batchNum.toString(), detailData, key, inputCharset);
-			
-//			StringBuffer param = new StringBuffer();
-//			param.append("&batch_no=").append(batchNo).append("&notify_url=").append(notifyUrl).append("&account_name=").append(accountName)
-//			.append("&partner=").append(partner).append("&pay_date=").append(payDate).append("&batch_fee=").append(batchFee)
-//			.append("&service=").append(service).append("&sign=").append(sign).append("&sign_type=").append(signType)
-//			.append("&batch_num=").append(batchNum).append("&email=").append(email).append("&detail_data=").append(detailData);
-//			
-//			logger.info("url=" + payGateway2);
-//			logger.info("param=" + param.toString());
-			//this.printJson(errorCode, param.toString(), payGateway2);
-			
-			Map<String, String> mapRet = new HashMap<String, String>();
-			mapRet.put("errorCode", errorCode);
-			mapRet.put("url", payGateway2);
-			mapRet.put("batch_no", batchNo);
-			mapRet.put("notify_url", notifyUrl);
-			mapRet.put("account_name", accountName);
-			mapRet.put("partner", partner);
-			mapRet.put("pay_date", payDate);
-			mapRet.put("batch_fee", batchFee);
-			mapRet.put("service", service);
-			mapRet.put("sign", sign);
-			mapRet.put("sign_type", signType);
-			mapRet.put("batch_num", batchNum);
-			mapRet.put("email", email);
-			mapRet.put("detail_data", detailData);
-			this.printJson(mapRet);
-			
-		} catch (RuyicaiException e) {
-			errorCode = e.getErrorCode().value;
-			logger.info("RuyicaiException:errorCode=" + errorCode + ";errorMsg=" + e.getErrorCode().memo);
-			this.printErrorJson(errorCode);		
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("支付宝批量付款到银行账户->出现异常", e);
-			errorCode = ErrorCode.ERROR.value;	
-			this.printErrorJson(errorCode);
-			return null;
-		}
-		
-		logger.info("支付宝批量付款到银行账户->结束");
-		return null;
+		Object o = mapResult.containsKey("value")? mapResult.get("value") : null;
+		logger.info("支付宝批量付款->校验提现 o=" + o);
+		map = (Map<String, String>)o;
+		return map;
 	}
 }
