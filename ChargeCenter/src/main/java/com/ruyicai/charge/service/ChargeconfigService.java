@@ -389,16 +389,16 @@ public class ChargeconfigService {
 			memo = "lottery修改DNA绑定状态";
 			value = ConfigUtil.getConfig("lottery.properties", key);
 		} else if (key.equals("DNARSAPayAddress")) {
-			memo = "lottery修改DNA绑定状态";
+			memo = "易联支付请求地址";
 			value = ConfigUtil.getConfig("charge.properties", key);
 		} else if (key.equals("DNANameSpace")) {
-			memo = "lottery修改DNA绑定状态";
+			memo = "易联支付请求地址命名空间";
 			value = ConfigUtil.getConfig("charge.properties", key);
 		} else if (key.equals("GDYILIAN_CERT_PUB_64")) {
-			memo = "lottery修改DNA绑定状态";
+			memo = "易联支付请求秘钥";
 			value = ConfigUtil.getConfig("charge.properties", key);
 		} else if (key.equals("DNAV2ReturnUrl")) {
-			memo = "lottery修改DNA绑定状态";
+			memo = "易联支付异步地址";
 			value = ConfigUtil.getConfig("charge.properties", key);
 		} else {
 			logger.error("Chargeconfig key=" + key + "不存在");
