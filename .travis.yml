@@ -1,0 +1,12 @@
+language: java
+jdk:
+  - oraclejdk6
+script:
+   - (cd ChargeCenter; mvn clean package)
+# whitelist
+branches:
+  only:
+    - master
+notifications:
+  email:
+    - zhangxiaofeng@ruyicai.com
