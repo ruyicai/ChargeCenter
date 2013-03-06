@@ -13,8 +13,8 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.ruyicai.charge.dna.pay.DNATransactionClientService;
-import com.ruyicai.charge.dna.thirdpart.PosMessage;
+import com.ruyicai.charge.dna.v2.pay.DNATransactionClientService;
+import com.ruyicai.charge.dna.v2.thirdpart.PosMessage;
 import com.ruyicai.charge.service.ChargeconfigService;
 import com.ruyicai.charge.util.ConfigUtil;
 import com.ruyicai.charge.util.ErrorCode;

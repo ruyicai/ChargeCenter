@@ -1,0 +1,22 @@
+<html>
+<body>
+    银联语音CA数字签名处理包, 系统具体默认使用北京数字证书认证中心CA证书.
+    <div style="margin-left: 2em;">
+     <p><b>BJCA数字签名配置说明</b></p>
+     <ul>
+         <li>服务器证书公钥可通过systemsetting.properties文件的SERVER_CERT参数配置,获取.</li>
+         <li>调用商户证书可通过systemsetting.properties文件的BJCA_INSTANCE_NAME指定配置.</li>
+         <li>商户证书具体配置内容位于在C:/BJCAROOT(windows), /usr/BJCAROOT(linux)目录下BJCA_ServerConfig.xml文件中</li>
+     </ul>
+     
+ <p><b>BJCA数字签名加密流程说明</b></p>
+<ul>	
+    <li>1.	商户签署《银联语音支付测试协议》，易联安排测试工程师配合商户完成系统接入测试。</li>
+    <li>2.	商户收到银联手机支付开通通知，该通知包含了生产环境的地址及参数配置信息, 商户密钥分成两份通过两封邮件发出。</li>
+    <li>3.	商户收到开通通知后第一时间登录银联手机支付后台修改初始登录密码。</li>
+    <li>4.	BJCA数字证书的申请参照业务部门申请流程，由业务部门代为申请.</li>
+    <li>5.	商户修改测试环境的参数信息为该通知里生产环境参数。需要替换的参数包括：服务地址，商户编号，终端编号，商户密钥，测试证书等.</li>
+</ul>
+    </div>
+</body>
+</html>

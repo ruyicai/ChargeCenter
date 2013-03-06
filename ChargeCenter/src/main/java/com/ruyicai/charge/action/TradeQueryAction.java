@@ -19,7 +19,7 @@ import com.ruyicai.charge.alipay.tradequery.SingleTradeQueryXML;
 import com.ruyicai.charge.chinapay.tradequery.ChinapayTradequery;
 import com.ruyicai.charge.chinapay.tradequery.PaymentType;
 import com.ruyicai.charge.chinapay.tradequery.TradeStatus;
-import com.ruyicai.charge.dna.pay.DNATransactionClientService;
+import com.ruyicai.charge.dna.v2.pay.DNATransactionClientService;
 import com.ruyicai.charge.lakala.MD5Util;
 import com.ruyicai.charge.liantonghuajian.LthjUtil;
 import com.ruyicai.charge.liantonghuajian.XmlHttpConnection;

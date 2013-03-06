@@ -388,6 +388,18 @@ public class ChargeconfigService {
 		} else if (key.equals("lotteryModifyTdnabindState")) {
 			memo = "lottery修改DNA绑定状态";
 			value = ConfigUtil.getConfig("lottery.properties", key);
+		} else if (key.equals("DNARSAPayAddress")) {
+			memo = "lottery修改DNA绑定状态";
+			value = ConfigUtil.getConfig("charge.properties", key);
+		} else if (key.equals("DNANameSpace")) {
+			memo = "lottery修改DNA绑定状态";
+			value = ConfigUtil.getConfig("charge.properties", key);
+		} else if (key.equals("GDYILIAN_CERT_PUB_64")) {
+			memo = "lottery修改DNA绑定状态";
+			value = ConfigUtil.getConfig("charge.properties", key);
+		} else if (key.equals("DNAV2ReturnUrl")) {
+			memo = "lottery修改DNA绑定状态";
+			value = ConfigUtil.getConfig("charge.properties", key);
 		} else {
 			logger.error("Chargeconfig key=" + key + "不存在");
 			return cc;

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ruyicai</groupId>
@@ -12,8 +11,8 @@
 	<properties>
 		<prelaunch.tomcat.port>9080</prelaunch.tomcat.port>
 		<roo.version>1.1.5.RELEASE</roo.version>
-		<aspectj.version>1.6.11.M2</aspectj.version>
-		<spring.version>3.0.5.RELEASE</spring.version>
+		<aspectj.version>1.6.11</aspectj.version>
+		<spring.version>3.1.0.RELEASE</spring.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<memcache.client.ip>192.168.99.30:12000,192.168.99.31:12000</memcache.client.ip>
 	</properties>
@@ -240,7 +239,6 @@
 			<groupId>org.springframework.roo</groupId>
 			<artifactId>org.springframework.roo.annotations</artifactId>
 			<version>${roo.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -347,13 +345,13 @@
 			<groupId>ojdbc</groupId>
 			<artifactId>ojdbc</artifactId>
 			<version>14</version>
-			<type>jar</type>
+			<type>pom</type>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.13</version>
-			<classifier />
+			<classifier/>
 		</dependency>
 		<dependency>
 			<groupId>yeepay</groupId>
@@ -532,11 +530,12 @@
 				<database.testOnBorrow>true</database.testOnBorrow>
 				<database.systemUser>system</database.systemUser>
 				<database.systemPassword>123456</database.systemPassword>
-				<database.url.mysql>jdbc:mysql://192.168.0.92:3306/chargecenter?characterEncoding=utf-8</database.url.mysql>
+				<database.url.mysql>jdbc:mysql://localhost:3306/chargecenter?characterEncoding=utf-8</database.url.mysql>
 				<database.driverClassName.mysql>com.mysql.jdbc.Driver</database.driverClassName.mysql>
-				<database.username.mysql>jrtConsole</database.username.mysql>
-				<database.password.mysql>jrtConsole</database.password.mysql>
+				<database.username.mysql>root</database.username.mysql>
+				<database.password.mysql>zhengshuli</database.password.mysql>
 				<tlot.id.prefix>TE</tlot.id.prefix>
+				<memcache.client.ip>localhost:12000</memcache.client.ip>
 			</properties>
 		</profile>
 		<profile>
@@ -571,12 +570,12 @@
 				<database.systemPassword>123456</database.systemPassword>
 				<maven.test.skip>true</maven.test.skip>
 				<sys.target>beijing</sys.target>
-				<database.url.mysql>jdbc:mysql://192.168.190.105:3306/chargecenter?characterEncoding=utf-8</database.url.mysql>
+				<database.url.mysql>jdbc:mysql://localhost:3306/chargecenter?characterEncoding=utf-8</database.url.mysql>
 				<database.driverClassName.mysql>com.mysql.jdbc.Driver</database.driverClassName.mysql>
-				<database.username.mysql>jrtConsole</database.username.mysql>
-				<database.password.mysql>jrtConsole</database.password.mysql>
+				<database.username.mysql>root</database.username.mysql>
+				<database.password.mysql>zhengshu</database.password.mysql>
 				<tlot.id.prefix>LX</tlot.id.prefix>
-				<memcache.client.ip>192.168.190.102:12000,192.168.190.103:12000</memcache.client.ip>
+				<memcache.client.ip>localhost:12000</memcache.client.ip>
 			</properties>
 		</profile>
 	</profiles>
