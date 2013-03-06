@@ -539,6 +539,46 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>test</id>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+						<filtering>true</filtering>
+					</resource>
+					<resource>
+						<directory>conf/laoxie</directory>
+					</resource>
+				</resources>
+			</build>
+			<properties>
+				<database.url>jdbc:oracle:thin:@192.168.15.10:1521:jrtdb</database.url>
+				<database.driverClassName>oracle.jdbc.OracleDriver</database.driverClassName>
+				<database.username>jrtsch</database.username>
+				<database.password>jrtsch</database.password>
+				<database.initialSize>0</database.initialSize>
+				<database.maxActive>20</database.maxActive>
+				<database.maxIdle>100</database.maxIdle>
+				<database.minIdle>0</database.minIdle>
+				<database.maxWait>10000</database.maxWait>
+				<database.removeAbandoned>true</database.removeAbandoned>
+				<database.removeAbandonedTimeout>60</database.removeAbandonedTimeout>
+				<database.logAbandoned>true</database.logAbandoned>
+				<database.validationQuery>select 1 from dual</database.validationQuery>
+				<database.testOnBorrow>true</database.testOnBorrow>
+				<database.systemUser>system</database.systemUser>
+				<database.systemPassword>123456</database.systemPassword>
+				<maven.test.skip>true</maven.test.skip>
+				<sys.target>test</sys.target>
+				<database.url.mysql>jdbc:mysql://192.168.15.10:3306/chargecenter?characterEncoding=utf-8</database.url.mysql>
+				<database.driverClassName.mysql>com.mysql.jdbc.Driver</database.driverClassName.mysql>
+				<database.username.mysql>jrtConsole</database.username.mysql>
+				<database.password.mysql>jrtConsole</database.password.mysql>
+				<tlot.id.prefix>LX</tlot.id.prefix>
+				<memcache.client.ip>192.168.15.15:12000</memcache.client.ip>
+			</properties>
+		</profile>
+		<profile>
 			<id>beijing</id>
 			<build>
 				<resources>
