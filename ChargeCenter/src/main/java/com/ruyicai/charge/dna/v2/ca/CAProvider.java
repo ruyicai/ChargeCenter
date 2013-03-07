@@ -7,16 +7,16 @@ package com.ruyicai.charge.dna.v2.ca;
 import com.ruyicai.charge.dna.v2.common.ToolKit;
 
 
-/** CAÊı×ÖÖ¤ÊéÉú³ÉÀà, ÏµÍ³¾ßÌåÄ¬ÈÏÊ¹ÓÃ±±¾©Êı×ÖÖ¤ÊéÈÏÖ¤ÖĞĞÄCAÖ¤Êé.
- *  ·şÎñÆ÷Ö¤Êé¹«Ô¿¿ÉÍ¨¹ısystemsetting.propertiesÎÄ¼şµÄSERVER_CERT²ÎÊı»ñÈ¡.
- *  µ÷ÓÃÉÌ»§Ö¤Êé¿ÉÍ¨¹ısystemsetting.propertiesÎÄ¼şµÄBJCA_INSTANCE_NAMEÖ¸¶¨ÅäÖÃ.
- *  ÉÌ»§Ö¤Êé¾ßÌåÅäÖÃÄÚÈİÎ»ÓÚÔÚC:/BJCAROOT(windows), /usr/BJCAROOT(linux)Ä¿Â¼ÏÂBJCA_ServerConfig.xmlÎÄ¼şÖĞ
+/** CAæ•°å­—è¯ä¹¦ç”Ÿæˆç±», ç³»ç»Ÿå…·ä½“é»˜è®¤ä½¿ç”¨åŒ—äº¬æ•°å­—è¯ä¹¦è®¤è¯ä¸­å¿ƒCAè¯ä¹¦.
+ *  æœåŠ¡å™¨è¯ä¹¦å…¬é’¥å¯é€šè¿‡systemsetting.propertiesæ–‡ä»¶çš„SERVER_CERTå‚æ•°è·å–.
+ *  è°ƒç”¨å•†æˆ·è¯ä¹¦å¯é€šè¿‡systemsetting.propertiesæ–‡ä»¶çš„BJCA_INSTANCE_NAMEæŒ‡å®šé…ç½®.
+ *  å•†æˆ·è¯ä¹¦å…·ä½“é…ç½®å†…å®¹ä½äºåœ¨C:/BJCAROOT(windows), /usr/BJCAROOT(linux)ç›®å½•ä¸‹BJCA_ServerConfig.xmlæ–‡ä»¶ä¸­
  *
  * @author Administrator
  */
 public class CAProvider {
     public static void main(String[] args) throws Exception {
-        String signData = CAProvider.sign(CAProvider.getCA().getServerCert(), "dÂÒÂëdddd");
+        String signData = CAProvider.sign(CAProvider.getCA().getServerCert(), "dä¹±ç dddd");
         System.out.println(signData);
          String Data = CAProvider.verify(signData, true);
           System.out.println(Data);
@@ -26,9 +26,9 @@ public class CAProvider {
     
     private static CA cfca = null;
 
-    /** µ÷ÓÃÉÌ»§Ö¤Êé, Í¨¹ısystemsetting.propertiesÎÄ¼şµÄBJCA_INSTANCE_NAMEÖ¸¶¨ÅäÖÃ.
+    /** è°ƒç”¨å•†æˆ·è¯ä¹¦, é€šè¿‡systemsetting.propertiesæ–‡ä»¶çš„BJCA_INSTANCE_NAMEæŒ‡å®šé…ç½®.
      * 
-     * @return CAÖ¤ÊéÊµÏÖÀà
+     * @return CAè¯ä¹¦å®ç°ç±»
      */
     public static CA getCA() {
         if (cfca == null) {
@@ -41,21 +41,21 @@ public class CAProvider {
         return cfca;
     }
 
-    /** CAÊı×ÖÖ¤ÊéÇ©Ãû¼ÓÃÜ
+    /** CAæ•°å­—è¯ä¹¦ç­¾ååŠ å¯†
      * 
-     * @param cert ·şÎñÆ÷Ö¤Êé¹«Ô¿
-     * @param value ĞèÒªÇ©Ãû¼ÓÃÜµÄÄÚÈİ
-     * @return Ç©Ãû¼ÓÃÜµÄÄÚÈİ
+     * @param cert æœåŠ¡å™¨è¯ä¹¦å…¬é’¥
+     * @param value éœ€è¦ç­¾ååŠ å¯†çš„å†…å®¹
+     * @return ç­¾ååŠ å¯†çš„å†…å®¹
      * @throws Exception 
      */
     public static String sign(String cert, String value) throws Exception {
         return getCA().sign(cert, value);
     }
 
-    /** ¶ÔÇ©Ãû¼ÓÃÜÊı¾İ½øĞĞÑéÇ©¡£
+    /** å¯¹ç­¾ååŠ å¯†æ•°æ®è¿›è¡ŒéªŒç­¾ã€‚
      * 
-     * @param sign Ç©Ãû¼ÓÃÜµÄÄÚÈİ
-     * @return Ç©Ãû¼ÓÃÜµÄÔ­ÎÄ
+     * @param sign ç­¾ååŠ å¯†çš„å†…å®¹
+     * @return ç­¾ååŠ å¯†çš„åŸæ–‡
      * @throws Exception 
      */
     public static String verify(String value, boolean checkSign) throws Exception {

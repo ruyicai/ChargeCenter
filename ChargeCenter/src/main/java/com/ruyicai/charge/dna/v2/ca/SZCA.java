@@ -3,11 +3,9 @@
  * and open the template in the editor.
  */
 package com.ruyicai.charge.dna.v2.ca;
-
 import cn.org.bjca.security.SecurityEngineDeal;
 
-
-/** ±±¾©Êı×ÖÖ¤ÊéÖĞĞÄ, ÉîÛÚ·Ö¹«Ë¾Ìá¹©µÄCAÖ¤ÊéÊµÏÖ.
+/** åŒ—äº¬æ•°å­—è¯ä¹¦ä¸­å¿ƒ, æ·±åœ³åˆ†å…¬å¸æä¾›çš„CAè¯ä¹¦å®ç°.
  * 
  * @author Administrator
  */
@@ -18,7 +16,7 @@ public class SZCA implements CA {
      */
     public static void main(String[] args) throws Exception {
         try {
-            //³õÊ¼»¯Ó¦ÓÃ,µ÷ÓÃBJCAROOTÄ¿Â¼ÏÂÓ¦ÓÃÖĞÅäÖÃµÄÖ¤Êé
+            //åˆå§‹åŒ–åº”ç”¨,è°ƒç”¨BJCAROOTç›®å½•ä¸‹åº”ç”¨ä¸­é…ç½®çš„è¯ä¹¦
             SecurityEngineDeal sedServer = SecurityEngineDeal.getInstance("SecXV3Default");
             SecurityEngineDeal sedClient = SecurityEngineDeal.getInstance("BJCASecXV2Default");
 
@@ -27,33 +25,33 @@ public class SZCA implements CA {
             sedServer.setEncryptMethod("T-DES");
             sedClient.setEncryptMethod("T-DES");
 
-            //Ô­ÎÄ
-            String data = "BJCAÌìµÄÌìµÄÌìµÄÌìÌìµÄÌìµÄÌìµÄÌìÌìµÄÌìµÄÌìµÄÌìµÄÌìµÄÌìµÄÌìÌìµÄÌìµÄÌìµÄBJCA";
-            System.out.println("Ô­ÎÄ++++++" + data);
+            //åŸæ–‡
+            String data = "BJCAå¤©çš„å¤©çš„å¤©çš„å¤©å¤©çš„å¤©çš„å¤©çš„å¤©å¤©çš„å¤©çš„å¤©çš„å¤©çš„å¤©çš„å¤©çš„å¤©å¤©çš„å¤©çš„å¤©çš„BJCA";
+            System.out.println("åŸæ–‡++++++" + data);
 
             String certServer = sedServer.getServerCertificate();
             System.out.println("sedServer.getServerCertificate:++++++" + certServer);
             System.out.println("sedServer.validateCert:++++++" + sedServer.validateCert(certServer));
 
-            System.out.println("sedServer.getCertInfo:°æ±¾++++++++" + sedServer.getCertInfo(certServer, 1));
-            System.out.println("sedServer.getCertInfo:Ö¤ÊéĞòÁĞºÅ++++++++" + sedServer.getCertInfo(certServer, 2));
-            System.out.println("sedServer.getCertInfo:Ö¤ÊéÓĞĞ§ÆÚÆğÊ¼++++++++" + sedServer.getCertInfo(certServer, 11));
-            System.out.println("sedServer.getCertInfo:Ö¤ÊéÓĞĞ§ÆÚ½ØÖ¹++++++++" + sedServer.getCertInfo(certServer, 12));
-            System.out.println("sedServer.getCertInfo:ÓÃ»§×éÖ¯Ãû++++++++" + sedServer.getCertInfo(certServer, 14));
-            System.out.println("sedServer.getCertInfo:ÓÃ»§Í¨ÓÃÃû++++++++" + sedServer.getCertInfo(certServer, 17));
-            System.out.println("sedServer.getCertInfo:Ö¤Êé¹«Ô¿++++++++" + sedServer.getCertInfo(certServer, 30));
+            System.out.println("sedServer.getCertInfo:ç‰ˆæœ¬++++++++" + sedServer.getCertInfo(certServer, 1));
+            System.out.println("sedServer.getCertInfo:è¯ä¹¦åºåˆ—å·++++++++" + sedServer.getCertInfo(certServer, 2));
+            System.out.println("sedServer.getCertInfo:è¯ä¹¦æœ‰æ•ˆæœŸèµ·å§‹++++++++" + sedServer.getCertInfo(certServer, 11));
+            System.out.println("sedServer.getCertInfo:è¯ä¹¦æœ‰æ•ˆæœŸæˆªæ­¢++++++++" + sedServer.getCertInfo(certServer, 12));
+            System.out.println("sedServer.getCertInfo:ç”¨æˆ·ç»„ç»‡å++++++++" + sedServer.getCertInfo(certServer, 14));
+            System.out.println("sedServer.getCertInfo:ç”¨æˆ·é€šç”¨å++++++++" + sedServer.getCertInfo(certServer, 17));
+            System.out.println("sedServer.getCertInfo:è¯ä¹¦å…¬é’¥++++++++" + sedServer.getCertInfo(certServer, 30));
 
             String certClient = sedClient.getServerCertificate();
             System.out.println("sedClient.getServerCertificate:++++++" + certClient);
             System.out.println("sedClient.validateCert:++++++" + sedClient.validateCert(certClient));
 
-            System.out.println("sedClient.getCertInfo:°æ±¾++++++++" + sedClient.getCertInfo(certClient, 1));
-            System.out.println("sedClient.getCertInfo:Ö¤ÊéĞòÁĞºÅ++++++++" + sedClient.getCertInfo(certClient, 2));
-            System.out.println("sedClient.getCertInfo:Ö¤ÊéÓĞĞ§ÆÚÆğÊ¼++++++++" + sedClient.getCertInfo(certClient, 11));
-            System.out.println("sedClient.getCertInfo:Ö¤ÊéÓĞĞ§ÆÚ½ØÖ¹++++++++" + sedClient.getCertInfo(certClient, 12));
-            System.out.println("sedClient.getCertInfo:ÓÃ»§×éÖ¯Ãû++++++++" + sedClient.getCertInfo(certClient, 14));
-            System.out.println("sedClient.getCertInfo:ÓÃ»§Í¨ÓÃÃû++++++++" + sedClient.getCertInfo(certClient, 17));
-            System.out.println("sedClient.getCertInfo:Ö¤Êé¹«Ô¿++++++++" + sedClient.getCertInfo(certClient, 30));
+            System.out.println("sedClient.getCertInfo:ç‰ˆæœ¬++++++++" + sedClient.getCertInfo(certClient, 1));
+            System.out.println("sedClient.getCertInfo:è¯ä¹¦åºåˆ—å·++++++++" + sedClient.getCertInfo(certClient, 2));
+            System.out.println("sedClient.getCertInfo:è¯ä¹¦æœ‰æ•ˆæœŸèµ·å§‹++++++++" + sedClient.getCertInfo(certClient, 11));
+            System.out.println("sedClient.getCertInfo:è¯ä¹¦æœ‰æ•ˆæœŸæˆªæ­¢++++++++" + sedClient.getCertInfo(certClient, 12));
+            System.out.println("sedClient.getCertInfo:ç”¨æˆ·ç»„ç»‡å++++++++" + sedClient.getCertInfo(certClient, 14));
+            System.out.println("sedClient.getCertInfo:ç”¨æˆ·é€šç”¨å++++++++" + sedClient.getCertInfo(certClient, 17));
+            System.out.println("sedClient.getCertInfo:è¯ä¹¦å…¬é’¥++++++++" + sedClient.getCertInfo(certClient, 30));
 
 
             String signdata = sedClient.signData(data);
@@ -76,10 +74,10 @@ public class SZCA implements CA {
             String signData = sedClient.signDataPkcs7(data);
             System.out.println("sedClient.ignDataPkcs7++++++" + signData);
             System.out.println("sedServer.verifySignedDataPkcs7++++++" + sedServer.verifySignedDataPkcs7(signData));
-            System.out.println("sedServer.getP7SignDataInfo:Ô­ÎÄ++++++" + sedServer.getP7SignDataInfo(signData, 1));
+            System.out.println("sedServer.getP7SignDataInfo:åŸæ–‡++++++" + sedServer.getP7SignDataInfo(signData, 1));
             String certData = sedServer.getP7SignDataInfo(signData, 2);
-            System.out.println("sedServer.getP7SignDataInfo:Ç©ÃûÕßÖ¤Êé++++++" + sedServer.getP7SignDataInfo(signData, 2));
-            System.out.println("sedServer.signData:Ç©ÃûÖµ++++++" + sedServer.getP7SignDataInfo(signData, 3));
+            System.out.println("sedServer.getP7SignDataInfo:ç­¾åè€…è¯ä¹¦++++++" + sedServer.getP7SignDataInfo(signData, 2));
+            System.out.println("sedServer.signData:ç­¾åå€¼++++++" + sedServer.getP7SignDataInfo(signData, 3));
 
             String envelopData = sedClient.encodeP7SignAndEnvelopData(certServer, data);
             System.out.println("sedClient.encodeP7SignAndEnvelopData++++++" + envelopData);
@@ -107,7 +105,7 @@ public class SZCA implements CA {
         engine.setEncryptMethod("T-DES");
     }
 
-    /** ¶Ô×Ö·û´®Êı¾İ½øĞĞÊı×ÖÇ©Ãû£¬Ç©Ãû¸ñÊ½ÎªPkcs7
+    /** å¯¹å­—ç¬¦ä¸²æ•°æ®è¿›è¡Œæ•°å­—ç­¾åï¼Œç­¾åæ ¼å¼ä¸ºPkcs7
      * 
      * @param instance
      * @throws Exception 
@@ -122,10 +120,10 @@ public class SZCA implements CA {
         return tData;
     }
 
-    /** ¶ÔÇ©Ãû¼ÓÃÜÊı¾İ½øĞĞÑéÇ©£¬½âÃÜ¡£
+    /** å¯¹ç­¾ååŠ å¯†æ•°æ®è¿›è¡ŒéªŒç­¾ï¼Œè§£å¯†ã€‚
      * 
-     * @param sign Ç©Ãû¼ÓÃÜµÄÄÚÈİ
-     * @return Ç©Ãû¼ÓÃÜµÄÔ­ÎÄ
+     * @param sign ç­¾ååŠ å¯†çš„å†…å®¹
+     * @return ç­¾ååŠ å¯†çš„åŸæ–‡
      * @throws Exception 
      */
     public String verify(String sign, boolean checkSign) throws Exception {
@@ -141,32 +139,32 @@ public class SZCA implements CA {
         return src;
     }
 
-    /** »ñÈ¡Ö¤ÊéĞÅÏ¢
+    /** è·å–è¯ä¹¦ä¿¡æ¯
      * 
-     * @param sign Base64±àÂëµÄX.509Êı×ÖÖ¤Êé
-     * @param Type type	ÒâÒå
-    1	Ö¤Êé°æ±¾
-    2	Ö¤ÊéĞòÁĞºÅ
-    8	Ö¤Êé·¢·ÅÕßÍ¨ÓÃÃû
-    11	Ö¤ÊéÓĞĞ§ÆÚÆğÊ¼
-    12	Ö¤ÊéÓĞĞ§ÆÚ½ØÖ¹
-    13	ÓÃ»§¹ú¼ÒÃû
-    14	ÓÃ»§×éÖ¯Ãû
-    15	ÓÃ»§²¿ÃÅÃû
-    16	ÓÃ»§Ê¡ÖİÃû
-    17	ÓÃ»§Í¨ÓÃÃû
-    18	ÓÃ»§³ÇÊĞÃû
-    19	ÓÃ»§EMAILµØÖ·
-    20	Ö¤Êé°ä·¢ÕßDN
-    21	Ö¤ÊéÖ÷Ìâ£¨DN£©
-    23	ÓÃ»§¹ú¼ÒÃû(±¸ÓÃÃûC)
-    24	ÓÃ»§×éÖ¯Ãû(±¸ÓÃÃûO)
-    25	ÓÃ»§²¿ÃÅÃû(±¸ÓÃÃûOU)
-    26	ÓÃ»§Ê¡ÖİÃû(±¸ÓÃÃûS)
-    27	ÓÃ»§Í¨ÓÃÃû(±¸ÓÃÃûCN)
-    28	ÓÃ»§³ÇÊĞÃû(±¸ÓÃÃûL)
-    29	ÓÃ»§EMAILµØÖ·(±¸ÓÃÃûE)
-    30	Ö¤Êé¹«Ô¿£¨base64£©    
+     * @param sign Base64ç¼–ç çš„X.509æ•°å­—è¯ä¹¦
+     * @param Type type	æ„ä¹‰
+    1	è¯ä¹¦ç‰ˆæœ¬
+    2	è¯ä¹¦åºåˆ—å·
+    8	è¯ä¹¦å‘æ”¾è€…é€šç”¨å
+    11	è¯ä¹¦æœ‰æ•ˆæœŸèµ·å§‹
+    12	è¯ä¹¦æœ‰æ•ˆæœŸæˆªæ­¢
+    13	ç”¨æˆ·å›½å®¶å
+    14	ç”¨æˆ·ç»„ç»‡å
+    15	ç”¨æˆ·éƒ¨é—¨å
+    16	ç”¨æˆ·çœå·å
+    17	ç”¨æˆ·é€šç”¨å
+    18	ç”¨æˆ·åŸå¸‚å
+    19	ç”¨æˆ·EMAILåœ°å€
+    20	è¯ä¹¦é¢å‘è€…DN
+    21	è¯ä¹¦ä¸»é¢˜ï¼ˆDNï¼‰
+    23	ç”¨æˆ·å›½å®¶å(å¤‡ç”¨åC)
+    24	ç”¨æˆ·ç»„ç»‡å(å¤‡ç”¨åO)
+    25	ç”¨æˆ·éƒ¨é—¨å(å¤‡ç”¨åOU)
+    26	ç”¨æˆ·çœå·å(å¤‡ç”¨åS)
+    27	ç”¨æˆ·é€šç”¨å(å¤‡ç”¨åCN)
+    28	ç”¨æˆ·åŸå¸‚å(å¤‡ç”¨åL)
+    29	ç”¨æˆ·EMAILåœ°å€(å¤‡ç”¨åE)
+    30	è¯ä¹¦å…¬é’¥ï¼ˆbase64ï¼‰    
      * @return CertInfo
      */
     public String getCertInfo(String sign, int type)
@@ -176,7 +174,7 @@ public class SZCA implements CA {
 
     }
 
-    /** »ñÈ¡·şÎñÆ÷Ö¤Êé
+    /** è·å–æœåŠ¡å™¨è¯ä¹¦
      * 
      * @return
      * @throws Exception 

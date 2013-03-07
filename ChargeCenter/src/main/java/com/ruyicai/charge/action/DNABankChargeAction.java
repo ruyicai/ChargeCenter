@@ -14,9 +14,9 @@ import org.apache.struts2.interceptor.ServletResponseAware;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ruyicai.charge.dna.v2.pay.DNATransactionClientService;
+import com.ruyicai.charge.dna.v2.pay.PayWhitelistToDnaParameter;
 import com.ruyicai.charge.dna.v2.thirdpart.PosMessage;
 import com.ruyicai.charge.service.ChargeconfigService;
-import com.ruyicai.charge.util.ConfigUtil;
 import com.ruyicai.charge.util.ErrorCode;
 import com.ruyicai.charge.util.HttpRequest;
 import com.ruyicai.charge.util.JsonUtil;
@@ -336,9 +336,9 @@ public class DNABankChargeAction  implements ServletRequestAware, ServletRespons
 			String type = "2";// 交易类型：用户充值
 
 			// 接听DNA语音电话的手机号码是accessMobile而不是mobileCode
-			Map map = dnaTransactionClientService.payWhitelistToDna(accessMobile, cardNumber, amount+ "", userName, documentNumber, accountAddress, ip, 
-					documentAddress, key, userno, accesstype, cardType, bankId, type, amt, channel, subchannel, ladderpresentflag, 
-					continuebettype, orderid);
+			Map map = dnaTransactionClientService.payWhitelistToDna(new PayWhitelistToDnaParameter(accessMobile, cardNumber, amount+ "", userName, documentNumber,
+					accountAddress, ip, documentAddress, key, userno, accesstype, cardType, bankId,
+					type, amt, channel, subchannel, ladderpresentflag, continuebettype, orderid));
 			errorCode = (String) map.get("errorCode");
 			if (errorCode.equals(ErrorCode.OK.value)) {
 				PosMessage pm = (PosMessage) map.get("pm");
