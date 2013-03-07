@@ -1,5 +1,23 @@
 package com.ruyicai.charge.dna.v2.pay;
 
+/**
+ * 易联支付参数类
+ * userPhoneNumber 持卡人的手机号码
+ * userCardNumber 持卡人的卡号
+ * amount 充值金额
+ * userName 开户人姓名
+ * documentNumber 开户证件号码
+ * accountAddress 开户银行所在地
+ * ip 支付的IP地址
+ * documentAddress 持卡人身份证地址
+ * payType 支付类型 0 为白名单支付 1 为灰名单支付
+ * userno 客户编号
+ * accesstype 接入参数
+ * cardType 卡别标识.卡序列标识
+ * 
+ * @author zsl
+ *
+ */
 public class PayWhitelistToDnaParameter {
 	private String userPhoneNumber;
 	private String userCardNumber;

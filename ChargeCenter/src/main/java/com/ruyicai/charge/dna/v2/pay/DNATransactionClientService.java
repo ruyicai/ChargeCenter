@@ -48,54 +48,37 @@ public final class DNATransactionClientService {
 			// 构造TransactionClient，连接方式设置为CA
 			TransactionClient tm = createRSATransactionClient();
 			// 第一次身份验证
-			PosMessage pm = tm.accountQuery(getSerialNO(), getAccountNumber(payParam), "||||||||||",
-					Strings.random(24));
+			PosMessage pm = tm.accountQuery(getSerialNO(), getAccountNumber(payParam),
+					"||||||||||", Strings.random(24));
 
 			// 订单信息，金额，描述，备注，订单号。
 			String orderAmount = (Float.parseFloat(payParam.getAmt()) / 100) + "";
-			String orderRemark = "";
 			String transactionId = "";
-			String merOrderNo = "12" + getMerchantOrderNO(); // TODO得修改回去
-			// 交易密钥, 随机生成, 用于加密解密报文
-			String encryptKey = Strings.random(24);// RSA密钥，区分新旧CA方式，新CA方式就是RSA
-			// 交易结果CA证书异步返回测试地址， 请修改为商户服务器提供的地址, 类型＋地址, 请参照<<银联语音支付平台接口规范>>
-			String returnUrl = chargeconfigService.getChargeconfig("DNAV2ReturnUrl");
-			// 是否即时支付,一线通选非即时支付
-			boolean payNow = true;
+			if (Float.parseFloat(orderAmount) > Float.parseFloat(pm.getAmount())) {
+				LOGGER.info("该银行卡超过当日交易金额上限，请明天再交易\r\n");
+			}
 			// 白名单用户开始支付流程
-			if (pm.getRespCode().equals("0000")) {
+			else if (pm.getRespCode().equals("0000")) {
 				transactionId = saveTransactionRecord(payParam);
+				String merOrderNo = "12" + transactionId;
 				// 白名单支付 transdata第一位需要传用户名
-				pm = tm.pay(getSerialNO(), getAccountNumber(payParam), DEFAULT_PARAM_VALUE, orderAmount, merOrderNo, "reference",
-						ORDER_DESC, orderRemark, payNow, returnUrl, payParam.getUserName()
-								+ "||||||||||", encryptKey);
-				// XXX 和易联测试接口临时添加，正式产品去掉这次调用
-				orderQuery(transactionId);
+				pm = pay(tm, payParam, payParam.getUserName() + "||||||||||", transactionId,
+						orderAmount);
 			}
 			// T438：系统交易过的新卡，需要提供持卡人信息；；T437：系统未交易过的新卡，需要提供持卡人信息；T404系统不支持的卡
 			else if (pm.getRespCode().equals("T438") || pm.getRespCode().equals("T437")
 					|| pm.getRespCode().equals("T404")) {
-				String idCardType = "01"; // 银行开户证件类型，　01:身份证，02:护照，03:军人证，04:台胞证
-											// 本系统固定为身份证
-				String ipAddress = payParam.getIp().equals("") ? "127.0.0.1" : payParam.getIp(); // 持卡人登录IP地址．
-				String idCardAddress = payParam.getDocumentAddress().equals("") ? "身份证地址"
-						: payParam.getDocumentAddress(); // 身份证地址,截取至街道
-				String transData = getTransData(payParam, idCardType,
-						ipAddress, idCardAddress, pm);
+				String transData = getTransData(payParam, pm);
 				LOGGER.info("transData=" + transData);
 				// 为交易过的新卡第二次身份验证
-				pm = tm.accountQuery(getSerialNO(), getAccountNumber(payParam), transData, Strings.random(24));
+				tm.accountQuery(getSerialNO(), getAccountNumber(payParam), transData,
+						Strings.random(24));
 				transactionId = saveTransactionRecord(payParam);
-				
-				pm = tm.pay(getSerialNO(), getAccountNumber(payParam), DEFAULT_PARAM_VALUE, orderAmount, merOrderNo, "reference",
-						ORDER_DESC, orderRemark, payNow, returnUrl, transData, encryptKey);
-				orderQuery(transactionId);
+				pm = pay(tm, payParam, transData, transactionId, orderAmount);
 			}
 			// 黑名单T432退出支付流程
 			else if (pm.getRespCode().equals("T432")) {
 				LOGGER.info("银行卡被列入黑名单，拒绝交易；\r\n");
-			} else if (Float.parseFloat(orderAmount) > Float.parseFloat(pm.getAmount())) {
-				LOGGER.info("该银行卡超过当日交易金额上限，请明天再交易\r\n");
 			} else if (pm.getRespCode().equals("T436")) {
 				LOGGER.info("该银行卡交易时间受限，请明天八点以后再交易\r\n");
 			}
@@ -108,9 +91,26 @@ public final class DNATransactionClientService {
 		} catch (Exception e) {
 			LOGGER.error("DNA支付的出现错误:", e);
 			result.put("pm", new PosMessage());
-			result.put("errorCode", ErrorCode.ERROR);
+			result.put("errorCode", ErrorCode.ERROR.value);
 			return result;
 		}
+	}
+
+	private PosMessage pay(TransactionClient tm, PayWhitelistToDnaParameter payParam,
+			String transData, String transactionId, String orderAmount) throws Exception {
+		// 交易密钥, 随机生成, 用于加密解密报文
+		String encryptKey = Strings.random(24);// RSA密钥，区分新旧CA方式，新CA方式就是RSA
+		// 交易结果CA证书异步返回测试地址， 请修改为商户服务器提供的地址, 类型＋地址, 请参照<<银联语音支付平台接口规范>>
+		String returnUrl = chargeconfigService.getChargeconfig("DNAV2ReturnUrl");
+		// 是否即时支付,一线通选非即时支付
+		boolean payNow = true;
+		String merOrderNo = "12" + transactionId;
+		PosMessage pm = tm.pay(getSerialNO(), getAccountNumber(payParam), DEFAULT_PARAM_VALUE,
+				orderAmount, merOrderNo, "reference", ORDER_DESC, DEFAULT_PARAM_VALUE, payNow,
+				returnUrl, transData, encryptKey);
+		// XXX 和易联测试接口临时添加，正式产品去掉这次调用
+		orderQuery(merOrderNo);
+		return pm;
 	}
 
 	private String getAccountNumber(PayWhitelistToDnaParameter payParam) {
@@ -135,16 +135,24 @@ public final class DNATransactionClientService {
 		return param;
 	}
 
-	private String getTransData(PayWhitelistToDnaParameter payParam,
-			String idCardType, String ipAddress, String idCardAddress, PosMessage pm) {
+	private String getTransData(PayWhitelistToDnaParameter payParam, PosMessage pm) {
+		String idCardType = "01"; // 银行开户证件类型，　01:身份证，02:护照，03:军人证，04:台胞证
+		// 本系统固定为身份证
+		String ipAddress = payParam.getIp().equals("") ? "127.0.0.1" : payParam.getIp(); // 持卡人登录IP地址．
+		String idCardAddress = payParam.getDocumentAddress().equals("") ? "身份证地址" : payParam
+				.getDocumentAddress(); // 身份证地址,截取至街道
 		String bankPhoneNumber = "13423105530";
 		// 根据第一次查卡返回Reference填写业务数据transData进行第二次查卡
 		String[] reference = pm.getReference().trim().split("\\|");
-		String newuserName = (reference.length > 0 && reference[0].equals("1")) ? payParam.getUserName() : "";
-		String documentNumber = (reference.length > 1 && reference[1].equals("1")) ? payParam.getDocumentAddress() : "";
-		String accountAddress = (reference.length > 2 && reference[2].equals("1")) ? payParam.getAccountAddress() : "";
+		String newuserName = (reference.length > 0 && reference[0].equals("1")) ? payParam
+				.getUserName() : "";
+		String documentNumber = (reference.length > 1 && reference[1].equals("1")) ? payParam
+				.getDocumentAddress() : "";
+		String accountAddress = (reference.length > 2 && reference[2].equals("1")) ? payParam
+				.getAccountAddress() : "";
 		idCardType = (reference.length > 3 && reference[3].equals("1")) ? idCardType : "";
-		String secondUserName = (reference.length > 4 && reference[4].equals("1")) ? payParam.getUserName() : "";
+		String secondUserName = (reference.length > 4 && reference[4].equals("1")) ? payParam
+				.getUserName() : "";
 		ipAddress = (reference.length > 5 && reference[5].equals("1")) ? ipAddress : "";
 		idCardAddress = (reference.length > 6 && reference[6].equals("1")) ? idCardAddress : "";
 		String productPhoneNumber = DEFAULT_PARAM_VALUE; // 无需填写
@@ -160,7 +168,8 @@ public final class DNATransactionClientService {
 		return transData;
 	}
 
-	public Map<String, String> orderQuery(String transactionId) {
+	public Map<String, String> orderQuery(String transactionId) throws InterruptedException {
+		Thread.sleep(1000);
 		Map<String, String> map = new HashMap<String, String>();
 		String errorCode = ErrorCode.OK.value;
 		PosMessage pm = null;
@@ -169,9 +178,8 @@ public final class DNATransactionClientService {
 		try {
 			tm = createRSATransactionClient();
 			String acqSsn = getSerialNO();
-			String orderNo = "12" + transactionId + "|";
 			boolean isPay = false;
-			pm = tm.orderQuery(acqSsn, "", orderNo, isPay, Strings.random(24));
+			pm = tm.orderQuery(acqSsn, "", transactionId, isPay, Strings.random(24));
 		} catch (Exception e) {
 			errorCode = ErrorCode.ERROR.value;
 			e.printStackTrace();
@@ -181,9 +189,9 @@ public final class DNATransactionClientService {
 
 		map.put("errorCode", errorCode);
 		map.put("ProcCode", pm.getProcCode());
-		map.put("AccountNum", pm.getAccountNum().substring(2));
+		map.put("AccountNum", pm.getAccountNum());
 		map.put("ProcessCode", pm.getProcessCode());
-		map.put("Amount", new BigDecimal(pm.getAmount()).toString());
+		map.put("Amount", pm.getAmount().isEmpty() ? "" : new BigDecimal(pm.getAmount()).toString());
 		map.put("AcqSsn", pm.getAcqSsn());
 		map.put("Ltime", pm.getLtime());
 		map.put("Ldate", pm.getLdate());
@@ -226,16 +234,15 @@ public final class DNATransactionClientService {
 		}
 	}
 
-	private String saveTransactionRecord(PayWhitelistToDnaParameter payParam)
-			throws Exception {
+	private String saveTransactionRecord(PayWhitelistToDnaParameter payParam) throws Exception {
 		StringBuffer param = getSaveTransactionParam(payParam);
 		String url = chargeconfigService.getChargeconfig("lotteryReqUrl");
 		LOGGER.info("DNA银行卡充值->生成交易记录：url=" + url + " ,param=" + param.toString());
 		String result = HttpRequest.doPostRequest(url, param.toString());
 		LOGGER.info("返回 return=" + result);
 		Map<String, Object> mapResult = JsonUtil.transferJson2Map(result);
-		String errorCode = mapResult.containsKey("errorCode") ? mapResult
-				.get("errorCode").toString() : "";
+		String errorCode = mapResult.containsKey("errorCode") ? mapResult.get("errorCode")
+				.toString() : "";
 		if (!"0".equals(errorCode)) {
 			throw new Exception("生成交易记录出现错误 errorCode=" + errorCode);
 		}
@@ -264,6 +271,4 @@ public final class DNATransactionClientService {
 	public static String getMerchantOrderNO() {
 		return DateFormatter.yyyyMMddHHmmss(new java.util.Date());
 	}
-
-	// private String getParamByReference(int order,)
 }

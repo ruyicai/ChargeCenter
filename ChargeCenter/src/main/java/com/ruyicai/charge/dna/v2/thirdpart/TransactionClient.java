@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
 
+import com.ruyicai.charge.dna.v2.ca.RSAProvider;
 import com.ruyicai.charge.dna.v2.common.Formatter;
 import com.ruyicai.charge.dna.v2.common.SslConnection;
 import com.ruyicai.charge.dna.v2.common.Strings;
@@ -16,15 +17,15 @@ import com.ruyicai.charge.dna.v2.common.encrpt.TripleDes;
 import com.ruyicai.charge.dna.v2.thirdpart.jaws.IOrderServerWSProxy;
 
 /**
- * ÒøÁªÓïÒôÖ§¸¶ÉÌ»§½ÓÈë¿Í»§¶Ë£¬Ö§³ÖWebService, XML,XML CAÈýÖÖ½ÓÈë·½Ê½¡£
- * ¾ßÌåËµÃ÷Çë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶.doc¡±
+ * é“¶è”è¯­éŸ³æ”¯ä»˜å•†æˆ·æŽ¥å…¥å®¢æˆ·ç«¯ï¼Œæ”¯æŒWebService, XML,XML CAä¸‰ç§æŽ¥å…¥æ–¹å¼ã€‚
+ * å…·ä½“è¯´æ˜Žè¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ.docâ€
  */
 public final class TransactionClient {
 
-    /** ½¨Á¢Ò»¸öÒøÁªÓïÒôÖ§¸¶¿Í»§¶ËÊµÀý, Ä¬ÈÏÊÇWebServiceÁ¬½Ó, ¿ÉÒÔÉèÖÃTransactionTypeÐÞ¸ÄÁ¬½Ó·½Ê½¡£
+    /** å»ºç«‹ä¸€ä¸ªé“¶è”è¯­éŸ³æ”¯ä»˜å®¢æˆ·ç«¯å®žä¾‹, é»˜è®¤æ˜¯WebServiceè¿žæŽ¥, å¯ä»¥è®¾ç½®TransactionTypeä¿®æ”¹è¿žæŽ¥æ–¹å¼ã€‚
      * 
-     * @param url - Url µØÖ·¡£
-     * @param nameSpace - WebService ÃüÃû¿Õ¼ä, ÆäËûÁ¬½Ó·½Ê½Ìî¿Õ
+     * @param url - Url åœ°å€ã€‚
+     * @param nameSpace - WebService å‘½åç©ºé—´, å…¶ä»–è¿žæŽ¥æ–¹å¼å¡«ç©º
      */
     public TransactionClient(String url, String nameSpace) {
 
@@ -58,143 +59,143 @@ public final class TransactionClient {
     }
     private int timeout = 120000;
 
-    /** »ñÈ¡½»Ò×³¬Ê±Ê±¼ä,µ¥Î»:ºÀÃë
+    /** èŽ·å–äº¤æ˜“è¶…æ—¶æ—¶é—´,å•ä½:è±ªç§’
      * 
-     * @return ½»Ò×³¬Ê±Ê±¼ä, Ä¬ÈÏ120Ãë
+     * @return äº¤æ˜“è¶…æ—¶æ—¶é—´, é»˜è®¤120ç§’
      */
     public int getTimeout() {
         return timeout;
     }
 
     /**
-     * ÉèÖÃ½»Ò×³¬Ê±Ê±¼ä,ºÀÃë, Ä¬ÈÏ120Ãë
-     * @param timeout ½»Ò×³¬Ê±Ê±¼ä,µ¥Î»:Ãë
+     * è®¾ç½®äº¤æ˜“è¶…æ—¶æ—¶é—´,è±ªç§’, é»˜è®¤120ç§’
+     * @param timeout äº¤æ˜“è¶…æ—¶æ—¶é—´,å•ä½:ç§’
      */
     public void setTimeout(int timeout) {
         this.timeout = timeout;
     }
 
-    /** »ñÈ¡·þÎñÆ÷Á¬½ÓµØÖ·,Socket½Ó¿ÚÊ±ÌîIP.
+    /** èŽ·å–æœåŠ¡å™¨è¿žæŽ¥åœ°å€,SocketæŽ¥å£æ—¶å¡«IP.
      * 
-     * @return ·þÎñÆ÷Á¬½ÓµØÖ· 
+     * @return æœåŠ¡å™¨è¿žæŽ¥åœ°å€ 
      */
     public String getUrl() {
         return url;
     }
 
-    /** ÉèÖÃ·þÎñÆ÷Á¬½ÓµØÖ·
+    /** è®¾ç½®æœåŠ¡å™¨è¿žæŽ¥åœ°å€
      * 
-     * @param url ·þÎñÆ÷Á¬½ÓµØÖ·
+     * @param url æœåŠ¡å™¨è¿žæŽ¥åœ°å€
      */
     public void setUrl(String url) {
         this.url = url;
     }
 
-    /** »ñÈ¡·þÎñÃüÃû¿Õ¼ä, Ö»Õë¶ÔWebService½ÓÈë; Socket½Ó¿ÚÊ±Ìî¶Ë¿Ú.
+    /** èŽ·å–æœåŠ¡å‘½åç©ºé—´, åªé’ˆå¯¹WebServiceæŽ¥å…¥; SocketæŽ¥å£æ—¶å¡«ç«¯å£.
      * 
-     * @return ·þÎñÃüÃû¿Õ¼ä
+     * @return æœåŠ¡å‘½åç©ºé—´
      */
     public String getNameSapce() {
         return nameSpace;
     }
 
-    /** ÉèÖÃ·þÎñÃüÃû¿Õ¼ä, Ö»Õë¶ÔWebService½ÓÈë; Socket½Ó¿ÚÊ±Ìî¶Ë¿Ú.
+    /** è®¾ç½®æœåŠ¡å‘½åç©ºé—´, åªé’ˆå¯¹WebServiceæŽ¥å…¥; SocketæŽ¥å£æ—¶å¡«ç«¯å£.
      * 
-     * @param nameSpace ·þÎñÃüÃû¿Õ¼ä
+     * @param nameSpace æœåŠ¡å‘½åç©ºé—´
      */
     public void setNameSapce(String nameSpace) {
         this.nameSpace = nameSpace;
     }
 
-    /** »ñÈ¡·þÎñ½ÓÈë·½Ê½, ÔÝÊ±°üÀ¨WebService, XML, CA, SOCKET
+    /** èŽ·å–æœåŠ¡æŽ¥å…¥æ–¹å¼, æš‚æ—¶åŒ…æ‹¬WebService, XML, CA, SOCKET
      * 
-     * @return ·þÎñ½ÓÈë·½Ê½
+     * @return æœåŠ¡æŽ¥å…¥æ–¹å¼
      */
     public TransactionType getTransactionType() {
         return transactionType;
     }
 
-    /** ÉèÖÃ·þÎñ½ÓÈë·½Ê½
-     * TransactionType.CA: ¼ÓÃÜ±¨ÎÄÌå¸ñÊ½£ºBASE64(°æ±¾ºÅ))|BASE64(RSA(±¨ÎÄ¼ÓÃÜÃÜÔ¿))| BASE64(3DES(±¨ÎÄÔ­ÎÄ))| BASE64(MD5(±¨ÎÄÔ­ÎÄ))
-     * @param type ÔÝÊ±°üÀ¨WebService, XML, CA
+    /** è®¾ç½®æœåŠ¡æŽ¥å…¥æ–¹å¼
+     * TransactionType.CA: åŠ å¯†æŠ¥æ–‡ä½“æ ¼å¼ï¼šBASE64(ç‰ˆæœ¬å·))|BASE64(RSA(æŠ¥æ–‡åŠ å¯†å¯†é’¥))| BASE64(3DES(æŠ¥æ–‡åŽŸæ–‡))| BASE64(MD5(æŠ¥æ–‡åŽŸæ–‡))
+     * @param type æš‚æ—¶åŒ…æ‹¬WebService, XML, CA
      */
     public void setTransactionType(TransactionType type) {
         this.transactionType = type;
     }
 
-    /** »ñÈ¡·þÎñ¶ËCAÖ¤Êé¹«Ô¿
+    /** èŽ·å–æœåŠ¡ç«¯CAè¯ä¹¦å…¬é’¥
      * 
-     * @return ·þÎñ¶ËCAÖ¤Êé¹«Ô¿ 
+     * @return æœåŠ¡ç«¯CAè¯ä¹¦å…¬é’¥ 
      */
     public String getServerCert() {
         return serverCert;
     }
 
-    /** ÉèÖÃ·þÎñ¶ËCAÖ¤Êé¹«Ô¿
+    /** è®¾ç½®æœåŠ¡ç«¯CAè¯ä¹¦å…¬é’¥
      * 
-     * @param cert ·þÎñ¶ËCAÖ¤Êé¹«Ô¿ 
+     * @param cert æœåŠ¡ç«¯CAè¯ä¹¦å…¬é’¥ 
      */
     public void setServerCert(String cert) {
         this.serverCert = cert;
     }
 
-    /** ÉèÖÃÉÌ»§±àºÅ, ÉÌ»§±àºÅÓÉÒøÁªÓïÒôÖ§¸¶Æ½Ì¨ÔÚÉÌ»§×¢²á³É¹¦ºó·ÖÅä ¸ñÊ½ÈçÏÂ:
-     * ¡°01¡±	ÉÌ»§±àºÅ+×ÓÉÌ»§±àºÅ£¨ÀýÈç£º"01"+"ÉÌ»§±àºÅ"+"|"+"×ÓÉÌ»§±àºÅ", ÔÝ²»Ö§³Ö£©
-     * ¡°02¡±	ÉÌ»§±àºÅ (ÀýÈç£º"02"+""+"|"+"")
+    /** è®¾ç½®å•†æˆ·ç¼–å·, å•†æˆ·ç¼–å·ç”±é“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°åœ¨å•†æˆ·æ³¨å†ŒæˆåŠŸåŽåˆ†é… æ ¼å¼å¦‚ä¸‹:
+     * â€œ01â€	å•†æˆ·ç¼–å·+å­å•†æˆ·ç¼–å·ï¼ˆä¾‹å¦‚ï¼š"01"+"å•†æˆ·ç¼–å·"+"|"+"å­å•†æˆ·ç¼–å·", æš‚ä¸æ”¯æŒï¼‰
+     * â€œ02â€	å•†æˆ·ç¼–å· (ä¾‹å¦‚ï¼š"02"+""+"|"+"")
      *     
-     * @return ÉÌ»§±àºÅ
+     * @return å•†æˆ·ç¼–å·
      */
     public String getMerchantNo() {
         return merchantNo;
     }
 
-    /** ÉèÖÃÉÌ»§±àºÅ£¬ÉÌ»§±àºÅÓÉÒøÁªÓïÒôÖ§¸¶Æ½Ì¨ÔÚÉÌ»§×¢²á³É¹¦ºó·ÖÅä
-     * ¡°01¡±	ÉÌ»§±àºÅ+×ÓÉÌ»§±àºÅ£¨ÀýÈç£º"01"+"ÉÌ»§±àºÅ"+"|"+"×ÓÉÌ»§±àºÅ", ÔÝ²»Ö§³Ö£©
-     * ¡°02¡±	ÉÌ»§±àºÅ (ÀýÈç£º"02"+""+"|"+"")
+    /** è®¾ç½®å•†æˆ·ç¼–å·ï¼Œå•†æˆ·ç¼–å·ç”±é“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°åœ¨å•†æˆ·æ³¨å†ŒæˆåŠŸåŽåˆ†é…
+     * â€œ01â€	å•†æˆ·ç¼–å·+å­å•†æˆ·ç¼–å·ï¼ˆä¾‹å¦‚ï¼š"01"+"å•†æˆ·ç¼–å·"+"|"+"å­å•†æˆ·ç¼–å·", æš‚ä¸æ”¯æŒï¼‰
+     * â€œ02â€	å•†æˆ·ç¼–å· (ä¾‹å¦‚ï¼š"02"+""+"|"+"")
      * 
-     * @param merchantNo ÉÌ»§±àºÅ
+     * @param merchantNo å•†æˆ·ç¼–å·
      */
     public void setMerchantNo(String merchantNo) {
         this.merchantNo = merchantNo;
     }
 
-    /** »ñÈ¡ÉÌ»§ÃÜÔ¿£¬ ÉÌ»§ÃÜÔ¿ÓÉÒøÁªÓïÒôÖ§¸¶Æ½Ì¨ÔÚÉÌ»§×¢²á³É¹¦ºó·ÖÅä
+    /** èŽ·å–å•†æˆ·å¯†é’¥ï¼Œ å•†æˆ·å¯†é’¥ç”±é“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°åœ¨å•†æˆ·æ³¨å†ŒæˆåŠŸåŽåˆ†é…
      * 
-     * @return ÉÌ»§ÃÜÔ¿
+     * @return å•†æˆ·å¯†é’¥
      */
     public String getMerchantPWD() {
         return merchantPWD;
     }
 
-    /** ÉèÖÃÉÌ»§ÃÜÔ¿£¬ÉÌ»§ÃÜÔ¿ÓÉÒøÁªÓïÒôÖ§¸¶Æ½Ì¨ÔÚÉÌ»§×¢²á³É¹¦ºó·ÖÅä
+    /** è®¾ç½®å•†æˆ·å¯†é’¥ï¼Œå•†æˆ·å¯†é’¥ç”±é“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°åœ¨å•†æˆ·æ³¨å†ŒæˆåŠŸåŽåˆ†é…
      * 
-     * @param merchantPWD ÉÌ»§ÃÜÔ¿
+     * @param merchantPWD å•†æˆ·å¯†é’¥
      */
     public void setMerchantPassWD(String merchantPWD) {
         this.merchantPWD = merchantPWD;
     }
 
-    /** »ñÈ¡ÉÌ»§ÖÕ¶Ë±àºÅ£¬ÓÉÒøÁªÓïÒôÖ§¸¶Æ½Ì¨ÔÚÉÌ»§×¢²á³É¹¦ºó·ÖÅä
+    /** èŽ·å–å•†æˆ·ç»ˆç«¯ç¼–å·ï¼Œç”±é“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°åœ¨å•†æˆ·æ³¨å†ŒæˆåŠŸåŽåˆ†é…
      * 
-     * @return ÉÌ»§ÖÕ¶Ë±àºÅ
+     * @return å•†æˆ·ç»ˆç«¯ç¼–å·
      */
     public String getTerminalNo() {
         return terminalNo;
     }
 
-    /** ÉèÖÃÉÌ»§ÖÕ¶Ë±àºÅ£¬ÓÉÒøÁªÓïÒôÖ§¸¶Æ½Ì¨ÔÚÉÌ»§×¢²á³É¹¦ºó·ÖÅä
+    /** è®¾ç½®å•†æˆ·ç»ˆç«¯ç¼–å·ï¼Œç”±é“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°åœ¨å•†æˆ·æ³¨å†ŒæˆåŠŸåŽåˆ†é…
      * 
-     * @param terminalNo ÉÌ»§ÖÕ¶Ë±àºÅ
+     * @param terminalNo å•†æˆ·ç»ˆç«¯ç¼–å·
      */
     public void setTerminalNo(String terminalNo) {
         this.terminalNo = terminalNo;
     }
 
-    /** ²âÊÔÁ¬½ÓÊÇ·ñÕý³£
+    /** æµ‹è¯•è¿žæŽ¥æ˜¯å¦æ­£å¸¸
      * 
-     * @param encryptKey ¼ÓÃÜÃÜÔ¿,24Î»,Ã¿±Ê½»Ò×Ëæ»úÉú³É, ÓÃÓÚCA½Ó¿Ú·¢ËÍ½»Ò×±¨ÎÄÊ±¼ÓÃÜ, ·µ»Ø±¨ÎÄÊ±½âÃÜ
-     * @param acqSsn ÏµÍ³¸ú×ÙºÅ
-     * @return ¸ù¾Ý39Óò(RespCode)ÏìÓ¦Âë, 0000±íÊ¾Õý³£
+     * @param encryptKey åŠ å¯†å¯†é’¥,24ä½,æ¯ç¬”äº¤æ˜“éšæœºç”Ÿæˆ, ç”¨äºŽCAæŽ¥å£å‘é€äº¤æ˜“æŠ¥æ–‡æ—¶åŠ å¯†, è¿”å›žæŠ¥æ–‡æ—¶è§£å¯†
+     * @param acqSsn ç³»ç»Ÿè·Ÿè¸ªå·
+     * @return æ ¹æ®39åŸŸ(RespCode)å“åº”ç , 0000è¡¨ç¤ºæ­£å¸¸
      * @throws Exception 
      */
     public PosMessage connectionTest(String acqSsn, String encryptKey) throws Exception {
@@ -208,27 +209,27 @@ public final class TransactionClient {
         return resMessage;
     }
 
-    /** ¶¨ÖÆ²éÑ¯£¬·µ»ØÊÖ»úºÅÔÚÒøÁªÓïÒôÖ§¸¶µÄÓÃ»§¶¨ÖÆÇé¿ö
-     * @param acqSsn - ÏµÍ³¸ú×ÙºÅ
-     * @param accountNum - ³Ö¿¨ÈËÕÊºÅ£¬Ç°Á½Î»±êÃ÷ÀàÐÍ£¬ÔÝÊ±Ö§³Ö 14£¬21¸ñÊ½
-     *          ¡°01¡°	½è¼Ç¿¨ºÅ
-     *          ¡°02¡±	ÐÅÓÃ¿¨ºÅ
-     *          ¡°04¡±	ÊÖ»úºÅ
-     *          ¡°05¡±	Éí·ÝÖ¤ºÅ
-     *          ¡°14¡±	ÊÖ»úºÅÂë+ÒøÐÐ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÒøÐÐ¿¨ºÅ")
-     *          ¡°21¡±	ÊÖ»úºÅÂë+ÐÅÓÃ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÐÅÓÃ¿¨ºÅ")
+    /** å®šåˆ¶æŸ¥è¯¢ï¼Œè¿”å›žæ‰‹æœºå·åœ¨é“¶è”è¯­éŸ³æ”¯ä»˜çš„ç”¨æˆ·å®šåˆ¶æƒ…å†µ
+     * @param acqSsn - ç³»ç»Ÿè·Ÿè¸ªå·
+     * @param accountNum - æŒå¡äººå¸å·ï¼Œå‰ä¸¤ä½æ ‡æ˜Žç±»åž‹ï¼Œæš‚æ—¶æ”¯æŒ 14ï¼Œ21æ ¼å¼
+     *          â€œ01â€œ	å€Ÿè®°å¡å·
+     *          â€œ02â€	ä¿¡ç”¨å¡å·
+     *          â€œ04â€	æ‰‹æœºå·
+     *          â€œ05â€	èº«ä»½è¯å·
+     *          â€œ14â€	æ‰‹æœºå·ç +é“¶è¡Œå¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"é“¶è¡Œå¡å·")
+     *          â€œ21â€	æ‰‹æœºå·ç +ä¿¡ç”¨å¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"ä¿¡ç”¨å¡å·")
     
-     * @param transData - ÒµÎñ½»»»Êý¾Ý
-     * @return  ¸ù¾Ý39Óò(RespCode)ÏìÓ¦Âë, ÅÐ¶Ï5.4¶©µ¥Ö§¸¶48Óò(TransData)ÐèÒªÌîÐ´µÄÄÚÈÝ.
-     *           0000£º£¨°×Ãûµ¥£©ÏµÍ³ÊÜÐÅÈÎ¿¨£¬5.4½Ú48ÓòÎÞÐèÌá¹©³Ö¿¨ÈËÐÅÏ¢£»
-     *           T437£º£¨ÐÂÓÃ»§£©ÏµÍ³Î´½»Ò×¹ýµÄÐÂ¿¨£¬5.4½Ú48ÓòÐèÌá¹©³Ö¿¨ÈËÐÅÏ¢°üÀ¨¿ª»§ÐÕÃû£¬¿ª»§Ö¤¼þºÅ£¬¿ª»§ÒøÐÐËùÔÚÊ¡ÊÐ£¬¿ª»§Ö¤¼þºÅÂëÀàÐÍ£»
-     *           T438£º£¨»ÒÃûµ¥£©ÏµÍ³½»Ò×¹ýµ«Î´¼ÓÈë°×Ãûµ¥µÄ¿¨£¬½»Ò×Ê±°´ÐÂÓÃ»§´¦Àí£¬²¢ÒªÇó±¾ÈËÏû·Ñ£»
-     *           T436£º¸Ã¿¨½»Ò×Ê±¼äÊÜÏÞ£¬¾Ü¾ø½»Ò×£»
-     *           T432£º£¨ºÚÃûµ¥£©ºÚÃûµ¥ÒøÐÐ¿¨ºÅ£¬¾Ü¾ø½»Ò×£»
-     *           T404£ºÏµÍ³²»Ö§³ÖµÄÒøÐÐ¿¨ºÅ£¬¾Ü¾ø½»Ò×¡£
-     *           µÚ4Óò(Amount)·µ»Ø¸ÃÓÃ»§µ±ÈÕ½»Ò×½ð¶îÉÏÏÞ¡£
-     * @param encryptKey ¼ÓÃÜÃÜÔ¿,24Î»,Ã¿±Ê½»Ò×Ëæ»úÉú³É, ÓÃÓÚCA½Ó¿Ú·¢ËÍ½»Ò×±¨ÎÄÊ±¼ÓÃÜ, ·µ»Ø±¨ÎÄÊ±½âÃÜ
-     * @throws Exception ·µ»Ø½á¹ûMACÐ£ÑéÊ§°Ü
+     * @param transData - ä¸šåŠ¡äº¤æ¢æ•°æ®
+     * @return  æ ¹æ®39åŸŸ(RespCode)å“åº”ç , åˆ¤æ–­5.4è®¢å•æ”¯ä»˜48åŸŸ(TransData)éœ€è¦å¡«å†™çš„å†…å®¹.
+     *           0000ï¼šï¼ˆç™½åå•ï¼‰ç³»ç»Ÿå—ä¿¡ä»»å¡ï¼Œ5.4èŠ‚48åŸŸæ— éœ€æä¾›æŒå¡äººä¿¡æ¯ï¼›
+     *           T437ï¼šï¼ˆæ–°ç”¨æˆ·ï¼‰ç³»ç»Ÿæœªäº¤æ˜“è¿‡çš„æ–°å¡ï¼Œ5.4èŠ‚48åŸŸéœ€æä¾›æŒå¡äººä¿¡æ¯åŒ…æ‹¬å¼€æˆ·å§“åï¼Œå¼€æˆ·è¯ä»¶å·ï¼Œå¼€æˆ·é“¶è¡Œæ‰€åœ¨çœå¸‚ï¼Œå¼€æˆ·è¯ä»¶å·ç ç±»åž‹ï¼›
+     *           T438ï¼šï¼ˆç°åå•ï¼‰ç³»ç»Ÿäº¤æ˜“è¿‡ä½†æœªåŠ å…¥ç™½åå•çš„å¡ï¼Œäº¤æ˜“æ—¶æŒ‰æ–°ç”¨æˆ·å¤„ç†ï¼Œå¹¶è¦æ±‚æœ¬äººæ¶ˆè´¹ï¼›
+     *           T436ï¼šè¯¥å¡äº¤æ˜“æ—¶é—´å—é™ï¼Œæ‹’ç»äº¤æ˜“ï¼›
+     *           T432ï¼šï¼ˆé»‘åå•ï¼‰é»‘åå•é“¶è¡Œå¡å·ï¼Œæ‹’ç»äº¤æ˜“ï¼›
+     *           T404ï¼šç³»ç»Ÿä¸æ”¯æŒçš„é“¶è¡Œå¡å·ï¼Œæ‹’ç»äº¤æ˜“ã€‚
+     *           ç¬¬4åŸŸ(Amount)è¿”å›žè¯¥ç”¨æˆ·å½“æ—¥äº¤æ˜“é‡‘é¢ä¸Šé™ã€‚
+     * @param encryptKey åŠ å¯†å¯†é’¥,24ä½,æ¯ç¬”äº¤æ˜“éšæœºç”Ÿæˆ, ç”¨äºŽCAæŽ¥å£å‘é€äº¤æ˜“æŠ¥æ–‡æ—¶åŠ å¯†, è¿”å›žæŠ¥æ–‡æ—¶è§£å¯†
+     * @throws Exception è¿”å›žç»“æžœMACæ ¡éªŒå¤±è´¥
      */
     public PosMessage bindQuery(String acqSsn, String accountNum, String transData, String encryptKey) throws Exception {
 
@@ -249,33 +250,33 @@ public final class TransactionClient {
 
         if (!resMessage.getMac().toUpperCase().equals(
                 md5.getMD5ofStr(TransactionUtil.getMacString(resMessage) + " " + merchantPWD))) {
-            throw new Exception("·µ»Ø½á¹ûMACÐ£ÑéÊ§°Ü");
+            throw new Exception("è¿”å›žç»“æžœMACæ ¡éªŒå¤±è´¥");
         }
 
         return resMessage;
     }
 
-    /** ÕÊ»§²éÑ¯£¬·µ»Ø½»Ò×ÕÊºÅÔÚÒøÁªÓïÒôÖ§¸¶µÄ×¢²áÇé¿ö
-     * @param acqSsn - ÏµÍ³¸ú×ÙºÅ
-     * @param accountNum - ³Ö¿¨ÈËÕÊºÅ£¬Ç°Á½Î»±êÃ÷ÀàÐÍ£¬ÔÝÊ±Ö§³Ö 14£¬21¸ñÊ½
-     *          ¡°01¡°	½è¼Ç¿¨ºÅ
-     *          ¡°02¡±	ÐÅÓÃ¿¨ºÅ
-     *          ¡°04¡±	ÊÖ»úºÅ
-     *          ¡°05¡±	Éí·ÝÖ¤ºÅ
-     *          ¡°14¡±	ÊÖ»úºÅÂë+ÒøÐÐ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÒøÐÐ¿¨ºÅ")
-     *          ¡°21¡±	ÊÖ»úºÅÂë+ÐÅÓÃ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÐÅÓÃ¿¨ºÅ")
+    /** å¸æˆ·æŸ¥è¯¢ï¼Œè¿”å›žäº¤æ˜“å¸å·åœ¨é“¶è”è¯­éŸ³æ”¯ä»˜çš„æ³¨å†Œæƒ…å†µ
+     * @param acqSsn - ç³»ç»Ÿè·Ÿè¸ªå·
+     * @param accountNum - æŒå¡äººå¸å·ï¼Œå‰ä¸¤ä½æ ‡æ˜Žç±»åž‹ï¼Œæš‚æ—¶æ”¯æŒ 14ï¼Œ21æ ¼å¼
+     *          â€œ01â€œ	å€Ÿè®°å¡å·
+     *          â€œ02â€	ä¿¡ç”¨å¡å·
+     *          â€œ04â€	æ‰‹æœºå·
+     *          â€œ05â€	èº«ä»½è¯å·
+     *          â€œ14â€	æ‰‹æœºå·ç +é“¶è¡Œå¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"é“¶è¡Œå¡å·")
+     *          â€œ21â€	æ‰‹æœºå·ç +ä¿¡ç”¨å¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"ä¿¡ç”¨å¡å·")
     
-     * @param transData - ÒµÎñ½»»»Êý¾Ý
-     * @return  ¸ù¾Ý39Óò(RespCode)ÏìÓ¦Âë, ÅÐ¶Ï5.4¶©µ¥Ö§¸¶48Óò(TransData)ÐèÒªÌîÐ´µÄÄÚÈÝ.
-     *           0000£º£¨°×Ãûµ¥£©ÏµÍ³ÊÜÐÅÈÎ¿¨£¬5.4½Ú48ÓòÎÞÐèÌá¹©³Ö¿¨ÈËÐÅÏ¢£»
-     *           T437£º£¨ÐÂÓÃ»§£©ÏµÍ³Î´½»Ò×¹ýµÄÐÂ¿¨£¬5.4½Ú48ÓòÐèÌá¹©³Ö¿¨ÈËÐÅÏ¢°üÀ¨¿ª»§ÐÕÃû£¬¿ª»§Ö¤¼þºÅ£¬¿ª»§ÒøÐÐËùÔÚÊ¡ÊÐ£¬¿ª»§Ö¤¼þºÅÂëÀàÐÍ£»
-     *           T438£º£¨»ÒÃûµ¥£©ÏµÍ³½»Ò×¹ýµ«Î´¼ÓÈë°×Ãûµ¥µÄ¿¨£¬½»Ò×Ê±°´ÐÂÓÃ»§´¦Àí£¬²¢ÒªÇó±¾ÈËÏû·Ñ£»
-     *           T436£º¸Ã¿¨½»Ò×Ê±¼äÊÜÏÞ£¬¾Ü¾ø½»Ò×£»
-     *           T432£º£¨ºÚÃûµ¥£©ºÚÃûµ¥ÒøÐÐ¿¨ºÅ£¬¾Ü¾ø½»Ò×£»
-     *           T404£ºÏµÍ³²»Ö§³ÖµÄÒøÐÐ¿¨ºÅ£¬¾Ü¾ø½»Ò×¡£
-     *           µÚ4Óò(Amount)·µ»Ø¸ÃÓÃ»§µ±ÈÕ½»Ò×½ð¶îÉÏÏÞ¡£
-     * @param encryptKey ¼ÓÃÜÃÜÔ¿,24Î»,Ã¿±Ê½»Ò×Ëæ»úÉú³É, ÓÃÓÚCA½Ó¿Ú·¢ËÍ½»Ò×±¨ÎÄÊ±¼ÓÃÜ, ·µ»Ø±¨ÎÄÊ±½âÃÜ
-     * @throws Exception ·µ»Ø½á¹ûMACÐ£ÑéÊ§°Ü
+     * @param transData - ä¸šåŠ¡äº¤æ¢æ•°æ®
+     * @return  æ ¹æ®39åŸŸ(RespCode)å“åº”ç , åˆ¤æ–­5.4è®¢å•æ”¯ä»˜48åŸŸ(TransData)éœ€è¦å¡«å†™çš„å†…å®¹.
+     *           0000ï¼šï¼ˆç™½åå•ï¼‰ç³»ç»Ÿå—ä¿¡ä»»å¡ï¼Œ5.4èŠ‚48åŸŸæ— éœ€æä¾›æŒå¡äººä¿¡æ¯ï¼›
+     *           T437ï¼šï¼ˆæ–°ç”¨æˆ·ï¼‰ç³»ç»Ÿæœªäº¤æ˜“è¿‡çš„æ–°å¡ï¼Œ5.4èŠ‚48åŸŸéœ€æä¾›æŒå¡äººä¿¡æ¯åŒ…æ‹¬å¼€æˆ·å§“åï¼Œå¼€æˆ·è¯ä»¶å·ï¼Œå¼€æˆ·é“¶è¡Œæ‰€åœ¨çœå¸‚ï¼Œå¼€æˆ·è¯ä»¶å·ç ç±»åž‹ï¼›
+     *           T438ï¼šï¼ˆç°åå•ï¼‰ç³»ç»Ÿäº¤æ˜“è¿‡ä½†æœªåŠ å…¥ç™½åå•çš„å¡ï¼Œäº¤æ˜“æ—¶æŒ‰æ–°ç”¨æˆ·å¤„ç†ï¼Œå¹¶è¦æ±‚æœ¬äººæ¶ˆè´¹ï¼›
+     *           T436ï¼šè¯¥å¡äº¤æ˜“æ—¶é—´å—é™ï¼Œæ‹’ç»äº¤æ˜“ï¼›
+     *           T432ï¼šï¼ˆé»‘åå•ï¼‰é»‘åå•é“¶è¡Œå¡å·ï¼Œæ‹’ç»äº¤æ˜“ï¼›
+     *           T404ï¼šç³»ç»Ÿä¸æ”¯æŒçš„é“¶è¡Œå¡å·ï¼Œæ‹’ç»äº¤æ˜“ã€‚
+     *           ç¬¬4åŸŸ(Amount)è¿”å›žè¯¥ç”¨æˆ·å½“æ—¥äº¤æ˜“é‡‘é¢ä¸Šé™ã€‚
+     * @param encryptKey åŠ å¯†å¯†é’¥,24ä½,æ¯ç¬”äº¤æ˜“éšæœºç”Ÿæˆ, ç”¨äºŽCAæŽ¥å£å‘é€äº¤æ˜“æŠ¥æ–‡æ—¶åŠ å¯†, è¿”å›žæŠ¥æ–‡æ—¶è§£å¯†
+     * @throws Exception è¿”å›žç»“æžœMACæ ¡éªŒå¤±è´¥
      */
     public PosMessage accountQuery(String acqSsn, String accountNum, String transData, String encryptKey) throws Exception {
 
@@ -296,38 +297,38 @@ public final class TransactionClient {
 
         if (!resMessage.getMac().toUpperCase().equals(
                 md5.getMD5ofStr(TransactionUtil.getMacString(resMessage) + " " + merchantPWD))) {
-            throw new Exception("·µ»Ø½á¹ûMACÐ£ÑéÊ§°Ü");
+            throw new Exception("è¿”å›žç»“æžœMACæ ¡éªŒå¤±è´¥");
         }
 
         return resMessage;
     }
 
     /**
-     * ¶©µ¥²éÑ¯
+     * è®¢å•æŸ¥è¯¢
      * 
-     * @param acqSsn ÏµÍ³¸ú×ÙºÅ
-     * @param accountNum - ³Ö¿¨ÈËÕÊºÅ£¬¿ÉÎª¿Õ£¬ÔÝÊ±Ö§³Ö 14£¬21¸ñÊ½
-     *          ¡°01¡°	½è¼Ç¿¨ºÅ
-     *          ¡°02¡±	ÐÅÓÃ¿¨ºÅ
-     *          ¡°04¡±	ÊÖ»úºÅ
-     *          ¡°05¡±	Éí·ÝÖ¤ºÅ
-     *          ¡°14¡±	ÊÖ»úºÅÂë+ÒøÐÐ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÒøÐÐ¿¨ºÅ")
-     *          ¡°21¡±	ÊÖ»úºÅÂë+ÐÅÓÃ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÐÅÓÃ¿¨ºÅ")
+     * @param acqSsn ç³»ç»Ÿè·Ÿè¸ªå·
+     * @param accountNum - æŒå¡äººå¸å·ï¼Œå¯ä¸ºç©ºï¼Œæš‚æ—¶æ”¯æŒ 14ï¼Œ21æ ¼å¼
+     *          â€œ01â€œ	å€Ÿè®°å¡å·
+     *          â€œ02â€	ä¿¡ç”¨å¡å·
+     *          â€œ04â€	æ‰‹æœºå·
+     *          â€œ05â€	èº«ä»½è¯å·
+     *          â€œ14â€	æ‰‹æœºå·ç +é“¶è¡Œå¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"é“¶è¡Œå¡å·")
+     *          â€œ21â€	æ‰‹æœºå·ç +ä¿¡ç”¨å¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"ä¿¡ç”¨å¡å·")
      * 
-     * @param orderNo ¶©µ¥±àºÅ£¬Ç°Á½Î»±êÃ÷ÀàÐÍ£¬ ¶©µ¥²éÑ¯½¨ÒéÌá¹©¡°01¡±DNA¶©µ¥±àºÅ
-     *                ¡°01¡±	ÒøÁªÊÖ»úÖ§¸¶(DNA)¶©µ¥±àºÅ
-     *                ¡°02¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÍøÒ³×ÔÖúÏÂµ¥£¨WEB£©
-     *                ¡°03¡±	ÉÌ»§¶©µ¥±àºÅ£¬¿Í·þµç»°ÏÂµ¥£¨CallCenter£©
-     *                ¡°04¡±	ÉÌ»§¶©µ¥±àºÅ£¬µç»°×ÔÖúÏÂµ¥£¨IVR£©
-     *                ¡°05¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÊÖ»ú×ÔÖúÏÂµ¥£¨WAP£©
+     * @param orderNo è®¢å•ç¼–å·ï¼Œå‰ä¸¤ä½æ ‡æ˜Žç±»åž‹ï¼Œ è®¢å•æŸ¥è¯¢å»ºè®®æä¾›â€œ01â€DNAè®¢å•ç¼–å·
+     *                â€œ01â€	é“¶è”æ‰‹æœºæ”¯ä»˜(DNA)è®¢å•ç¼–å·
+     *                â€œ02â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç½‘é¡µè‡ªåŠ©ä¸‹å•ï¼ˆWEBï¼‰
+     *                â€œ03â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œå®¢æœç”µè¯ä¸‹å•ï¼ˆCallCenterï¼‰
+     *                â€œ04â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç”µè¯è‡ªåŠ©ä¸‹å•ï¼ˆIVRï¼‰
+     *                â€œ05â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œæ‰‹æœºè‡ªåŠ©ä¸‹å•ï¼ˆWAPï¼‰
      * 
-     *                ¡°12¡±	ÉÌ»§¶©µ¥±àºÅ£¨WEB£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°13¡±	ÉÌ»§¶©µ¥±àºÅ£¨CallCenter£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°14¡±	ÉÌ»§¶©µ¥±àºÅ£¨IVR£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°15¡±	ÉÌ»§¶©µ¥±àºÅ£¨WAP£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     * @param encryptKey ¼ÓÃÜÃÜÔ¿,24Î»,Ã¿±Ê½»Ò×Ëæ»úÉú³É, ÓÃÓÚCA½Ó¿Ú·¢ËÍ½»Ò×±¨ÎÄÊ±¼ÓÃÜ, ·µ»Ø±¨ÎÄÊ±½âÃÜ
-     * @return RespCode 0000 ±íÊ¾²éÑ¯³É¹¦, ÆäËû´íÎóÂëÇë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨´íÎóÂëÁÐ±í¡±
-     * @throws Exception ·µ»Ø½á¹ûMACÐ£ÑéÊ§°Ü
+     *                â€œ12â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWEBï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ13â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆCallCenterï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ14â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆIVRï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ15â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWAPï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     * @param encryptKey åŠ å¯†å¯†é’¥,24ä½,æ¯ç¬”äº¤æ˜“éšæœºç”Ÿæˆ, ç”¨äºŽCAæŽ¥å£å‘é€äº¤æ˜“æŠ¥æ–‡æ—¶åŠ å¯†, è¿”å›žæŠ¥æ–‡æ—¶è§£å¯†
+     * @return RespCode 0000 è¡¨ç¤ºæŸ¥è¯¢æˆåŠŸ, å…¶ä»–é”™è¯¯ç è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°é”™è¯¯ç åˆ—è¡¨â€
+     * @throws Exception è¿”å›žç»“æžœMACæ ¡éªŒå¤±è´¥
      */
     public PosMessage orderQuery(String acqSsn, String accountNum, String orderNo, boolean isPayNow, String encryptKey) throws Exception {
 
@@ -353,45 +354,45 @@ public final class TransactionClient {
         PosMessage resMessage = this.transact(request, encryptKey);
         if (resMessage != null && !resMessage.getMac().toUpperCase().equals(
                 md5.getMD5ofStr(TransactionUtil.getMacString(resMessage) + " " + merchantPWD))) {
-            throw new Exception("·µ»Ø½á¹ûMACÐ£ÑéÊ§°Ü");
+            throw new Exception("è¿”å›žç»“æžœMACæ ¡éªŒå¤±è´¥");
         }
 
         return resMessage;
     }
 
-    /** ·Ç¼´Ê±Ö§¸¶¶©µ¥·¢ÆðÖ§¸¶
+    /** éžå³æ—¶æ”¯ä»˜è®¢å•å‘èµ·æ”¯ä»˜
      * 
-     * @param acqSsn ÏµÍ³¸ú×ÙºÅ
-     * @param accountNum - ³Ö¿¨ÈËÕÊºÅ£¬¿ÉÎª¿Õ£¬ÔÝÊ±Ö§³Ö 14£¬21¸ñÊ½
-     *          ¡°01¡°	½è¼Ç¿¨ºÅ
-     *          ¡°02¡±	ÐÅÓÃ¿¨ºÅ
-     *          ¡°04¡±	ÊÖ»úºÅ
-     *          ¡°05¡±	Éí·ÝÖ¤ºÅ
-     *          ¡°14¡±	ÊÖ»úºÅÂë+ÒøÐÐ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÒøÐÐ¿¨ºÅ")
-     *          ¡°21¡±	ÊÖ»úºÅÂë+ÐÅÓÃ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÐÅÓÃ¿¨ºÅ")
+     * @param acqSsn ç³»ç»Ÿè·Ÿè¸ªå·
+     * @param accountNum - æŒå¡äººå¸å·ï¼Œå¯ä¸ºç©ºï¼Œæš‚æ—¶æ”¯æŒ 14ï¼Œ21æ ¼å¼
+     *          â€œ01â€œ	å€Ÿè®°å¡å·
+     *          â€œ02â€	ä¿¡ç”¨å¡å·
+     *          â€œ04â€	æ‰‹æœºå·
+     *          â€œ05â€	èº«ä»½è¯å·
+     *          â€œ14â€	æ‰‹æœºå·ç +é“¶è¡Œå¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"é“¶è¡Œå¡å·")
+     *          â€œ21â€	æ‰‹æœºå·ç +ä¿¡ç”¨å¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"ä¿¡ç”¨å¡å·")
      * 
-     * @param orderNo ¶©µ¥±àºÅ£¬Ç°Á½Î»±êÃ÷ÀàÐÍ£¬ ÉÌ»§Ìá½»ÉÌ»§¶©µ¥±àºÅ£¬Í¬Ò»¸öÉÌ»§¶©µ¥±àºÅÖ»ÄÜÖ§¸¶³É¹¦Ò»´Î£¬½»Ò×·µ»ØÊ±ÒøÁªÓïÒôÖ§¸¶¼ÓÉÏDNA¶©µ¥±àºÅ
-     *                ¡°01¡±	ÒøÁªÊÖ»úÖ§¸¶(DNA)¶©µ¥±àºÅ
-     *                ¡°02¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÍøÒ³×ÔÖúÏÂµ¥£¨WEB£©
-     *                ¡°03¡±	ÉÌ»§¶©µ¥±àºÅ£¬¿Í·þµç»°ÏÂµ¥£¨CallCenter£©
-     *                ¡°04¡±	ÉÌ»§¶©µ¥±àºÅ£¬µç»°×ÔÖúÏÂµ¥£¨IVR£©
-     *                ¡°05¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÊÖ»ú×ÔÖúÏÂµ¥£¨WAP£©
+     * @param orderNo è®¢å•ç¼–å·ï¼Œå‰ä¸¤ä½æ ‡æ˜Žç±»åž‹ï¼Œ å•†æˆ·æäº¤å•†æˆ·è®¢å•ç¼–å·ï¼ŒåŒä¸€ä¸ªå•†æˆ·è®¢å•ç¼–å·åªèƒ½æ”¯ä»˜æˆåŠŸä¸€æ¬¡ï¼Œäº¤æ˜“è¿”å›žæ—¶é“¶è”è¯­éŸ³æ”¯ä»˜åŠ ä¸ŠDNAè®¢å•ç¼–å·
+     *                â€œ01â€	é“¶è”æ‰‹æœºæ”¯ä»˜(DNA)è®¢å•ç¼–å·
+     *                â€œ02â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç½‘é¡µè‡ªåŠ©ä¸‹å•ï¼ˆWEBï¼‰
+     *                â€œ03â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œå®¢æœç”µè¯ä¸‹å•ï¼ˆCallCenterï¼‰
+     *                â€œ04â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç”µè¯è‡ªåŠ©ä¸‹å•ï¼ˆIVRï¼‰
+     *                â€œ05â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œæ‰‹æœºè‡ªåŠ©ä¸‹å•ï¼ˆWAPï¼‰
      * 
-     *                ¡°12¡±	ÉÌ»§¶©µ¥±àºÅ£¨WEB£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°13¡±	ÉÌ»§¶©µ¥±àºÅ£¨CallCenter£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°14¡±	ÉÌ»§¶©µ¥±àºÅ£¨IVR£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°15¡±	ÉÌ»§¶©µ¥±àºÅ£¨WAP£©+¡®|¡¯+DNA¶©µ¥±àºÅ
+     *                â€œ12â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWEBï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ13â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆCallCenterï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ14â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆIVRï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ15â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWAPï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
      * 
-     * @param pin ½»Ò×ÃÜÂë£¬ÓïÒô²å¼þÄ£Ê½ÐèÒªÌî£¬ÓïÒôÍâºôÄ£Ê½Ìî¿Õ£¬ÐèÓÃUPOP¹«Ô¿¼ÓÃÜ£¬ Ëã·¨Çë²ÎÕÕ<<ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶>>ËµÃ÷
-     * @param reference ÏµÍ³²Î¿¼ºÅ£¬ Ô­Öµ·µ»Ø¡£
+     * @param pin äº¤æ˜“å¯†ç ï¼Œè¯­éŸ³æ’ä»¶æ¨¡å¼éœ€è¦å¡«ï¼Œè¯­éŸ³å¤–å‘¼æ¨¡å¼å¡«ç©ºï¼Œéœ€ç”¨UPOPå…¬é’¥åŠ å¯†ï¼Œ ç®—æ³•è¯·å‚ç…§<<é“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ>>è¯´æ˜Ž
+     * @param reference ç³»ç»Ÿå‚è€ƒå·ï¼Œ åŽŸå€¼è¿”å›žã€‚
      * @param transData
-     *          ¿ª»§ÐÕÃû	C	C	ÒøÐÐ¿¨¿ª»§ÐÕÃû(ÀÏÓÃ»§±¾ÈËÏû·Ñ·µ»Ø¸øÉÌ»§)
-     *          ¿ª»§Ö¤¼þºÅÂë	C	C	ÒøÐÐ¿¨¿ª»§Ö¤¼þºÅÂë
-     *          ¿ª»§ÒøÐÐËùÔÚÊ¡ÊÐ	C	C	Ê¡ÊÐÒÑ¶ººÅ·Ö¸î£¬±ÈÈç¡°¹ã¶«Ê¡£¬ÉîÛÚÊÐ¡±
-     *          ¿ª»§Ö¤¼þÀàÐÍ	C	C	ÒøÐÐ¿¨¿ª»§Ö¤¼þÀàÐÍ£¬²ÎÕÕ7.2ËµÃ÷
-     *          ÒøÐÐÃû³Æ	C	C+	310002:·Ç¼´Ê±¶©µ¥²éÑ¯·µ»ØÒøÐÐÃû³Æ 
-     * @return RespCode 0000 ±íÊ¾Ö§¸¶³É¹¦, ÆäËû´íÎóÂëÇë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨´íÎóÂëÁÐ±í¡±
-     * @throws Exception ·µ»Ø½á¹ûMACÐ£ÑéÊ§°Ü
+     *          å¼€æˆ·å§“å	C	C	é“¶è¡Œå¡å¼€æˆ·å§“å(è€ç”¨æˆ·æœ¬äººæ¶ˆè´¹è¿”å›žç»™å•†æˆ·)
+     *          å¼€æˆ·è¯ä»¶å·ç 	C	C	é“¶è¡Œå¡å¼€æˆ·è¯ä»¶å·ç 
+     *          å¼€æˆ·é“¶è¡Œæ‰€åœ¨çœå¸‚	C	C	çœå¸‚å·²é€—å·åˆ†å‰²ï¼Œæ¯”å¦‚â€œå¹¿ä¸œçœï¼Œæ·±åœ³å¸‚â€
+     *          å¼€æˆ·è¯ä»¶ç±»åž‹	C	C	é“¶è¡Œå¡å¼€æˆ·è¯ä»¶ç±»åž‹ï¼Œå‚ç…§7.2è¯´æ˜Ž
+     *          é“¶è¡Œåç§°	C	C+	310002:éžå³æ—¶è®¢å•æŸ¥è¯¢è¿”å›žé“¶è¡Œåç§° 
+     * @return RespCode 0000 è¡¨ç¤ºæ”¯ä»˜æˆåŠŸ, å…¶ä»–é”™è¯¯ç è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°é”™è¯¯ç åˆ—è¡¨â€
+     * @throws Exception è¿”å›žç»“æžœMACæ ¡éªŒå¤±è´¥
      */
     public PosMessage orderPay(String acqSsn, String accountNum, String orderNo, String respCode, String pin, String reference, String transData, String encryptKey) throws Exception {
 
@@ -416,45 +417,45 @@ public final class TransactionClient {
         PosMessage resMessage = this.transact(request, encryptKey);
         if (resMessage != null && !resMessage.getMac().toUpperCase().equals(
                 md5.getMD5ofStr(TransactionUtil.getMacString(resMessage) + " " + merchantPWD))) {
-            throw new Exception("·µ»Ø½á¹ûMACÐ£ÑéÊ§°Ü");
+            throw new Exception("è¿”å›žç»“æžœMACæ ¡éªŒå¤±è´¥");
         }
 
         return resMessage;
     }
 
-    /** ·Ç¼´Ê±Ö§¸¶¶©µ¥·¢ÆðÖ§¸¶
+    /** éžå³æ—¶æ”¯ä»˜è®¢å•å‘èµ·æ”¯ä»˜
      * 
-     * @param acqSsn ÏµÍ³¸ú×ÙºÅ
-     * @param accountNum - ³Ö¿¨ÈËÕÊºÅ£¬¿ÉÎª¿Õ£¬ÔÝÊ±Ö§³Ö 14£¬21¸ñÊ½
-     *          ¡°01¡°	½è¼Ç¿¨ºÅ
-     *          ¡°02¡±	ÐÅÓÃ¿¨ºÅ
-     *          ¡°04¡±	ÊÖ»úºÅ
-     *          ¡°05¡±	Éí·ÝÖ¤ºÅ
-     *          ¡°14¡±	ÊÖ»úºÅÂë+ÒøÐÐ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÒøÐÐ¿¨ºÅ")
-     *          ¡°21¡±	ÊÖ»úºÅÂë+ÐÅÓÃ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÐÅÓÃ¿¨ºÅ")
+     * @param acqSsn ç³»ç»Ÿè·Ÿè¸ªå·
+     * @param accountNum - æŒå¡äººå¸å·ï¼Œå¯ä¸ºç©ºï¼Œæš‚æ—¶æ”¯æŒ 14ï¼Œ21æ ¼å¼
+     *          â€œ01â€œ	å€Ÿè®°å¡å·
+     *          â€œ02â€	ä¿¡ç”¨å¡å·
+     *          â€œ04â€	æ‰‹æœºå·
+     *          â€œ05â€	èº«ä»½è¯å·
+     *          â€œ14â€	æ‰‹æœºå·ç +é“¶è¡Œå¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"é“¶è¡Œå¡å·")
+     *          â€œ21â€	æ‰‹æœºå·ç +ä¿¡ç”¨å¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"ä¿¡ç”¨å¡å·")
      * 
-     * @param orderNo ¶©µ¥±àºÅ£¬Ç°Á½Î»±êÃ÷ÀàÐÍ£¬ ÉÌ»§Ìá½»ÉÌ»§¶©µ¥±àºÅ£¬Í¬Ò»¸öÉÌ»§¶©µ¥±àºÅÖ»ÄÜÖ§¸¶³É¹¦Ò»´Î£¬½»Ò×·µ»ØÊ±ÒøÁªÓïÒôÖ§¸¶¼ÓÉÏDNA¶©µ¥±àºÅ
-     *                ¡°01¡±	ÒøÁªÊÖ»úÖ§¸¶(DNA)¶©µ¥±àºÅ
-     *                ¡°02¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÍøÒ³×ÔÖúÏÂµ¥£¨WEB£©
-     *                ¡°03¡±	ÉÌ»§¶©µ¥±àºÅ£¬¿Í·þµç»°ÏÂµ¥£¨CallCenter£©
-     *                ¡°04¡±	ÉÌ»§¶©µ¥±àºÅ£¬µç»°×ÔÖúÏÂµ¥£¨IVR£©
-     *                ¡°05¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÊÖ»ú×ÔÖúÏÂµ¥£¨WAP£©
+     * @param orderNo è®¢å•ç¼–å·ï¼Œå‰ä¸¤ä½æ ‡æ˜Žç±»åž‹ï¼Œ å•†æˆ·æäº¤å•†æˆ·è®¢å•ç¼–å·ï¼ŒåŒä¸€ä¸ªå•†æˆ·è®¢å•ç¼–å·åªèƒ½æ”¯ä»˜æˆåŠŸä¸€æ¬¡ï¼Œäº¤æ˜“è¿”å›žæ—¶é“¶è”è¯­éŸ³æ”¯ä»˜åŠ ä¸ŠDNAè®¢å•ç¼–å·
+     *                â€œ01â€	é“¶è”æ‰‹æœºæ”¯ä»˜(DNA)è®¢å•ç¼–å·
+     *                â€œ02â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç½‘é¡µè‡ªåŠ©ä¸‹å•ï¼ˆWEBï¼‰
+     *                â€œ03â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œå®¢æœç”µè¯ä¸‹å•ï¼ˆCallCenterï¼‰
+     *                â€œ04â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç”µè¯è‡ªåŠ©ä¸‹å•ï¼ˆIVRï¼‰
+     *                â€œ05â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œæ‰‹æœºè‡ªåŠ©ä¸‹å•ï¼ˆWAPï¼‰
      * 
-     *                ¡°12¡±	ÉÌ»§¶©µ¥±àºÅ£¨WEB£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°13¡±	ÉÌ»§¶©µ¥±àºÅ£¨CallCenter£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°14¡±	ÉÌ»§¶©µ¥±àºÅ£¨IVR£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°15¡±	ÉÌ»§¶©µ¥±àºÅ£¨WAP£©+¡®|¡¯+DNA¶©µ¥±àºÅ
+     *                â€œ12â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWEBï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ13â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆCallCenterï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ14â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆIVRï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ15â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWAPï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
      * 
-     * @param pin ½»Ò×ÃÜÂë£¬ÓïÒô²å¼þÄ£Ê½ÐèÒªÌî£¬ÓïÒôÍâºôÄ£Ê½Ìî¿Õ£¬ÐèÓÃUPOP¹«Ô¿¼ÓÃÜ£¬ Ëã·¨Çë²ÎÕÕ<<ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶>>ËµÃ÷
-     * @param reference ÏµÍ³²Î¿¼ºÅ£¬ Ô­Öµ·µ»Ø¡£
+     * @param pin äº¤æ˜“å¯†ç ï¼Œè¯­éŸ³æ’ä»¶æ¨¡å¼éœ€è¦å¡«ï¼Œè¯­éŸ³å¤–å‘¼æ¨¡å¼å¡«ç©ºï¼Œéœ€ç”¨UPOPå…¬é’¥åŠ å¯†ï¼Œ ç®—æ³•è¯·å‚ç…§<<é“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ>>è¯´æ˜Ž
+     * @param reference ç³»ç»Ÿå‚è€ƒå·ï¼Œ åŽŸå€¼è¿”å›žã€‚
      * @param transData
-     *          ¿ª»§ÐÕÃû	C	C	ÒøÐÐ¿¨¿ª»§ÐÕÃû(ÀÏÓÃ»§±¾ÈËÏû·Ñ·µ»Ø¸øÉÌ»§)
-     *          ¿ª»§Ö¤¼þºÅÂë	C	C	ÒøÐÐ¿¨¿ª»§Ö¤¼þºÅÂë
-     *          ¿ª»§ÒøÐÐËùÔÚÊ¡ÊÐ	C	C	Ê¡ÊÐÒÑ¶ººÅ·Ö¸î£¬±ÈÈç¡°¹ã¶«Ê¡£¬ÉîÛÚÊÐ¡±
-     *          ¿ª»§Ö¤¼þÀàÐÍ	C	C	ÒøÐÐ¿¨¿ª»§Ö¤¼þÀàÐÍ£¬²ÎÕÕ7.2ËµÃ÷
-     *          ÒøÐÐÃû³Æ	C	C+	310002:·Ç¼´Ê±¶©µ¥²éÑ¯·µ»ØÒøÐÐÃû³Æ 
-     * @return RespCode 0000 ±íÊ¾Ö§¸¶³É¹¦, ÆäËû´íÎóÂëÇë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨´íÎóÂëÁÐ±í¡±
-     * @throws Exception ·µ»Ø½á¹ûMACÐ£ÑéÊ§°Ü
+     *          å¼€æˆ·å§“å	C	C	é“¶è¡Œå¡å¼€æˆ·å§“å(è€ç”¨æˆ·æœ¬äººæ¶ˆè´¹è¿”å›žç»™å•†æˆ·)
+     *          å¼€æˆ·è¯ä»¶å·ç 	C	C	é“¶è¡Œå¡å¼€æˆ·è¯ä»¶å·ç 
+     *          å¼€æˆ·é“¶è¡Œæ‰€åœ¨çœå¸‚	C	C	çœå¸‚å·²é€—å·åˆ†å‰²ï¼Œæ¯”å¦‚â€œå¹¿ä¸œçœï¼Œæ·±åœ³å¸‚â€
+     *          å¼€æˆ·è¯ä»¶ç±»åž‹	C	C	é“¶è¡Œå¡å¼€æˆ·è¯ä»¶ç±»åž‹ï¼Œå‚ç…§7.2è¯´æ˜Ž
+     *          é“¶è¡Œåç§°	C	C+	310002:éžå³æ—¶è®¢å•æŸ¥è¯¢è¿”å›žé“¶è¡Œåç§° 
+     * @return RespCode 0000 è¡¨ç¤ºæ”¯ä»˜æˆåŠŸ, å…¶ä»–é”™è¯¯ç è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°é”™è¯¯ç åˆ—è¡¨â€
+     * @throws Exception è¿”å›žç»“æžœMACæ ¡éªŒå¤±è´¥
      */
     public PosMessage orderVpc(PosMessage posMsg) throws Exception {
 
@@ -464,75 +465,75 @@ public final class TransactionClient {
         VpcMessage resMessage = this.transactVPC(request);
 //        if (resMessage != null && !resMessage.getMac().toUpperCase().equals(
 //                md5.getMD5ofStr(TransactionUtil.getMacString(resMessage) + " " + merchantPWD))) {
-//            throw new Exception("·µ»Ø½á¹ûMACÐ£ÑéÊ§°Ü");
+//            throw new Exception("è¿”å›žç»“æžœMACæ ¡éªŒå¤±è´¥");
 //        }
 
         return TransactionUtil.toXmlMessage(resMessage);
     }
 
-    /** ¶©µ¥Ö§¸¶
-     *  ÉÌ»§ÔÚµ÷ÓÃ5.4¶©µ¥Ö§¸¶½Ó¿ÚÇ°¿ÉÒÔÏÈµ÷ÓÃ5.2ÕÊ»§²éÑ¯£¨´¦ÀíÂë300002£©½Ó¿Ú£¬ ¸ù¾Ý5.2ÕÊ»§²éÑ¯²éÑ¯½á¹ûÕýÈ·ÌîÐ´48Óò(TransData)ÄÚÈÝ¡£
+    /** è®¢å•æ”¯ä»˜
+     *  å•†æˆ·åœ¨è°ƒç”¨5.4è®¢å•æ”¯ä»˜æŽ¥å£å‰å¯ä»¥å…ˆè°ƒç”¨5.2å¸æˆ·æŸ¥è¯¢ï¼ˆå¤„ç†ç 300002ï¼‰æŽ¥å£ï¼Œ æ ¹æ®5.2å¸æˆ·æŸ¥è¯¢æŸ¥è¯¢ç»“æžœæ­£ç¡®å¡«å†™48åŸŸ(TransData)å†…å®¹ã€‚
      * 
-     * @param acqSsn ÏµÍ³¸ú×ÙºÅ
-     * @param accountNum  ³Ö¿¨ÈËÕÊºÅ£¬¿ÉÎª¿Õ£¬ÔÝÊ±Ö§³Ö 14£¬21¸ñÊ½
-     *          ¡°01¡°	½è¼Ç¿¨ºÅ
-     *          ¡°02¡±	ÐÅÓÃ¿¨ºÅ
-     *          ¡°04¡±	ÊÖ»úºÅ
-     *          ¡°05¡±	Éí·ÝÖ¤ºÅ
-     *          ¡°14¡±	ÊÖ»úºÅÂë+ÒøÐÐ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÒøÐÐ¿¨ºÅ")
-     *          ¡°21¡±	ÊÖ»úºÅÂë+ÐÅÓÃ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÐÅÓÃ¿¨ºÅ")
+     * @param acqSsn ç³»ç»Ÿè·Ÿè¸ªå·
+     * @param accountNum  æŒå¡äººå¸å·ï¼Œå¯ä¸ºç©ºï¼Œæš‚æ—¶æ”¯æŒ 14ï¼Œ21æ ¼å¼
+     *          â€œ01â€œ	å€Ÿè®°å¡å·
+     *          â€œ02â€	ä¿¡ç”¨å¡å·
+     *          â€œ04â€	æ‰‹æœºå·
+     *          â€œ05â€	èº«ä»½è¯å·
+     *          â€œ14â€	æ‰‹æœºå·ç +é“¶è¡Œå¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"é“¶è¡Œå¡å·")
+     *          â€œ21â€	æ‰‹æœºå·ç +ä¿¡ç”¨å¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"ä¿¡ç”¨å¡å·")
      * 
-     * @param pin ½»Ò×ÃÜÂë£¬ÓïÒô²å¼þÄ£Ê½ÐèÒªÌî£¬ÓïÒôÍâºôÄ£Ê½Ìî¿Õ£¬ÐèÓÃUPOP¹«Ô¿¼ÓÃÜ£¬ Ëã·¨Çë²ÎÕÕ<<ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶>>ËµÃ÷
-     * @param amount  ¶©µ¥½ð¶î
-     * @param orderNo ¶©µ¥±àºÅ£¬ ÉÌ»§Ìá½»ÉÌ»§¶©µ¥±àºÅ£¬Ç°Á½Î»±êÃ÷ÀàÐÍ£¬Í¬Ò»¸öÉÌ»§¶©µ¥±àºÅÖ»ÄÜÖ§¸¶³É¹¦Ò»´Î£¬½»Ò×·µ»ØÊ±ÒøÁªÓïÒôÖ§¸¶¼ÓÉÏDNA¶©µ¥±àºÅ
-     *                ¡°01¡±	ÒøÁªÊÖ»úÖ§¸¶(DNA)¶©µ¥±àºÅ
-     *                ¡°02¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÍøÒ³×ÔÖúÏÂµ¥£¨WEB£©
-     *                ¡°03¡±	ÉÌ»§¶©µ¥±àºÅ£¬¿Í·þµç»°ÏÂµ¥£¨CallCenter£©
-     *                ¡°04¡±	ÉÌ»§¶©µ¥±àºÅ£¬µç»°×ÔÖúÏÂµ¥£¨IVR£©
-     *                ¡°05¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÊÖ»ú×ÔÖúÏÂµ¥£¨WAP£©
+     * @param pin äº¤æ˜“å¯†ç ï¼Œè¯­éŸ³æ’ä»¶æ¨¡å¼éœ€è¦å¡«ï¼Œè¯­éŸ³å¤–å‘¼æ¨¡å¼å¡«ç©ºï¼Œéœ€ç”¨UPOPå…¬é’¥åŠ å¯†ï¼Œ ç®—æ³•è¯·å‚ç…§<<é“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ>>è¯´æ˜Ž
+     * @param amount  è®¢å•é‡‘é¢
+     * @param orderNo è®¢å•ç¼–å·ï¼Œ å•†æˆ·æäº¤å•†æˆ·è®¢å•ç¼–å·ï¼Œå‰ä¸¤ä½æ ‡æ˜Žç±»åž‹ï¼ŒåŒä¸€ä¸ªå•†æˆ·è®¢å•ç¼–å·åªèƒ½æ”¯ä»˜æˆåŠŸä¸€æ¬¡ï¼Œäº¤æ˜“è¿”å›žæ—¶é“¶è”è¯­éŸ³æ”¯ä»˜åŠ ä¸ŠDNAè®¢å•ç¼–å·
+     *                â€œ01â€	é“¶è”æ‰‹æœºæ”¯ä»˜(DNA)è®¢å•ç¼–å·
+     *                â€œ02â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç½‘é¡µè‡ªåŠ©ä¸‹å•ï¼ˆWEBï¼‰
+     *                â€œ03â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œå®¢æœç”µè¯ä¸‹å•ï¼ˆCallCenterï¼‰
+     *                â€œ04â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç”µè¯è‡ªåŠ©ä¸‹å•ï¼ˆIVRï¼‰
+     *                â€œ05â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œæ‰‹æœºè‡ªåŠ©ä¸‹å•ï¼ˆWAPï¼‰
      * 
-     *                ¡°12¡±	ÉÌ»§¶©µ¥±àºÅ£¨WEB£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°13¡±	ÉÌ»§¶©µ¥±àºÅ£¨CallCenter£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°14¡±	ÉÌ»§¶©µ¥±àºÅ£¨IVR£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°15¡±	ÉÌ»§¶©µ¥±àºÅ£¨WAP£©+¡®|¡¯+DNA¶©µ¥±àºÅ
+     *                â€œ12â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWEBï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ13â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆCallCenterï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ14â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆIVRï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ15â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWAPï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
      * 
-     * @param reference ÏµÍ³²Î¿¼ºÅ£¬ Ô­Öµ·µ»Ø¡£
-     * @param description ¶©µ¥ÃèÊö, ³¤¶È²»Òª³¬¹ý50¸ö×Ö£¬Ç°Á½Î»¿ÉÒÔÅäÖÃÓïÒôºÏ³ÉÀàÐÍ¡£
-     *          ¡°00¡±	ÖÐÎÄ
-     *          ¡°01¡±	ÔÁÓï
-     *          ¡°02¡±	Ó¢ÎÄ
-     * @param remark ¶©µ¥±¸×¢
-     * @param payNow ÊÇ·ñ¼°Ê±Ö§¸¶
-     * @param returnUrl ¶©µ¥Ö§¸¶½á¹ûÒì²½·µ»ØµØÖ·£¬Ç°Á½Î»±êÃ÷µØÖ·ÀàÐÍ£¬Í¬²½½»Ò×ÇëÌî¿Õ¡£
-     *                   Èç¹û¸ÃÓò·Ç¿Õ, ÊÖ»úÖ§¸¶·µ»Ø½»Ò×½á¹û£¨²ÎÕÕ6.2£©µ½¸ÃµØÖ·, 
-     *                   ÉÌ»§ÊÕµ½½á¹ûºó·µ»ØÈ·ÈÏÐÅÏ¢£¨²ÎÕÕ5.8£©£¬Èç¹û·µ»ØµØÖ·ÎªServletµØÖ·£¬
-     *                   ÔòÖ±½Ó·µ»Ø¡°0000¡±´ú±íÉÌ»§½ÓÊÕ½á¹û³É¹¦£¬ÎÞÐè·µ»ØÒ³Ãæ.
-     *                   ÈÎºÎÕý³£Ò³Ãæ·µ»Ø¾ù±íÊ¾½ÓÊÕ½á¹û³É¹¦¡£
+     * @param reference ç³»ç»Ÿå‚è€ƒå·ï¼Œ åŽŸå€¼è¿”å›žã€‚
+     * @param description è®¢å•æè¿°, é•¿åº¦ä¸è¦è¶…è¿‡50ä¸ªå­—ï¼Œå‰ä¸¤ä½å¯ä»¥é…ç½®è¯­éŸ³åˆæˆç±»åž‹ã€‚
+     *          â€œ00â€	ä¸­æ–‡
+     *          â€œ01â€	ç²¤è¯­
+     *          â€œ02â€	è‹±æ–‡
+     * @param remark è®¢å•å¤‡æ³¨
+     * @param payNow æ˜¯å¦åŠæ—¶æ”¯ä»˜
+     * @param returnUrl è®¢å•æ”¯ä»˜ç»“æžœå¼‚æ­¥è¿”å›žåœ°å€ï¼Œå‰ä¸¤ä½æ ‡æ˜Žåœ°å€ç±»åž‹ï¼ŒåŒæ­¥äº¤æ˜“è¯·å¡«ç©ºã€‚
+     *                   å¦‚æžœè¯¥åŸŸéžç©º, æ‰‹æœºæ”¯ä»˜è¿”å›žäº¤æ˜“ç»“æžœï¼ˆå‚ç…§6.2ï¼‰åˆ°è¯¥åœ°å€, 
+     *                   å•†æˆ·æ”¶åˆ°ç»“æžœåŽè¿”å›žç¡®è®¤ä¿¡æ¯ï¼ˆå‚ç…§5.8ï¼‰ï¼Œå¦‚æžœè¿”å›žåœ°å€ä¸ºServletåœ°å€ï¼Œ
+     *                   åˆ™ç›´æŽ¥è¿”å›žâ€œ0000â€ä»£è¡¨å•†æˆ·æŽ¥æ”¶ç»“æžœæˆåŠŸï¼Œæ— éœ€è¿”å›žé¡µé¢.
+     *                   ä»»ä½•æ­£å¸¸é¡µé¢è¿”å›žå‡è¡¨ç¤ºæŽ¥æ”¶ç»“æžœæˆåŠŸã€‚
      *
-     *           ¡°01¡±	SocketÒì²½·µ»Ø½ÓÊÕµØÖ·(ÔÝ²»Ö§³Ö) ÄÚÈÝ¸ñÊ½£º[IP|PORT]
-     *           ¡°02¡±	HttpÒì²½·µ»Ø½ÓÊÕµØÖ· ÄÚÈÝ¸ñÊ½£º[URL]
-     *           ¡°03¡±	WebServiceÒì²½·µ»Ø½ÓÊÕµØÖ·,ÄÚÈÝ¸ñÊ½£º[URL|NAMESPACE]
-     *           ¡°04¡±	HttpÍ¬²½/Òì²½·µ»Ø½ÓÊÕµØÖ·,ÄÚÈÝ¸ñÊ½£º[URL|URL]
-     *           ¡°05¡±	CAÇ©ÃûXMLÒì²½·µ»Ø½ÓÊÕµØÖ·, ÄÚÈÝ¸ñÊ½[URL]
-     *           ¡°06¡±	XMLÒì²½·µ»Ø½ÓÊÕµØÖ·, ÄÚÈÝ¸ñÊ½[URL]
+     *           â€œ01â€	Socketå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€(æš‚ä¸æ”¯æŒ) å†…å®¹æ ¼å¼ï¼š[IP|PORT]
+     *           â€œ02â€	Httpå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€ å†…å®¹æ ¼å¼ï¼š[URL]
+     *           â€œ03â€	WebServiceå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€,å†…å®¹æ ¼å¼ï¼š[URL|NAMESPACE]
+     *           â€œ04â€	HttpåŒæ­¥/å¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€,å†…å®¹æ ¼å¼ï¼š[URL|URL]
+     *           â€œ05â€	CAç­¾åXMLå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€, å†…å®¹æ ¼å¼[URL]
+     *           â€œ06â€	XMLå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€, å†…å®¹æ ¼å¼[URL]
      *      
-     * @param transData Ìá¹©ÒµÎñ½»»»Êý¾Ý°üÀ¨ÒøÐÐ¿ª»§ÐÕÃû£¬¿ª»§Ö¤¼þ£¬¿ª»§ÒøÐÐËùÔÚÊ¡ÊÐ£¬¿ª»§Ö¤¼þÀàÐÍµÈ£¬×Ö¶ÎÖ®¼äÒÔ¡®|¡¯·Ö¸î, ÎÞÓÃÁô¿Õ¼´¿É
-     *          1	¿ª»§ÐÕÃû            ÒøÐÐ¿¨¿ª»§ÐÕÃû
-     *          2	¿ª»§Ö¤¼þºÅÂë        ÒøÐÐ¿¨¿ª»§Ö¤¼þºÅÂë
-     *          3	¿ª»§ÒøÐÐËùÔÚÊ¡ÊÐ    Ê¡ÊÐÒÑ¶ººÅ·Ö¸î£¬±ÈÈç¡°¹ã¶«Ê¡£¬ÉîÛÚÊÐ¡±, ¡®±±¾©ÊÐ¡¯
-     *          4	¿ª»§Ö¤¼þÀàÐÍ        ÒøÐÐ¿¨¿ª»§Ö¤¼þÀàÐÍ£¬²ÎÕÕ7.2ËµÃ÷
-     *          5	¶©µ¥ÊÜÒæÈËÐÕÃû      Èç»úÆ±³Ë»úÈË, ¶à¸öÊÜÒæÈËÒÔ¶ººÅ·Ö¸î,¶ÔÓÚÊÜÒæÈË½Ï¶àµÄÇé¿ö,ÖÁÉÙÌîÁ½¸ö,Èç¹ûÊÜÒæÈË°üÀ¨¿ª»§ÈË,Ðè°üº¬ÔÚÄÚ.
-     *          6	³Ö¿¨ÈËIPµØÖ·        ³Ö¿¨ÈËµÇÂ½ÉÌ»§ÍøÕ¾µÄIPµØÖ·
-     *          7	¿ª»§Ö¤¼þµØÖ·        ¿ª»§Ö¤¼þµØÖ·²»ÐèÈ«²¿Ìá¹©,½ØÈ¡ÖÁ½ÖµÀ¼´¿É,³£¼û½ÖµÀ¹Ø¼ü×Ö°üÀ¨£ºÂ·/½ÖµÀ/½Ö/ºúÍ¬/µÀ/Ìõ/Àï/Õò/Ïç/´å/×¯/Åª/Ïï/Õ¬/ß—/ÍÍ/Ïï/Õ¯/×é/¶Ó/Ô°/Ôº
-     *          8	ÊÜÒæÈËÊÖ»úºÅ	   ÊÜÒæÈËÊÖ»úºÅ(ÊÖ»ú³äÖµ±ØÌî)
-     *          9	²úÆ·ÏúÊÛµØ	   Ê¡ÊÐÒÑ¶ººÅ·Ö¸î£¬±ÈÈç¡°¹ã¶«Ê¡£¬ÉîÛÚÊÐ¡±, ¡®±±¾©ÊÐ¡¯(ÍÅ¹º±ØÌî)
-     *          10	¿ª»§ÒøÐÐµÇ¼ÇÊÖ»úºÅ  (5.2Éí·ÝÑéÖ¤,½»Ò×²Î¿¼±êÃ÷ÒªÌîµÄ±ØÌî)
-     *          11	ÆäËûÐÐÒµ·ç¿ØÊý¾Ý    ÀýÈç£º
+     * @param transData æä¾›ä¸šåŠ¡äº¤æ¢æ•°æ®åŒ…æ‹¬é“¶è¡Œå¼€æˆ·å§“åï¼Œå¼€æˆ·è¯ä»¶ï¼Œå¼€æˆ·é“¶è¡Œæ‰€åœ¨çœå¸‚ï¼Œå¼€æˆ·è¯ä»¶ç±»åž‹ç­‰ï¼Œå­—æ®µä¹‹é—´ä»¥â€˜|â€™åˆ†å‰², æ— ç”¨ç•™ç©ºå³å¯
+     *          1	å¼€æˆ·å§“å            é“¶è¡Œå¡å¼€æˆ·å§“å
+     *          2	å¼€æˆ·è¯ä»¶å·ç         é“¶è¡Œå¡å¼€æˆ·è¯ä»¶å·ç 
+     *          3	å¼€æˆ·é“¶è¡Œæ‰€åœ¨çœå¸‚    çœå¸‚å·²é€—å·åˆ†å‰²ï¼Œæ¯”å¦‚â€œå¹¿ä¸œçœï¼Œæ·±åœ³å¸‚â€, â€˜åŒ—äº¬å¸‚â€™
+     *          4	å¼€æˆ·è¯ä»¶ç±»åž‹        é“¶è¡Œå¡å¼€æˆ·è¯ä»¶ç±»åž‹ï¼Œå‚ç…§7.2è¯´æ˜Ž
+     *          5	è®¢å•å—ç›Šäººå§“å      å¦‚æœºç¥¨ä¹˜æœºäºº, å¤šä¸ªå—ç›Šäººä»¥é€—å·åˆ†å‰²,å¯¹äºŽå—ç›Šäººè¾ƒå¤šçš„æƒ…å†µ,è‡³å°‘å¡«ä¸¤ä¸ª,å¦‚æžœå—ç›ŠäººåŒ…æ‹¬å¼€æˆ·äºº,éœ€åŒ…å«åœ¨å†….
+     *          6	æŒå¡äººIPåœ°å€        æŒå¡äººç™»é™†å•†æˆ·ç½‘ç«™çš„IPåœ°å€
+     *          7	å¼€æˆ·è¯ä»¶åœ°å€        å¼€æˆ·è¯ä»¶åœ°å€ä¸éœ€å…¨éƒ¨æä¾›,æˆªå–è‡³è¡—é“å³å¯,å¸¸è§è¡—é“å…³é”®å­—åŒ…æ‹¬ï¼šè·¯/è¡—é“/è¡—/èƒ¡åŒ/é“/æ¡/é‡Œ/é•‡/ä¹¡/æ‘/åº„/å¼„/å··/å®…/ï¿½/å±¯/å··/å¯¨/ç»„/é˜Ÿ/å›­/é™¢
+     *          8	å—ç›Šäººæ‰‹æœºå·	   å—ç›Šäººæ‰‹æœºå·(æ‰‹æœºå……å€¼å¿…å¡«)
+     *          9	äº§å“é”€å”®åœ°	   çœå¸‚å·²é€—å·åˆ†å‰²ï¼Œæ¯”å¦‚â€œå¹¿ä¸œçœï¼Œæ·±åœ³å¸‚â€, â€˜åŒ—äº¬å¸‚â€™(å›¢è´­å¿…å¡«)
+     *          10	å¼€æˆ·é“¶è¡Œç™»è®°æ‰‹æœºå·  (5.2èº«ä»½éªŒè¯,äº¤æ˜“å‚è€ƒæ ‡æ˜Žè¦å¡«çš„å¿…å¡«)
+     *          11	å…¶ä»–è¡Œä¸šé£ŽæŽ§æ•°æ®    ä¾‹å¦‚ï¼š
      *                                          Apple:appid
-     *                                          ´ú¸¶:ÒøÐÐÁªÐÐºÅ|ÒøÐÐºÅ
-     *                                          ÐÅÓÃ¿¨»¹¿î:ÐÅÓÃ¿¨ºÅ|ÐÕÃû|Ö¤¼þºÅ|Ö¤¾ÝÀàÐÍ
-     * @param encryptKey ¼ÓÃÜÃÜÔ¿,24Î»,Ã¿±Ê½»Ò×Ëæ»úÉú³É, ÓÃÓÚCA½Ó¿Ú·¢ËÍ½»Ò×±¨ÎÄÊ±¼ÓÃÜ, ·µ»Ø±¨ÎÄÊ±½âÃÜ
-     * @return RespCode 0000 ±íÊ¾Ö§¸¶³É¹¦, ÆäËû´íÎóÂëÇë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨´íÎóÂëÁÐ±í¡±
+     *                                          ä»£ä»˜:é“¶è¡Œè”è¡Œå·|é“¶è¡Œå·
+     *                                          ä¿¡ç”¨å¡è¿˜æ¬¾:ä¿¡ç”¨å¡å·|å§“å|è¯ä»¶å·|è¯æ®ç±»åž‹
+     * @param encryptKey åŠ å¯†å¯†é’¥,24ä½,æ¯ç¬”äº¤æ˜“éšæœºç”Ÿæˆ, ç”¨äºŽCAæŽ¥å£å‘é€äº¤æ˜“æŠ¥æ–‡æ—¶åŠ å¯†, è¿”å›žæŠ¥æ–‡æ—¶è§£å¯†
+     * @return RespCode 0000 è¡¨ç¤ºæ”¯ä»˜æˆåŠŸ, å…¶ä»–é”™è¯¯ç è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°é”™è¯¯ç åˆ—è¡¨â€
      * @throws Exception
      */
     public PosMessage pay(String acqSsn, String accountNum, String pin,
@@ -568,75 +569,75 @@ public final class TransactionClient {
 
         if (!resMessage.getMac().toUpperCase().equals(
                 md5.getMD5ofStr(TransactionUtil.getMacString(resMessage) + " " + merchantPWD))) {
-            throw new Exception("·µ»Ø½á¹ûÐ£ÑéÊ§°Ü");
+            throw new Exception("è¿”å›žç»“æžœæ ¡éªŒå¤±è´¥");
         }
 
         return resMessage;
     }
 
-    /** ÉÌ»§¶ËÒ»ÏßÍ¨¶©µ¥ÉêÇë, TsNo·µ»ØÒ»ÏßÍ¨Éè±¸Ö§¸¶±êÊ¶Âë
-     *  ÉÌ»§ÔÚµ÷ÓÃ5.4¶©µ¥Ö§¸¶½Ó¿ÚÇ°¿ÉÒÔÏÈµ÷ÓÃ5.2ÕÊ»§²éÑ¯£¨´¦ÀíÂë300002£©½Ó¿Ú£¬ ¸ù¾Ý5.2ÕÊ»§²éÑ¯²éÑ¯½á¹ûÕýÈ·ÌîÐ´48Óò(TransData)ÄÚÈÝ¡£
+    /** å•†æˆ·ç«¯ä¸€çº¿é€šè®¢å•ç”³è¯·, TsNoè¿”å›žä¸€çº¿é€šè®¾å¤‡æ”¯ä»˜æ ‡è¯†ç 
+     *  å•†æˆ·åœ¨è°ƒç”¨5.4è®¢å•æ”¯ä»˜æŽ¥å£å‰å¯ä»¥å…ˆè°ƒç”¨5.2å¸æˆ·æŸ¥è¯¢ï¼ˆå¤„ç†ç 300002ï¼‰æŽ¥å£ï¼Œ æ ¹æ®5.2å¸æˆ·æŸ¥è¯¢æŸ¥è¯¢ç»“æžœæ­£ç¡®å¡«å†™48åŸŸ(TransData)å†…å®¹ã€‚
      * 
-     * @param acqSsn ÏµÍ³¸ú×ÙºÅ
-     * @param accountNum  ³Ö¿¨ÈËÕÊºÅ£¬¿ÉÎª¿Õ£¬ÔÝÊ±Ö§³Ö 14£¬21¸ñÊ½
-     *          ¡°01¡°	½è¼Ç¿¨ºÅ
-     *          ¡°02¡±	ÐÅÓÃ¿¨ºÅ
-     *          ¡°04¡±	ÊÖ»úºÅ
-     *          ¡°05¡±	Éí·ÝÖ¤ºÅ
-     *          ¡°14¡±	ÊÖ»úºÅÂë+ÒøÐÐ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÒøÐÐ¿¨ºÅ")
-     *          ¡°21¡±	ÊÖ»úºÅÂë+ÐÅÓÃ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÐÅÓÃ¿¨ºÅ")
+     * @param acqSsn ç³»ç»Ÿè·Ÿè¸ªå·
+     * @param accountNum  æŒå¡äººå¸å·ï¼Œå¯ä¸ºç©ºï¼Œæš‚æ—¶æ”¯æŒ 14ï¼Œ21æ ¼å¼
+     *          â€œ01â€œ	å€Ÿè®°å¡å·
+     *          â€œ02â€	ä¿¡ç”¨å¡å·
+     *          â€œ04â€	æ‰‹æœºå·
+     *          â€œ05â€	èº«ä»½è¯å·
+     *          â€œ14â€	æ‰‹æœºå·ç +é“¶è¡Œå¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"é“¶è¡Œå¡å·")
+     *          â€œ21â€	æ‰‹æœºå·ç +ä¿¡ç”¨å¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"ä¿¡ç”¨å¡å·")
      * 
-     * @param pin ½»Ò×ÃÜÂë£¬ÓïÒô²å¼þÄ£Ê½ÐèÒªÌî£¬ÓïÒôÍâºôÄ£Ê½Ìî¿Õ£¬ÐèÓÃUPOP¹«Ô¿¼ÓÃÜ£¬ Ëã·¨Çë²ÎÕÕ<<ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶>>ËµÃ÷
-     * @param amount  ¶©µ¥½ð¶î
-     * @param orderNo ¶©µ¥±àºÅ£¬ ÉÌ»§Ìá½»ÉÌ»§¶©µ¥±àºÅ£¬Ç°Á½Î»±êÃ÷ÀàÐÍ£¬Í¬Ò»¸öÉÌ»§¶©µ¥±àºÅÖ»ÄÜÖ§¸¶³É¹¦Ò»´Î£¬½»Ò×·µ»ØÊ±ÒøÁªÓïÒôÖ§¸¶¼ÓÉÏDNA¶©µ¥±àºÅ
-     *                ¡°01¡±	ÒøÁªÊÖ»úÖ§¸¶(DNA)¶©µ¥±àºÅ
-     *                ¡°02¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÍøÒ³×ÔÖúÏÂµ¥£¨WEB£©
-     *                ¡°03¡±	ÉÌ»§¶©µ¥±àºÅ£¬¿Í·þµç»°ÏÂµ¥£¨CallCenter£©
-     *                ¡°04¡±	ÉÌ»§¶©µ¥±àºÅ£¬µç»°×ÔÖúÏÂµ¥£¨IVR£©
-     *                ¡°05¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÊÖ»ú×ÔÖúÏÂµ¥£¨WAP£©
+     * @param pin äº¤æ˜“å¯†ç ï¼Œè¯­éŸ³æ’ä»¶æ¨¡å¼éœ€è¦å¡«ï¼Œè¯­éŸ³å¤–å‘¼æ¨¡å¼å¡«ç©ºï¼Œéœ€ç”¨UPOPå…¬é’¥åŠ å¯†ï¼Œ ç®—æ³•è¯·å‚ç…§<<é“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ>>è¯´æ˜Ž
+     * @param amount  è®¢å•é‡‘é¢
+     * @param orderNo è®¢å•ç¼–å·ï¼Œ å•†æˆ·æäº¤å•†æˆ·è®¢å•ç¼–å·ï¼Œå‰ä¸¤ä½æ ‡æ˜Žç±»åž‹ï¼ŒåŒä¸€ä¸ªå•†æˆ·è®¢å•ç¼–å·åªèƒ½æ”¯ä»˜æˆåŠŸä¸€æ¬¡ï¼Œäº¤æ˜“è¿”å›žæ—¶é“¶è”è¯­éŸ³æ”¯ä»˜åŠ ä¸ŠDNAè®¢å•ç¼–å·
+     *                â€œ01â€	é“¶è”æ‰‹æœºæ”¯ä»˜(DNA)è®¢å•ç¼–å·
+     *                â€œ02â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç½‘é¡µè‡ªåŠ©ä¸‹å•ï¼ˆWEBï¼‰
+     *                â€œ03â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œå®¢æœç”µè¯ä¸‹å•ï¼ˆCallCenterï¼‰
+     *                â€œ04â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç”µè¯è‡ªåŠ©ä¸‹å•ï¼ˆIVRï¼‰
+     *                â€œ05â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œæ‰‹æœºè‡ªåŠ©ä¸‹å•ï¼ˆWAPï¼‰
      * 
-     *                ¡°12¡±	ÉÌ»§¶©µ¥±àºÅ£¨WEB£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°13¡±	ÉÌ»§¶©µ¥±àºÅ£¨CallCenter£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°14¡±	ÉÌ»§¶©µ¥±àºÅ£¨IVR£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°15¡±	ÉÌ»§¶©µ¥±àºÅ£¨WAP£©+¡®|¡¯+DNA¶©µ¥±àºÅ
+     *                â€œ12â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWEBï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ13â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆCallCenterï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ14â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆIVRï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ15â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWAPï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
      * 
-     * @param reference ÏµÍ³²Î¿¼ºÅ£¬ Ô­Öµ·µ»Ø¡£
-     * @param description ¶©µ¥ÃèÊö, ³¤¶È²»Òª³¬¹ý50¸ö×Ö£¬Ç°Á½Î»¿ÉÒÔÅäÖÃÓïÒôºÏ³ÉÀàÐÍ¡£
-     *          ¡°00¡±	ÖÐÎÄ
-     *          ¡°01¡±	ÔÁÓï
-     *          ¡°02¡±	Ó¢ÎÄ
-     * @param remark ¶©µ¥±¸×¢
-     * @param payNow ÊÇ·ñ¼°Ê±Ö§¸¶
-     * @param returnUrl ¶©µ¥Ö§¸¶½á¹ûÒì²½·µ»ØµØÖ·£¬Ç°Á½Î»±êÃ÷µØÖ·ÀàÐÍ£¬Í¬²½½»Ò×ÇëÌî¿Õ¡£
-     *                   Èç¹û¸ÃÓò·Ç¿Õ, ÊÖ»úÖ§¸¶·µ»Ø½»Ò×½á¹û£¨²ÎÕÕ6.2£©µ½¸ÃµØÖ·, 
-     *                   ÉÌ»§ÊÕµ½½á¹ûºó·µ»ØÈ·ÈÏÐÅÏ¢£¨²ÎÕÕ5.8£©£¬Èç¹û·µ»ØµØÖ·ÎªServletµØÖ·£¬
-     *                   ÔòÖ±½Ó·µ»Ø¡°0000¡±´ú±íÉÌ»§½ÓÊÕ½á¹û³É¹¦£¬ÎÞÐè·µ»ØÒ³Ãæ.
-     *                   ÈÎºÎÕý³£Ò³Ãæ·µ»Ø¾ù±íÊ¾½ÓÊÕ½á¹û³É¹¦¡£
+     * @param reference ç³»ç»Ÿå‚è€ƒå·ï¼Œ åŽŸå€¼è¿”å›žã€‚
+     * @param description è®¢å•æè¿°, é•¿åº¦ä¸è¦è¶…è¿‡50ä¸ªå­—ï¼Œå‰ä¸¤ä½å¯ä»¥é…ç½®è¯­éŸ³åˆæˆç±»åž‹ã€‚
+     *          â€œ00â€	ä¸­æ–‡
+     *          â€œ01â€	ç²¤è¯­
+     *          â€œ02â€	è‹±æ–‡
+     * @param remark è®¢å•å¤‡æ³¨
+     * @param payNow æ˜¯å¦åŠæ—¶æ”¯ä»˜
+     * @param returnUrl è®¢å•æ”¯ä»˜ç»“æžœå¼‚æ­¥è¿”å›žåœ°å€ï¼Œå‰ä¸¤ä½æ ‡æ˜Žåœ°å€ç±»åž‹ï¼ŒåŒæ­¥äº¤æ˜“è¯·å¡«ç©ºã€‚
+     *                   å¦‚æžœè¯¥åŸŸéžç©º, æ‰‹æœºæ”¯ä»˜è¿”å›žäº¤æ˜“ç»“æžœï¼ˆå‚ç…§6.2ï¼‰åˆ°è¯¥åœ°å€, 
+     *                   å•†æˆ·æ”¶åˆ°ç»“æžœåŽè¿”å›žç¡®è®¤ä¿¡æ¯ï¼ˆå‚ç…§5.8ï¼‰ï¼Œå¦‚æžœè¿”å›žåœ°å€ä¸ºServletåœ°å€ï¼Œ
+     *                   åˆ™ç›´æŽ¥è¿”å›žâ€œ0000â€ä»£è¡¨å•†æˆ·æŽ¥æ”¶ç»“æžœæˆåŠŸï¼Œæ— éœ€è¿”å›žé¡µé¢.
+     *                   ä»»ä½•æ­£å¸¸é¡µé¢è¿”å›žå‡è¡¨ç¤ºæŽ¥æ”¶ç»“æžœæˆåŠŸã€‚
      *
-     *           ¡°01¡±	SocketÒì²½·µ»Ø½ÓÊÕµØÖ·(ÔÝ²»Ö§³Ö) ÄÚÈÝ¸ñÊ½£º[IP|PORT]
-     *           ¡°02¡±	HttpÒì²½·µ»Ø½ÓÊÕµØÖ· ÄÚÈÝ¸ñÊ½£º[URL]
-     *           ¡°03¡±	WebServiceÒì²½·µ»Ø½ÓÊÕµØÖ·,ÄÚÈÝ¸ñÊ½£º[URL|NAMESPACE]
-     *           ¡°04¡±	HttpÍ¬²½/Òì²½·µ»Ø½ÓÊÕµØÖ·,ÄÚÈÝ¸ñÊ½£º[URL|URL]
-     *           ¡°05¡±	CAÇ©ÃûXMLÒì²½·µ»Ø½ÓÊÕµØÖ·, ÄÚÈÝ¸ñÊ½[URL]
-     *           ¡°06¡±	XMLÒì²½·µ»Ø½ÓÊÕµØÖ·, ÄÚÈÝ¸ñÊ½[URL]
-     * @param VpcUrl Ò»ÏßÍ¨Éè±¸µØÖ·¡£           
-     * @param transData Ìá¹©ÒµÎñ½»»»Êý¾Ý°üÀ¨ÒøÐÐ¿ª»§ÐÕÃû£¬¿ª»§Ö¤¼þ£¬¿ª»§ÒøÐÐËùÔÚÊ¡ÊÐ£¬¿ª»§Ö¤¼þÀàÐÍµÈ£¬×Ö¶ÎÖ®¼äÒÔ¡®|¡¯·Ö¸î, ÎÞÓÃÁô¿Õ¼´¿É
-     *          1	¿ª»§ÐÕÃû            ÒøÐÐ¿¨¿ª»§ÐÕÃû
-     *          2	¿ª»§Ö¤¼þºÅÂë        ÒøÐÐ¿¨¿ª»§Ö¤¼þºÅÂë
-     *          3	¿ª»§ÒøÐÐËùÔÚÊ¡ÊÐ    Ê¡ÊÐÒÑ¶ººÅ·Ö¸î£¬±ÈÈç¡°¹ã¶«Ê¡£¬ÉîÛÚÊÐ¡±, ¡®±±¾©ÊÐ¡¯
-     *          4	¿ª»§Ö¤¼þÀàÐÍ        ÒøÐÐ¿¨¿ª»§Ö¤¼þÀàÐÍ£¬²ÎÕÕ7.2ËµÃ÷
-     *          5	¶©µ¥ÊÜÒæÈËÐÕÃû      Èç»úÆ±³Ë»úÈË, ¶à¸öÊÜÒæÈËÒÔ¶ººÅ·Ö¸î,¶ÔÓÚÊÜÒæÈË½Ï¶àµÄÇé¿ö,ÖÁÉÙÌîÁ½¸ö,Èç¹ûÊÜÒæÈË°üÀ¨¿ª»§ÈË,Ðè°üº¬ÔÚÄÚ.
-     *          6	³Ö¿¨ÈËIPµØÖ·        ³Ö¿¨ÈËµÇÂ½ÉÌ»§ÍøÕ¾µÄIPµØÖ·
-     *          7	¿ª»§Ö¤¼þµØÖ·        ¿ª»§Ö¤¼þµØÖ·²»ÐèÈ«²¿Ìá¹©,½ØÈ¡ÖÁ½ÖµÀ¼´¿É,³£¼û½ÖµÀ¹Ø¼ü×Ö°üÀ¨£ºÂ·/½ÖµÀ/½Ö/ºúÍ¬/µÀ/Ìõ/Àï/Õò/Ïç/´å/×¯/Åª/Ïï/Õ¬/ß—/ÍÍ/Ïï/Õ¯/×é/¶Ó/Ô°/Ôº
-     *          8	ÊÜÒæÈËÊÖ»úºÅ	   ÊÜÒæÈËÊÖ»úºÅ(ÊÖ»ú³äÖµ±ØÌî)
-     *          9	²úÆ·ÏúÊÛµØ	   Ê¡ÊÐÒÑ¶ººÅ·Ö¸î£¬±ÈÈç¡°¹ã¶«Ê¡£¬ÉîÛÚÊÐ¡±, ¡®±±¾©ÊÐ¡¯(ÍÅ¹º±ØÌî)
-     *          10	¿ª»§ÒøÐÐµÇ¼ÇÊÖ»úºÅ  (5.2Éí·ÝÑéÖ¤,½»Ò×²Î¿¼±êÃ÷ÒªÌîµÄ±ØÌî)
-     *          11	ÆäËûÐÐÒµ·ç¿ØÊý¾Ý    ÀýÈç£º
+     *           â€œ01â€	Socketå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€(æš‚ä¸æ”¯æŒ) å†…å®¹æ ¼å¼ï¼š[IP|PORT]
+     *           â€œ02â€	Httpå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€ å†…å®¹æ ¼å¼ï¼š[URL]
+     *           â€œ03â€	WebServiceå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€,å†…å®¹æ ¼å¼ï¼š[URL|NAMESPACE]
+     *           â€œ04â€	HttpåŒæ­¥/å¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€,å†…å®¹æ ¼å¼ï¼š[URL|URL]
+     *           â€œ05â€	CAç­¾åXMLå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€, å†…å®¹æ ¼å¼[URL]
+     *           â€œ06â€	XMLå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€, å†…å®¹æ ¼å¼[URL]
+     * @param VpcUrl ä¸€çº¿é€šè®¾å¤‡åœ°å€ã€‚           
+     * @param transData æä¾›ä¸šåŠ¡äº¤æ¢æ•°æ®åŒ…æ‹¬é“¶è¡Œå¼€æˆ·å§“åï¼Œå¼€æˆ·è¯ä»¶ï¼Œå¼€æˆ·é“¶è¡Œæ‰€åœ¨çœå¸‚ï¼Œå¼€æˆ·è¯ä»¶ç±»åž‹ç­‰ï¼Œå­—æ®µä¹‹é—´ä»¥â€˜|â€™åˆ†å‰², æ— ç”¨ç•™ç©ºå³å¯
+     *          1	å¼€æˆ·å§“å            é“¶è¡Œå¡å¼€æˆ·å§“å
+     *          2	å¼€æˆ·è¯ä»¶å·ç         é“¶è¡Œå¡å¼€æˆ·è¯ä»¶å·ç 
+     *          3	å¼€æˆ·é“¶è¡Œæ‰€åœ¨çœå¸‚    çœå¸‚å·²é€—å·åˆ†å‰²ï¼Œæ¯”å¦‚â€œå¹¿ä¸œçœï¼Œæ·±åœ³å¸‚â€, â€˜åŒ—äº¬å¸‚â€™
+     *          4	å¼€æˆ·è¯ä»¶ç±»åž‹        é“¶è¡Œå¡å¼€æˆ·è¯ä»¶ç±»åž‹ï¼Œå‚ç…§7.2è¯´æ˜Ž
+     *          5	è®¢å•å—ç›Šäººå§“å      å¦‚æœºç¥¨ä¹˜æœºäºº, å¤šä¸ªå—ç›Šäººä»¥é€—å·åˆ†å‰²,å¯¹äºŽå—ç›Šäººè¾ƒå¤šçš„æƒ…å†µ,è‡³å°‘å¡«ä¸¤ä¸ª,å¦‚æžœå—ç›ŠäººåŒ…æ‹¬å¼€æˆ·äºº,éœ€åŒ…å«åœ¨å†….
+     *          6	æŒå¡äººIPåœ°å€        æŒå¡äººç™»é™†å•†æˆ·ç½‘ç«™çš„IPåœ°å€
+     *          7	å¼€æˆ·è¯ä»¶åœ°å€        å¼€æˆ·è¯ä»¶åœ°å€ä¸éœ€å…¨éƒ¨æä¾›,æˆªå–è‡³è¡—é“å³å¯,å¸¸è§è¡—é“å…³é”®å­—åŒ…æ‹¬ï¼šè·¯/è¡—é“/è¡—/èƒ¡åŒ/é“/æ¡/é‡Œ/é•‡/ä¹¡/æ‘/åº„/å¼„/å··/å®…/ï¿½/å±¯/å··/å¯¨/ç»„/é˜Ÿ/å›­/é™¢
+     *          8	å—ç›Šäººæ‰‹æœºå·	   å—ç›Šäººæ‰‹æœºå·(æ‰‹æœºå……å€¼å¿…å¡«)
+     *          9	äº§å“é”€å”®åœ°	   çœå¸‚å·²é€—å·åˆ†å‰²ï¼Œæ¯”å¦‚â€œå¹¿ä¸œçœï¼Œæ·±åœ³å¸‚â€, â€˜åŒ—äº¬å¸‚â€™(å›¢è´­å¿…å¡«)
+     *          10	å¼€æˆ·é“¶è¡Œç™»è®°æ‰‹æœºå·  (5.2èº«ä»½éªŒè¯,äº¤æ˜“å‚è€ƒæ ‡æ˜Žè¦å¡«çš„å¿…å¡«)
+     *          11	å…¶ä»–è¡Œä¸šé£ŽæŽ§æ•°æ®    ä¾‹å¦‚ï¼š
      *                                          Apple:appid
-     *                                          ´ú¸¶:ÒøÐÐÁªÐÐºÅ|ÒøÐÐºÅ
-     *                                          ÐÅÓÃ¿¨»¹¿î:ÐÅÓÃ¿¨ºÅ|ÐÕÃû|Ö¤¼þºÅ|Ö¤¾ÝÀàÐÍ
-     * @param encryptKey ¼ÓÃÜÃÜÔ¿,24Î»,Ã¿±Ê½»Ò×Ëæ»úÉú³É, ÓÃÓÚCA½Ó¿Ú·¢ËÍ½»Ò×±¨ÎÄÊ±¼ÓÃÜ, ·µ»Ø±¨ÎÄÊ±½âÃÜ
-     * @return RespCode 0000 ±íÊ¾Ö§¸¶³É¹¦, ÆäËû´íÎóÂëÇë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨´íÎóÂëÁÐ±í¡±
+     *                                          ä»£ä»˜:é“¶è¡Œè”è¡Œå·|é“¶è¡Œå·
+     *                                          ä¿¡ç”¨å¡è¿˜æ¬¾:ä¿¡ç”¨å¡å·|å§“å|è¯ä»¶å·|è¯æ®ç±»åž‹
+     * @param encryptKey åŠ å¯†å¯†é’¥,24ä½,æ¯ç¬”äº¤æ˜“éšæœºç”Ÿæˆ, ç”¨äºŽCAæŽ¥å£å‘é€äº¤æ˜“æŠ¥æ–‡æ—¶åŠ å¯†, è¿”å›žæŠ¥æ–‡æ—¶è§£å¯†
+     * @return RespCode 0000 è¡¨ç¤ºæ”¯ä»˜æˆåŠŸ, å…¶ä»–é”™è¯¯ç è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°é”™è¯¯ç åˆ—è¡¨â€
      * @throws Exception
      */
     public PosMessage payVPC(String acqSsn, String accountNum, String pin,
@@ -672,13 +673,13 @@ public final class TransactionClient {
 
         if (!pm.getMac().toUpperCase().equals(
                 md5.getMD5ofStr(TransactionUtil.getMacString(pm) + " " + merchantPWD))) {
-            throw new Exception("·µ»Ø½á¹ûÐ£ÑéÊ§°Ü");
+            throw new Exception("è¿”å›žç»“æžœæ ¡éªŒå¤±è´¥");
         }
 
         if (pm.getRespCode().equals("0000")) {
 
             VpcMessage vpcMsg = new VpcMessage();
-            vpcMsg.setMessageType("0500"); //Ò»ÏßÍ¨
+            vpcMsg.setMessageType("0500"); //ä¸€çº¿é€š
             String accType = accountNum.substring(0, 2);
             String[] acc = accountNum.substring(2).split("\\|");
             if (accType.equals("14")) {
@@ -713,74 +714,74 @@ public final class TransactionClient {
             TransactionClient tmVPC = new TransactionClient(vpcUrl, "");
             tmVPC.setTransactionType(TransactionType.VPC);
             vpcMsg = tmVPC.transactVPC(vpcMsg);
-            pm.setTsNo(vpcMsg.getProcessCode()); //Ö§¸¶±êÊ¶Âë
+            pm.setTsNo(vpcMsg.getProcessCode()); //æ”¯ä»˜æ ‡è¯†ç 
         }
 
         return pm;
     }
 
-    /** ´ú¸¶½»Ò×: ÆóÒµÎ¯ÍÐÍ¨¹ý×Ê½ð´ú¸¶Í¨µÀ¸¶¿î
+    /** ä»£ä»˜äº¤æ˜“: ä¼ä¸šå§”æ‰˜é€šè¿‡èµ„é‡‘ä»£ä»˜é€šé“ä»˜æ¬¾
      * 
-     * @param acqSsn ÏµÍ³¸ú×ÙºÅ
-     * @param accountNum  ³Ö¿¨ÈËÕÊºÅ£¬¿ÉÎª¿Õ£¬ÔÝÊ±Ö§³Ö 14£¬21¸ñÊ½
-     *          ¡°01¡°	½è¼Ç¿¨ºÅ
-     *          ¡°02¡±	ÐÅÓÃ¿¨ºÅ
-     *          ¡°04¡±	ÊÖ»úºÅ
-     *          ¡°05¡±	Éí·ÝÖ¤ºÅ
-     *          ¡°14¡±	ÊÖ»úºÅÂë+ÒøÐÐ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÒøÐÐ¿¨ºÅ")
-     *          ¡°21¡±	ÊÖ»úºÅÂë+ÐÅÓÃ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÐÅÓÃ¿¨ºÅ")
+     * @param acqSsn ç³»ç»Ÿè·Ÿè¸ªå·
+     * @param accountNum  æŒå¡äººå¸å·ï¼Œå¯ä¸ºç©ºï¼Œæš‚æ—¶æ”¯æŒ 14ï¼Œ21æ ¼å¼
+     *          â€œ01â€œ	å€Ÿè®°å¡å·
+     *          â€œ02â€	ä¿¡ç”¨å¡å·
+     *          â€œ04â€	æ‰‹æœºå·
+     *          â€œ05â€	èº«ä»½è¯å·
+     *          â€œ14â€	æ‰‹æœºå·ç +é“¶è¡Œå¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"é“¶è¡Œå¡å·")
+     *          â€œ21â€	æ‰‹æœºå·ç +ä¿¡ç”¨å¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"ä¿¡ç”¨å¡å·")
      * 
-     * @param pin ½»Ò×ÃÜÂë£¬ÓïÒô²å¼þÄ£Ê½ÐèÒªÌî£¬ÓïÒôÍâºôÄ£Ê½Ìî¿Õ£¬ÐèÓÃUPOP¹«Ô¿¼ÓÃÜ£¬ Ëã·¨Çë²ÎÕÕ<<ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶>>ËµÃ÷
-     * @param amount  ¶©µ¥½ð¶î
-     * @param orderNo ¶©µ¥±àºÅ£¬ ÉÌ»§Ìá½»ÉÌ»§¶©µ¥±àºÅ£¬Ç°Á½Î»±êÃ÷ÀàÐÍ£¬Í¬Ò»¸öÉÌ»§¶©µ¥±àºÅÖ»ÄÜÖ§¸¶³É¹¦Ò»´Î£¬½»Ò×·µ»ØÊ±ÒøÁªÓïÒôÖ§¸¶¼ÓÉÏDNA¶©µ¥±àºÅ
-     *                ¡°01¡±	ÒøÁªÊÖ»úÖ§¸¶(DNA)¶©µ¥±àºÅ
-     *                ¡°02¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÍøÒ³×ÔÖúÏÂµ¥£¨WEB£©
-     *                ¡°03¡±	ÉÌ»§¶©µ¥±àºÅ£¬¿Í·þµç»°ÏÂµ¥£¨CallCenter£©
-     *                ¡°04¡±	ÉÌ»§¶©µ¥±àºÅ£¬µç»°×ÔÖúÏÂµ¥£¨IVR£©
-     *                ¡°05¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÊÖ»ú×ÔÖúÏÂµ¥£¨WAP£©
+     * @param pin äº¤æ˜“å¯†ç ï¼Œè¯­éŸ³æ’ä»¶æ¨¡å¼éœ€è¦å¡«ï¼Œè¯­éŸ³å¤–å‘¼æ¨¡å¼å¡«ç©ºï¼Œéœ€ç”¨UPOPå…¬é’¥åŠ å¯†ï¼Œ ç®—æ³•è¯·å‚ç…§<<é“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ>>è¯´æ˜Ž
+     * @param amount  è®¢å•é‡‘é¢
+     * @param orderNo è®¢å•ç¼–å·ï¼Œ å•†æˆ·æäº¤å•†æˆ·è®¢å•ç¼–å·ï¼Œå‰ä¸¤ä½æ ‡æ˜Žç±»åž‹ï¼ŒåŒä¸€ä¸ªå•†æˆ·è®¢å•ç¼–å·åªèƒ½æ”¯ä»˜æˆåŠŸä¸€æ¬¡ï¼Œäº¤æ˜“è¿”å›žæ—¶é“¶è”è¯­éŸ³æ”¯ä»˜åŠ ä¸ŠDNAè®¢å•ç¼–å·
+     *                â€œ01â€	é“¶è”æ‰‹æœºæ”¯ä»˜(DNA)è®¢å•ç¼–å·
+     *                â€œ02â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç½‘é¡µè‡ªåŠ©ä¸‹å•ï¼ˆWEBï¼‰
+     *                â€œ03â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œå®¢æœç”µè¯ä¸‹å•ï¼ˆCallCenterï¼‰
+     *                â€œ04â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç”µè¯è‡ªåŠ©ä¸‹å•ï¼ˆIVRï¼‰
+     *                â€œ05â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œæ‰‹æœºè‡ªåŠ©ä¸‹å•ï¼ˆWAPï¼‰
      * 
-     *                ¡°12¡±	ÉÌ»§¶©µ¥±àºÅ£¨WEB£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°13¡±	ÉÌ»§¶©µ¥±àºÅ£¨CallCenter£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°14¡±	ÉÌ»§¶©µ¥±àºÅ£¨IVR£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°15¡±	ÉÌ»§¶©µ¥±àºÅ£¨WAP£©+¡®|¡¯+DNA¶©µ¥±àºÅ
+     *                â€œ12â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWEBï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ13â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆCallCenterï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ14â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆIVRï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ15â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWAPï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
      * 
-     * @param reference ÏµÍ³²Î¿¼ºÅ£¬ Ô­Öµ·µ»Ø¡£
-     * @param description ¶©µ¥ÃèÊö, ³¤¶È²»Òª³¬¹ý50¸ö×Ö£¬Ç°Á½Î»¿ÉÒÔÅäÖÃÓïÒôºÏ³ÉÀàÐÍ¡£
-     *          ¡°00¡±	ÖÐÎÄ
-     *          ¡°01¡±	ÔÁÓï
-     *          ¡°02¡±	Ó¢ÎÄ
-     * @param remark ¶©µ¥±¸×¢
-     * @param payNow ÊÇ·ñ¼°Ê±Ö§¸¶
-     * @param returnUrl ¶©µ¥Ö§¸¶½á¹ûÒì²½·µ»ØµØÖ·£¬Ç°Á½Î»±êÃ÷µØÖ·ÀàÐÍ£¬Í¬²½½»Ò×ÇëÌî¿Õ¡£
-     *                   Èç¹û¸ÃÓò·Ç¿Õ, ÊÖ»úÖ§¸¶·µ»Ø½»Ò×½á¹û£¨²ÎÕÕ6.2£©µ½¸ÃµØÖ·, 
-     *                   ÉÌ»§ÊÕµ½½á¹ûºó·µ»ØÈ·ÈÏÐÅÏ¢£¨²ÎÕÕ5.8£©£¬Èç¹û·µ»ØµØÖ·ÎªServletµØÖ·£¬
-     *                   ÔòÖ±½Ó·µ»Ø¡°0000¡±´ú±íÉÌ»§½ÓÊÕ½á¹û³É¹¦£¬ÎÞÐè·µ»ØÒ³Ãæ.
-     *                   ÈÎºÎÕý³£Ò³Ãæ·µ»Ø¾ù±íÊ¾½ÓÊÕ½á¹û³É¹¦¡£
+     * @param reference ç³»ç»Ÿå‚è€ƒå·ï¼Œ åŽŸå€¼è¿”å›žã€‚
+     * @param description è®¢å•æè¿°, é•¿åº¦ä¸è¦è¶…è¿‡50ä¸ªå­—ï¼Œå‰ä¸¤ä½å¯ä»¥é…ç½®è¯­éŸ³åˆæˆç±»åž‹ã€‚
+     *          â€œ00â€	ä¸­æ–‡
+     *          â€œ01â€	ç²¤è¯­
+     *          â€œ02â€	è‹±æ–‡
+     * @param remark è®¢å•å¤‡æ³¨
+     * @param payNow æ˜¯å¦åŠæ—¶æ”¯ä»˜
+     * @param returnUrl è®¢å•æ”¯ä»˜ç»“æžœå¼‚æ­¥è¿”å›žåœ°å€ï¼Œå‰ä¸¤ä½æ ‡æ˜Žåœ°å€ç±»åž‹ï¼ŒåŒæ­¥äº¤æ˜“è¯·å¡«ç©ºã€‚
+     *                   å¦‚æžœè¯¥åŸŸéžç©º, æ‰‹æœºæ”¯ä»˜è¿”å›žäº¤æ˜“ç»“æžœï¼ˆå‚ç…§6.2ï¼‰åˆ°è¯¥åœ°å€, 
+     *                   å•†æˆ·æ”¶åˆ°ç»“æžœåŽè¿”å›žç¡®è®¤ä¿¡æ¯ï¼ˆå‚ç…§5.8ï¼‰ï¼Œå¦‚æžœè¿”å›žåœ°å€ä¸ºServletåœ°å€ï¼Œ
+     *                   åˆ™ç›´æŽ¥è¿”å›žâ€œ0000â€ä»£è¡¨å•†æˆ·æŽ¥æ”¶ç»“æžœæˆåŠŸï¼Œæ— éœ€è¿”å›žé¡µé¢.
+     *                   ä»»ä½•æ­£å¸¸é¡µé¢è¿”å›žå‡è¡¨ç¤ºæŽ¥æ”¶ç»“æžœæˆåŠŸã€‚
      *
-     *           ¡°01¡±	SocketÒì²½·µ»Ø½ÓÊÕµØÖ·(ÔÝ²»Ö§³Ö) ÄÚÈÝ¸ñÊ½£º[IP|PORT]
-     *           ¡°02¡±	HttpÒì²½·µ»Ø½ÓÊÕµØÖ· ÄÚÈÝ¸ñÊ½£º[URL]
-     *           ¡°03¡±	WebServiceÒì²½·µ»Ø½ÓÊÕµØÖ·,ÄÚÈÝ¸ñÊ½£º[URL|NAMESPACE]
-     *           ¡°04¡±	HttpÍ¬²½/Òì²½·µ»Ø½ÓÊÕµØÖ·,ÄÚÈÝ¸ñÊ½£º[URL|URL]
-     *           ¡°05¡±	CAÇ©ÃûXMLÒì²½·µ»Ø½ÓÊÕµØÖ·, ÄÚÈÝ¸ñÊ½[URL]
-     *           ¡°06¡±	XMLÒì²½·µ»Ø½ÓÊÕµØÖ·, ÄÚÈÝ¸ñÊ½[URL]
+     *           â€œ01â€	Socketå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€(æš‚ä¸æ”¯æŒ) å†…å®¹æ ¼å¼ï¼š[IP|PORT]
+     *           â€œ02â€	Httpå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€ å†…å®¹æ ¼å¼ï¼š[URL]
+     *           â€œ03â€	WebServiceå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€,å†…å®¹æ ¼å¼ï¼š[URL|NAMESPACE]
+     *           â€œ04â€	HttpåŒæ­¥/å¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€,å†…å®¹æ ¼å¼ï¼š[URL|URL]
+     *           â€œ05â€	CAç­¾åXMLå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€, å†…å®¹æ ¼å¼[URL]
+     *           â€œ06â€	XMLå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€, å†…å®¹æ ¼å¼[URL]
      *      
-     * @param transData Ìá¹©ÒµÎñ½»»»Êý¾Ý°üÀ¨ÒøÐÐ¿ª»§ÐÕÃû£¬¿ª»§Ö¤¼þ£¬¿ª»§ÒøÐÐËùÔÚÊ¡ÊÐ£¬¿ª»§Ö¤¼þÀàÐÍµÈ£¬×Ö¶ÎÖ®¼äÒÔ¡®|¡¯·Ö¸î, ÎÞÓÃÁô¿Õ¼´¿É
-     *          1	¿ª»§ÐÕÃû            ÒøÐÐ¿¨¿ª»§ÐÕÃû
-     *          2	¿ª»§Ö¤¼þºÅÂë        ÒøÐÐ¿¨¿ª»§Ö¤¼þºÅÂë
-     *          3	¿ª»§ÒøÐÐËùÔÚÊ¡ÊÐ    Ê¡ÊÐÒÑ¶ººÅ·Ö¸î£¬±ÈÈç¡°¹ã¶«Ê¡£¬ÉîÛÚÊÐ¡±, ¡®±±¾©ÊÐ¡¯
-     *          4	¿ª»§Ö¤¼þÀàÐÍ        ÒøÐÐ¿¨¿ª»§Ö¤¼þÀàÐÍ£¬²ÎÕÕ7.2ËµÃ÷
-     *          5	¶©µ¥ÊÜÒæÈËÐÕÃû      Èç»úÆ±³Ë»úÈË, ¶à¸öÊÜÒæÈËÒÔ¶ººÅ·Ö¸î,¶ÔÓÚÊÜÒæÈË½Ï¶àµÄÇé¿ö,ÖÁÉÙÌîÁ½¸ö,Èç¹ûÊÜÒæÈË°üÀ¨¿ª»§ÈË,Ðè°üº¬ÔÚÄÚ.
-     *          6	³Ö¿¨ÈËIPµØÖ·        ³Ö¿¨ÈËµÇÂ½ÉÌ»§ÍøÕ¾µÄIPµØÖ·
-     *          7	¿ª»§Ö¤¼þµØÖ·        ¿ª»§Ö¤¼þµØÖ·²»ÐèÈ«²¿Ìá¹©,½ØÈ¡ÖÁ½ÖµÀ¼´¿É,³£¼û½ÖµÀ¹Ø¼ü×Ö°üÀ¨£ºÂ·/½ÖµÀ/½Ö/ºúÍ¬/µÀ/Ìõ/Àï/Õò/Ïç/´å/×¯/Åª/Ïï/Õ¬/ß—/ÍÍ/Ïï/Õ¯/×é/¶Ó/Ô°/Ôº
-     *          8	ÊÜÒæÈËÊÖ»úºÅ	   ÊÜÒæÈËÊÖ»úºÅ(ÊÖ»ú³äÖµ±ØÌî)
-     *          9	²úÆ·ÏúÊÛµØ	   Ê¡ÊÐÒÑ¶ººÅ·Ö¸î£¬±ÈÈç¡°¹ã¶«Ê¡£¬ÉîÛÚÊÐ¡±, ¡®±±¾©ÊÐ¡¯(ÍÅ¹º±ØÌî)
-     *          10	¿ª»§ÒøÐÐµÇ¼ÇÊÖ»úºÅ  (5.2Éí·ÝÑéÖ¤,½»Ò×²Î¿¼±êÃ÷ÒªÌîµÄ±ØÌî)
-     *          11	ÆäËûÐÐÒµ·ç¿ØÊý¾Ý    ÀýÈç£º
+     * @param transData æä¾›ä¸šåŠ¡äº¤æ¢æ•°æ®åŒ…æ‹¬é“¶è¡Œå¼€æˆ·å§“åï¼Œå¼€æˆ·è¯ä»¶ï¼Œå¼€æˆ·é“¶è¡Œæ‰€åœ¨çœå¸‚ï¼Œå¼€æˆ·è¯ä»¶ç±»åž‹ç­‰ï¼Œå­—æ®µä¹‹é—´ä»¥â€˜|â€™åˆ†å‰², æ— ç”¨ç•™ç©ºå³å¯
+     *          1	å¼€æˆ·å§“å            é“¶è¡Œå¡å¼€æˆ·å§“å
+     *          2	å¼€æˆ·è¯ä»¶å·ç         é“¶è¡Œå¡å¼€æˆ·è¯ä»¶å·ç 
+     *          3	å¼€æˆ·é“¶è¡Œæ‰€åœ¨çœå¸‚    çœå¸‚å·²é€—å·åˆ†å‰²ï¼Œæ¯”å¦‚â€œå¹¿ä¸œçœï¼Œæ·±åœ³å¸‚â€, â€˜åŒ—äº¬å¸‚â€™
+     *          4	å¼€æˆ·è¯ä»¶ç±»åž‹        é“¶è¡Œå¡å¼€æˆ·è¯ä»¶ç±»åž‹ï¼Œå‚ç…§7.2è¯´æ˜Ž
+     *          5	è®¢å•å—ç›Šäººå§“å      å¦‚æœºç¥¨ä¹˜æœºäºº, å¤šä¸ªå—ç›Šäººä»¥é€—å·åˆ†å‰²,å¯¹äºŽå—ç›Šäººè¾ƒå¤šçš„æƒ…å†µ,è‡³å°‘å¡«ä¸¤ä¸ª,å¦‚æžœå—ç›ŠäººåŒ…æ‹¬å¼€æˆ·äºº,éœ€åŒ…å«åœ¨å†….
+     *          6	æŒå¡äººIPåœ°å€        æŒå¡äººç™»é™†å•†æˆ·ç½‘ç«™çš„IPåœ°å€
+     *          7	å¼€æˆ·è¯ä»¶åœ°å€        å¼€æˆ·è¯ä»¶åœ°å€ä¸éœ€å…¨éƒ¨æä¾›,æˆªå–è‡³è¡—é“å³å¯,å¸¸è§è¡—é“å…³é”®å­—åŒ…æ‹¬ï¼šè·¯/è¡—é“/è¡—/èƒ¡åŒ/é“/æ¡/é‡Œ/é•‡/ä¹¡/æ‘/åº„/å¼„/å··/å®…/ï¿½/å±¯/å··/å¯¨/ç»„/é˜Ÿ/å›­/é™¢
+     *          8	å—ç›Šäººæ‰‹æœºå·	   å—ç›Šäººæ‰‹æœºå·(æ‰‹æœºå……å€¼å¿…å¡«)
+     *          9	äº§å“é”€å”®åœ°	   çœå¸‚å·²é€—å·åˆ†å‰²ï¼Œæ¯”å¦‚â€œå¹¿ä¸œçœï¼Œæ·±åœ³å¸‚â€, â€˜åŒ—äº¬å¸‚â€™(å›¢è´­å¿…å¡«)
+     *          10	å¼€æˆ·é“¶è¡Œç™»è®°æ‰‹æœºå·  (5.2èº«ä»½éªŒè¯,äº¤æ˜“å‚è€ƒæ ‡æ˜Žè¦å¡«çš„å¿…å¡«)
+     *          11	å…¶ä»–è¡Œä¸šé£ŽæŽ§æ•°æ®    ä¾‹å¦‚ï¼š
      *                                          Apple:appid
-     *                                          ´ú¸¶:ÒøÐÐÁªÐÐºÅ|ÒøÐÐºÅ
-     *                                          ÐÅÓÃ¿¨»¹¿î:ÐÅÓÃ¿¨ºÅ|ÐÕÃû|Ö¤¼þºÅ|Ö¤¾ÝÀàÐÍ
-     * @param encryptKey ¼ÓÃÜÃÜÔ¿,24Î»,Ã¿±Ê½»Ò×Ëæ»úÉú³É, ÓÃÓÚCA½Ó¿Ú·¢ËÍ½»Ò×±¨ÎÄÊ±¼ÓÃÜ, ·µ»Ø±¨ÎÄÊ±½âÃÜ
-     * @return RespCode 0000 ±íÊ¾Ö§¸¶³É¹¦, ÆäËû´íÎóÂëÇë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨´íÎóÂëÁÐ±í¡±
+     *                                          ä»£ä»˜:é“¶è¡Œè”è¡Œå·|é“¶è¡Œå·
+     *                                          ä¿¡ç”¨å¡è¿˜æ¬¾:ä¿¡ç”¨å¡å·|å§“å|è¯ä»¶å·|è¯æ®ç±»åž‹
+     * @param encryptKey åŠ å¯†å¯†é’¥,24ä½,æ¯ç¬”äº¤æ˜“éšæœºç”Ÿæˆ, ç”¨äºŽCAæŽ¥å£å‘é€äº¤æ˜“æŠ¥æ–‡æ—¶åŠ å¯†, è¿”å›žæŠ¥æ–‡æ—¶è§£å¯†
+     * @return RespCode 0000 è¡¨ç¤ºæ”¯ä»˜æˆåŠŸ, å…¶ä»–é”™è¯¯ç è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°é”™è¯¯ç åˆ—è¡¨â€
      * @throws Exception
      */
     public PosMessage payAgent(String acqSsn, String accountNum, String pin,
@@ -816,74 +817,74 @@ public final class TransactionClient {
 
         if (!resMessage.getMac().toUpperCase().equals(
                 md5.getMD5ofStr(TransactionUtil.getMacString(resMessage) + " " + merchantPWD))) {
-            throw new Exception("·µ»Ø½á¹ûÐ£ÑéÊ§°Ü");
+            throw new Exception("è¿”å›žç»“æžœæ ¡éªŒå¤±è´¥");
         }
 
         return resMessage;
     }
 
-    /** ´úÊÕ½»Ò×: ÆóÒµÎ¯ÍÐÍ¨¹ý×Ê½ð´úÊÕÍ¨µÀÊÕ¿î
+    /** ä»£æ”¶äº¤æ˜“: ä¼ä¸šå§”æ‰˜é€šè¿‡èµ„é‡‘ä»£æ”¶é€šé“æ”¶æ¬¾
      * 
-     * @param acqSsn ÏµÍ³¸ú×ÙºÅ
-     * @param accountNum  ³Ö¿¨ÈËÕÊºÅ£¬¿ÉÎª¿Õ£¬ÔÝÊ±Ö§³Ö 14£¬21¸ñÊ½
-     *          ¡°01¡°	½è¼Ç¿¨ºÅ
-     *          ¡°02¡±	ÐÅÓÃ¿¨ºÅ
-     *          ¡°04¡±	ÊÖ»úºÅ
-     *          ¡°05¡±	Éí·ÝÖ¤ºÅ
-     *          ¡°14¡±	ÊÖ»úºÅÂë+ÒøÐÐ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÒøÐÐ¿¨ºÅ")
-     *          ¡°21¡±	ÊÖ»úºÅÂë+ÐÅÓÃ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÐÅÓÃ¿¨ºÅ")
+     * @param acqSsn ç³»ç»Ÿè·Ÿè¸ªå·
+     * @param accountNum  æŒå¡äººå¸å·ï¼Œå¯ä¸ºç©ºï¼Œæš‚æ—¶æ”¯æŒ 14ï¼Œ21æ ¼å¼
+     *          â€œ01â€œ	å€Ÿè®°å¡å·
+     *          â€œ02â€	ä¿¡ç”¨å¡å·
+     *          â€œ04â€	æ‰‹æœºå·
+     *          â€œ05â€	èº«ä»½è¯å·
+     *          â€œ14â€	æ‰‹æœºå·ç +é“¶è¡Œå¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"é“¶è¡Œå¡å·")
+     *          â€œ21â€	æ‰‹æœºå·ç +ä¿¡ç”¨å¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"ä¿¡ç”¨å¡å·")
      * 
-     * @param pin ½»Ò×ÃÜÂë£¬ÓïÒô²å¼þÄ£Ê½ÐèÒªÌî£¬ÓïÒôÍâºôÄ£Ê½Ìî¿Õ£¬ÐèÓÃUPOP¹«Ô¿¼ÓÃÜ£¬ Ëã·¨Çë²ÎÕÕ<<ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶>>ËµÃ÷
-     * @param amount  ¶©µ¥½ð¶î
-     * @param orderNo ¶©µ¥±àºÅ£¬ ÉÌ»§Ìá½»ÉÌ»§¶©µ¥±àºÅ£¬Ç°Á½Î»±êÃ÷ÀàÐÍ£¬Í¬Ò»¸öÉÌ»§¶©µ¥±àºÅÖ»ÄÜÖ§¸¶³É¹¦Ò»´Î£¬½»Ò×·µ»ØÊ±ÒøÁªÓïÒôÖ§¸¶¼ÓÉÏDNA¶©µ¥±àºÅ
-     *                ¡°01¡±	ÒøÁªÊÖ»úÖ§¸¶(DNA)¶©µ¥±àºÅ
-     *                ¡°02¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÍøÒ³×ÔÖúÏÂµ¥£¨WEB£©
-     *                ¡°03¡±	ÉÌ»§¶©µ¥±àºÅ£¬¿Í·þµç»°ÏÂµ¥£¨CallCenter£©
-     *                ¡°04¡±	ÉÌ»§¶©µ¥±àºÅ£¬µç»°×ÔÖúÏÂµ¥£¨IVR£©
-     *                ¡°05¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÊÖ»ú×ÔÖúÏÂµ¥£¨WAP£©
+     * @param pin äº¤æ˜“å¯†ç ï¼Œè¯­éŸ³æ’ä»¶æ¨¡å¼éœ€è¦å¡«ï¼Œè¯­éŸ³å¤–å‘¼æ¨¡å¼å¡«ç©ºï¼Œéœ€ç”¨UPOPå…¬é’¥åŠ å¯†ï¼Œ ç®—æ³•è¯·å‚ç…§<<é“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ>>è¯´æ˜Ž
+     * @param amount  è®¢å•é‡‘é¢
+     * @param orderNo è®¢å•ç¼–å·ï¼Œ å•†æˆ·æäº¤å•†æˆ·è®¢å•ç¼–å·ï¼Œå‰ä¸¤ä½æ ‡æ˜Žç±»åž‹ï¼ŒåŒä¸€ä¸ªå•†æˆ·è®¢å•ç¼–å·åªèƒ½æ”¯ä»˜æˆåŠŸä¸€æ¬¡ï¼Œäº¤æ˜“è¿”å›žæ—¶é“¶è”è¯­éŸ³æ”¯ä»˜åŠ ä¸ŠDNAè®¢å•ç¼–å·
+     *                â€œ01â€	é“¶è”æ‰‹æœºæ”¯ä»˜(DNA)è®¢å•ç¼–å·
+     *                â€œ02â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç½‘é¡µè‡ªåŠ©ä¸‹å•ï¼ˆWEBï¼‰
+     *                â€œ03â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œå®¢æœç”µè¯ä¸‹å•ï¼ˆCallCenterï¼‰
+     *                â€œ04â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç”µè¯è‡ªåŠ©ä¸‹å•ï¼ˆIVRï¼‰
+     *                â€œ05â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œæ‰‹æœºè‡ªåŠ©ä¸‹å•ï¼ˆWAPï¼‰
      * 
-     *                ¡°12¡±	ÉÌ»§¶©µ¥±àºÅ£¨WEB£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°13¡±	ÉÌ»§¶©µ¥±àºÅ£¨CallCenter£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°14¡±	ÉÌ»§¶©µ¥±àºÅ£¨IVR£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°15¡±	ÉÌ»§¶©µ¥±àºÅ£¨WAP£©+¡®|¡¯+DNA¶©µ¥±àºÅ
+     *                â€œ12â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWEBï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ13â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆCallCenterï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ14â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆIVRï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ15â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWAPï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
      * 
-     * @param reference ÏµÍ³²Î¿¼ºÅ£¬ Ô­Öµ·µ»Ø¡£
-     * @param description ¶©µ¥ÃèÊö, ³¤¶È²»Òª³¬¹ý50¸ö×Ö£¬Ç°Á½Î»¿ÉÒÔÅäÖÃÓïÒôºÏ³ÉÀàÐÍ¡£
-     *          ¡°00¡±	ÖÐÎÄ
-     *          ¡°01¡±	ÔÁÓï
-     *          ¡°02¡±	Ó¢ÎÄ
-     * @param remark ¶©µ¥±¸×¢
-     * @param payNow ÊÇ·ñ¼°Ê±Ö§¸¶
-     * @param returnUrl ¶©µ¥Ö§¸¶½á¹ûÒì²½·µ»ØµØÖ·£¬Ç°Á½Î»±êÃ÷µØÖ·ÀàÐÍ£¬Í¬²½½»Ò×ÇëÌî¿Õ¡£
-     *                   Èç¹û¸ÃÓò·Ç¿Õ, ÊÖ»úÖ§¸¶·µ»Ø½»Ò×½á¹û£¨²ÎÕÕ6.2£©µ½¸ÃµØÖ·, 
-     *                   ÉÌ»§ÊÕµ½½á¹ûºó·µ»ØÈ·ÈÏÐÅÏ¢£¨²ÎÕÕ5.8£©£¬Èç¹û·µ»ØµØÖ·ÎªServletµØÖ·£¬
-     *                   ÔòÖ±½Ó·µ»Ø¡°0000¡±´ú±íÉÌ»§½ÓÊÕ½á¹û³É¹¦£¬ÎÞÐè·µ»ØÒ³Ãæ.
-     *                   ÈÎºÎÕý³£Ò³Ãæ·µ»Ø¾ù±íÊ¾½ÓÊÕ½á¹û³É¹¦¡£
+     * @param reference ç³»ç»Ÿå‚è€ƒå·ï¼Œ åŽŸå€¼è¿”å›žã€‚
+     * @param description è®¢å•æè¿°, é•¿åº¦ä¸è¦è¶…è¿‡50ä¸ªå­—ï¼Œå‰ä¸¤ä½å¯ä»¥é…ç½®è¯­éŸ³åˆæˆç±»åž‹ã€‚
+     *          â€œ00â€	ä¸­æ–‡
+     *          â€œ01â€	ç²¤è¯­
+     *          â€œ02â€	è‹±æ–‡
+     * @param remark è®¢å•å¤‡æ³¨
+     * @param payNow æ˜¯å¦åŠæ—¶æ”¯ä»˜
+     * @param returnUrl è®¢å•æ”¯ä»˜ç»“æžœå¼‚æ­¥è¿”å›žåœ°å€ï¼Œå‰ä¸¤ä½æ ‡æ˜Žåœ°å€ç±»åž‹ï¼ŒåŒæ­¥äº¤æ˜“è¯·å¡«ç©ºã€‚
+     *                   å¦‚æžœè¯¥åŸŸéžç©º, æ‰‹æœºæ”¯ä»˜è¿”å›žäº¤æ˜“ç»“æžœï¼ˆå‚ç…§6.2ï¼‰åˆ°è¯¥åœ°å€, 
+     *                   å•†æˆ·æ”¶åˆ°ç»“æžœåŽè¿”å›žç¡®è®¤ä¿¡æ¯ï¼ˆå‚ç…§5.8ï¼‰ï¼Œå¦‚æžœè¿”å›žåœ°å€ä¸ºServletåœ°å€ï¼Œ
+     *                   åˆ™ç›´æŽ¥è¿”å›žâ€œ0000â€ä»£è¡¨å•†æˆ·æŽ¥æ”¶ç»“æžœæˆåŠŸï¼Œæ— éœ€è¿”å›žé¡µé¢.
+     *                   ä»»ä½•æ­£å¸¸é¡µé¢è¿”å›žå‡è¡¨ç¤ºæŽ¥æ”¶ç»“æžœæˆåŠŸã€‚
      *
-     *           ¡°01¡±	SocketÒì²½·µ»Ø½ÓÊÕµØÖ·(ÔÝ²»Ö§³Ö) ÄÚÈÝ¸ñÊ½£º[IP|PORT]
-     *           ¡°02¡±	HttpÒì²½·µ»Ø½ÓÊÕµØÖ· ÄÚÈÝ¸ñÊ½£º[URL]
-     *           ¡°03¡±	WebServiceÒì²½·µ»Ø½ÓÊÕµØÖ·,ÄÚÈÝ¸ñÊ½£º[URL|NAMESPACE]
-     *           ¡°04¡±	HttpÍ¬²½/Òì²½·µ»Ø½ÓÊÕµØÖ·,ÄÚÈÝ¸ñÊ½£º[URL|URL]
-     *           ¡°05¡±	CAÇ©ÃûXMLÒì²½·µ»Ø½ÓÊÕµØÖ·, ÄÚÈÝ¸ñÊ½[URL]
-     *           ¡°06¡±	XMLÒì²½·µ»Ø½ÓÊÕµØÖ·, ÄÚÈÝ¸ñÊ½[URL]
+     *           â€œ01â€	Socketå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€(æš‚ä¸æ”¯æŒ) å†…å®¹æ ¼å¼ï¼š[IP|PORT]
+     *           â€œ02â€	Httpå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€ å†…å®¹æ ¼å¼ï¼š[URL]
+     *           â€œ03â€	WebServiceå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€,å†…å®¹æ ¼å¼ï¼š[URL|NAMESPACE]
+     *           â€œ04â€	HttpåŒæ­¥/å¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€,å†…å®¹æ ¼å¼ï¼š[URL|URL]
+     *           â€œ05â€	CAç­¾åXMLå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€, å†…å®¹æ ¼å¼[URL]
+     *           â€œ06â€	XMLå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€, å†…å®¹æ ¼å¼[URL]
      *      
-     * @param transData Ìá¹©ÒµÎñ½»»»Êý¾Ý°üÀ¨ÒøÐÐ¿ª»§ÐÕÃû£¬¿ª»§Ö¤¼þ£¬¿ª»§ÒøÐÐËùÔÚÊ¡ÊÐ£¬¿ª»§Ö¤¼þÀàÐÍµÈ£¬×Ö¶ÎÖ®¼äÒÔ¡®|¡¯·Ö¸î, ÎÞÓÃÁô¿Õ¼´¿É
-     *          1	¿ª»§ÐÕÃû            ÒøÐÐ¿¨¿ª»§ÐÕÃû
-     *          2	¿ª»§Ö¤¼þºÅÂë        ÒøÐÐ¿¨¿ª»§Ö¤¼þºÅÂë
-     *          3	¿ª»§ÒøÐÐËùÔÚÊ¡ÊÐ    Ê¡ÊÐÒÑ¶ººÅ·Ö¸î£¬±ÈÈç¡°¹ã¶«Ê¡£¬ÉîÛÚÊÐ¡±, ¡®±±¾©ÊÐ¡¯
-     *          4	¿ª»§Ö¤¼þÀàÐÍ        ÒøÐÐ¿¨¿ª»§Ö¤¼þÀàÐÍ£¬²ÎÕÕ7.2ËµÃ÷
-     *          5	¶©µ¥ÊÜÒæÈËÐÕÃû      Èç»úÆ±³Ë»úÈË, ¶à¸öÊÜÒæÈËÒÔ¶ººÅ·Ö¸î,¶ÔÓÚÊÜÒæÈË½Ï¶àµÄÇé¿ö,ÖÁÉÙÌîÁ½¸ö,Èç¹ûÊÜÒæÈË°üÀ¨¿ª»§ÈË,Ðè°üº¬ÔÚÄÚ.
-     *          6	³Ö¿¨ÈËIPµØÖ·        ³Ö¿¨ÈËµÇÂ½ÉÌ»§ÍøÕ¾µÄIPµØÖ·
-     *          7	¿ª»§Ö¤¼þµØÖ·        ¿ª»§Ö¤¼þµØÖ·²»ÐèÈ«²¿Ìá¹©,½ØÈ¡ÖÁ½ÖµÀ¼´¿É,³£¼û½ÖµÀ¹Ø¼ü×Ö°üÀ¨£ºÂ·/½ÖµÀ/½Ö/ºúÍ¬/µÀ/Ìõ/Àï/Õò/Ïç/´å/×¯/Åª/Ïï/Õ¬/ß—/ÍÍ/Ïï/Õ¯/×é/¶Ó/Ô°/Ôº
-     *          8	ÊÜÒæÈËÊÖ»úºÅ	   ÊÜÒæÈËÊÖ»úºÅ(ÊÖ»ú³äÖµ±ØÌî)
-     *          9	²úÆ·ÏúÊÛµØ	   Ê¡ÊÐÒÑ¶ººÅ·Ö¸î£¬±ÈÈç¡°¹ã¶«Ê¡£¬ÉîÛÚÊÐ¡±, ¡®±±¾©ÊÐ¡¯(ÍÅ¹º±ØÌî)
-     *          10	¿ª»§ÒøÐÐµÇ¼ÇÊÖ»úºÅ  (5.2Éí·ÝÑéÖ¤,½»Ò×²Î¿¼±êÃ÷ÒªÌîµÄ±ØÌî)
-     *          11	ÆäËûÐÐÒµ·ç¿ØÊý¾Ý    ÀýÈç£º
+     * @param transData æä¾›ä¸šåŠ¡äº¤æ¢æ•°æ®åŒ…æ‹¬é“¶è¡Œå¼€æˆ·å§“åï¼Œå¼€æˆ·è¯ä»¶ï¼Œå¼€æˆ·é“¶è¡Œæ‰€åœ¨çœå¸‚ï¼Œå¼€æˆ·è¯ä»¶ç±»åž‹ç­‰ï¼Œå­—æ®µä¹‹é—´ä»¥â€˜|â€™åˆ†å‰², æ— ç”¨ç•™ç©ºå³å¯
+     *          1	å¼€æˆ·å§“å            é“¶è¡Œå¡å¼€æˆ·å§“å
+     *          2	å¼€æˆ·è¯ä»¶å·ç         é“¶è¡Œå¡å¼€æˆ·è¯ä»¶å·ç 
+     *          3	å¼€æˆ·é“¶è¡Œæ‰€åœ¨çœå¸‚    çœå¸‚å·²é€—å·åˆ†å‰²ï¼Œæ¯”å¦‚â€œå¹¿ä¸œçœï¼Œæ·±åœ³å¸‚â€, â€˜åŒ—äº¬å¸‚â€™
+     *          4	å¼€æˆ·è¯ä»¶ç±»åž‹        é“¶è¡Œå¡å¼€æˆ·è¯ä»¶ç±»åž‹ï¼Œå‚ç…§7.2è¯´æ˜Ž
+     *          5	è®¢å•å—ç›Šäººå§“å      å¦‚æœºç¥¨ä¹˜æœºäºº, å¤šä¸ªå—ç›Šäººä»¥é€—å·åˆ†å‰²,å¯¹äºŽå—ç›Šäººè¾ƒå¤šçš„æƒ…å†µ,è‡³å°‘å¡«ä¸¤ä¸ª,å¦‚æžœå—ç›ŠäººåŒ…æ‹¬å¼€æˆ·äºº,éœ€åŒ…å«åœ¨å†….
+     *          6	æŒå¡äººIPåœ°å€        æŒå¡äººç™»é™†å•†æˆ·ç½‘ç«™çš„IPåœ°å€
+     *          7	å¼€æˆ·è¯ä»¶åœ°å€        å¼€æˆ·è¯ä»¶åœ°å€ä¸éœ€å…¨éƒ¨æä¾›,æˆªå–è‡³è¡—é“å³å¯,å¸¸è§è¡—é“å…³é”®å­—åŒ…æ‹¬ï¼šè·¯/è¡—é“/è¡—/èƒ¡åŒ/é“/æ¡/é‡Œ/é•‡/ä¹¡/æ‘/åº„/å¼„/å··/å®…/ï¿½/å±¯/å··/å¯¨/ç»„/é˜Ÿ/å›­/é™¢
+     *          8	å—ç›Šäººæ‰‹æœºå·	   å—ç›Šäººæ‰‹æœºå·(æ‰‹æœºå……å€¼å¿…å¡«)
+     *          9	äº§å“é”€å”®åœ°	   çœå¸‚å·²é€—å·åˆ†å‰²ï¼Œæ¯”å¦‚â€œå¹¿ä¸œçœï¼Œæ·±åœ³å¸‚â€, â€˜åŒ—äº¬å¸‚â€™(å›¢è´­å¿…å¡«)
+     *          10	å¼€æˆ·é“¶è¡Œç™»è®°æ‰‹æœºå·  (5.2èº«ä»½éªŒè¯,äº¤æ˜“å‚è€ƒæ ‡æ˜Žè¦å¡«çš„å¿…å¡«)
+     *          11	å…¶ä»–è¡Œä¸šé£ŽæŽ§æ•°æ®    ä¾‹å¦‚ï¼š
      *                                          Apple:appid
-     *                                          ´ú¸¶:ÒøÐÐÁªÐÐºÅ|ÒøÐÐºÅ
-     *                                          ÐÅÓÃ¿¨»¹¿î:ÐÅÓÃ¿¨ºÅ|ÐÕÃû|Ö¤¼þºÅ|Ö¤¾ÝÀàÐÍ
-     * @param encryptKey ¼ÓÃÜÃÜÔ¿,24Î»,Ã¿±Ê½»Ò×Ëæ»úÉú³É, ÓÃÓÚCA½Ó¿Ú·¢ËÍ½»Ò×±¨ÎÄÊ±¼ÓÃÜ, ·µ»Ø±¨ÎÄÊ±½âÃÜ
-     * @return RespCode 0000 ±íÊ¾Ö§¸¶³É¹¦, ÆäËû´íÎóÂëÇë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨´íÎóÂëÁÐ±í¡±
+     *                                          ä»£ä»˜:é“¶è¡Œè”è¡Œå·|é“¶è¡Œå·
+     *                                          ä¿¡ç”¨å¡è¿˜æ¬¾:ä¿¡ç”¨å¡å·|å§“å|è¯ä»¶å·|è¯æ®ç±»åž‹
+     * @param encryptKey åŠ å¯†å¯†é’¥,24ä½,æ¯ç¬”äº¤æ˜“éšæœºç”Ÿæˆ, ç”¨äºŽCAæŽ¥å£å‘é€äº¤æ˜“æŠ¥æ–‡æ—¶åŠ å¯†, è¿”å›žæŠ¥æ–‡æ—¶è§£å¯†
+     * @return RespCode 0000 è¡¨ç¤ºæ”¯ä»˜æˆåŠŸ, å…¶ä»–é”™è¯¯ç è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°é”™è¯¯ç åˆ—è¡¨â€
      * @throws Exception
      */
     public PosMessage PayTrust(String acqSsn, String accountNum, String pin,
@@ -919,74 +920,74 @@ public final class TransactionClient {
 
         if (!resMessage.getMac().toUpperCase().equals(
                 md5.getMD5ofStr(TransactionUtil.getMacString(resMessage) + " " + merchantPWD))) {
-            throw new Exception("·µ»Ø½á¹ûÐ£ÑéÊ§°Ü");
+            throw new Exception("è¿”å›žç»“æžœæ ¡éªŒå¤±è´¥");
         }
 
         return resMessage;
     }
 
-    /** ´úÊÕ½»Ò×: ÆóÒµÎ¯ÍÐÍ¨¹ý×Ê½ð´úÊÕÍ¨µÀÊÕ¿î
+    /** ä»£æ”¶äº¤æ˜“: ä¼ä¸šå§”æ‰˜é€šè¿‡èµ„é‡‘ä»£æ”¶é€šé“æ”¶æ¬¾
      * 
-     * @param acqSsn ÏµÍ³¸ú×ÙºÅ
-     * @param accountNum  ³Ö¿¨ÈËÕÊºÅ£¬¿ÉÎª¿Õ£¬ÔÝÊ±Ö§³Ö 14£¬21¸ñÊ½
-     *          ¡°01¡°	½è¼Ç¿¨ºÅ
-     *          ¡°02¡±	ÐÅÓÃ¿¨ºÅ
-     *          ¡°04¡±	ÊÖ»úºÅ
-     *          ¡°05¡±	Éí·ÝÖ¤ºÅ
-     *          ¡°14¡±	ÊÖ»úºÅÂë+ÒøÐÐ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÒøÐÐ¿¨ºÅ")
-     *          ¡°21¡±	ÊÖ»úºÅÂë+ÐÅÓÃ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÐÅÓÃ¿¨ºÅ")
+     * @param acqSsn ç³»ç»Ÿè·Ÿè¸ªå·
+     * @param accountNum  æŒå¡äººå¸å·ï¼Œå¯ä¸ºç©ºï¼Œæš‚æ—¶æ”¯æŒ 14ï¼Œ21æ ¼å¼
+     *          â€œ01â€œ	å€Ÿè®°å¡å·
+     *          â€œ02â€	ä¿¡ç”¨å¡å·
+     *          â€œ04â€	æ‰‹æœºå·
+     *          â€œ05â€	èº«ä»½è¯å·
+     *          â€œ14â€	æ‰‹æœºå·ç +é“¶è¡Œå¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"é“¶è¡Œå¡å·")
+     *          â€œ21â€	æ‰‹æœºå·ç +ä¿¡ç”¨å¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"ä¿¡ç”¨å¡å·")
      * 
-     * @param pin ½»Ò×ÃÜÂë£¬ÓïÒô²å¼þÄ£Ê½ÐèÒªÌî£¬ÓïÒôÍâºôÄ£Ê½Ìî¿Õ£¬ÐèÓÃUPOP¹«Ô¿¼ÓÃÜ£¬ Ëã·¨Çë²ÎÕÕ<<ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶>>ËµÃ÷
-     * @param amount  ¶©µ¥½ð¶î
-     * @param orderNo ¶©µ¥±àºÅ£¬ ÉÌ»§Ìá½»ÉÌ»§¶©µ¥±àºÅ£¬Ç°Á½Î»±êÃ÷ÀàÐÍ£¬Í¬Ò»¸öÉÌ»§¶©µ¥±àºÅÖ»ÄÜÖ§¸¶³É¹¦Ò»´Î£¬½»Ò×·µ»ØÊ±ÒøÁªÓïÒôÖ§¸¶¼ÓÉÏDNA¶©µ¥±àºÅ
-     *                ¡°01¡±	ÒøÁªÊÖ»úÖ§¸¶(DNA)¶©µ¥±àºÅ
-     *                ¡°02¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÍøÒ³×ÔÖúÏÂµ¥£¨WEB£©
-     *                ¡°03¡±	ÉÌ»§¶©µ¥±àºÅ£¬¿Í·þµç»°ÏÂµ¥£¨CallCenter£©
-     *                ¡°04¡±	ÉÌ»§¶©µ¥±àºÅ£¬µç»°×ÔÖúÏÂµ¥£¨IVR£©
-     *                ¡°05¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÊÖ»ú×ÔÖúÏÂµ¥£¨WAP£©
+     * @param pin äº¤æ˜“å¯†ç ï¼Œè¯­éŸ³æ’ä»¶æ¨¡å¼éœ€è¦å¡«ï¼Œè¯­éŸ³å¤–å‘¼æ¨¡å¼å¡«ç©ºï¼Œéœ€ç”¨UPOPå…¬é’¥åŠ å¯†ï¼Œ ç®—æ³•è¯·å‚ç…§<<é“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ>>è¯´æ˜Ž
+     * @param amount  è®¢å•é‡‘é¢
+     * @param orderNo è®¢å•ç¼–å·ï¼Œ å•†æˆ·æäº¤å•†æˆ·è®¢å•ç¼–å·ï¼Œå‰ä¸¤ä½æ ‡æ˜Žç±»åž‹ï¼ŒåŒä¸€ä¸ªå•†æˆ·è®¢å•ç¼–å·åªèƒ½æ”¯ä»˜æˆåŠŸä¸€æ¬¡ï¼Œäº¤æ˜“è¿”å›žæ—¶é“¶è”è¯­éŸ³æ”¯ä»˜åŠ ä¸ŠDNAè®¢å•ç¼–å·
+     *                â€œ01â€	é“¶è”æ‰‹æœºæ”¯ä»˜(DNA)è®¢å•ç¼–å·
+     *                â€œ02â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç½‘é¡µè‡ªåŠ©ä¸‹å•ï¼ˆWEBï¼‰
+     *                â€œ03â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œå®¢æœç”µè¯ä¸‹å•ï¼ˆCallCenterï¼‰
+     *                â€œ04â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç”µè¯è‡ªåŠ©ä¸‹å•ï¼ˆIVRï¼‰
+     *                â€œ05â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œæ‰‹æœºè‡ªåŠ©ä¸‹å•ï¼ˆWAPï¼‰
      * 
-     *                ¡°12¡±	ÉÌ»§¶©µ¥±àºÅ£¨WEB£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°13¡±	ÉÌ»§¶©µ¥±àºÅ£¨CallCenter£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°14¡±	ÉÌ»§¶©µ¥±àºÅ£¨IVR£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°15¡±	ÉÌ»§¶©µ¥±àºÅ£¨WAP£©+¡®|¡¯+DNA¶©µ¥±àºÅ
+     *                â€œ12â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWEBï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ13â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆCallCenterï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ14â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆIVRï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ15â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWAPï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
      * 
-     * @param reference ÏµÍ³²Î¿¼ºÅ£¬ Ô­Öµ·µ»Ø¡£
-     * @param description ¶©µ¥ÃèÊö, ³¤¶È²»Òª³¬¹ý50¸ö×Ö£¬Ç°Á½Î»¿ÉÒÔÅäÖÃÓïÒôºÏ³ÉÀàÐÍ¡£
-     *          ¡°00¡±	ÖÐÎÄ
-     *          ¡°01¡±	ÔÁÓï
-     *          ¡°02¡±	Ó¢ÎÄ
-     * @param remark ¶©µ¥±¸×¢
-     * @param payNow ÊÇ·ñ¼°Ê±Ö§¸¶
-     * @param returnUrl ¶©µ¥Ö§¸¶½á¹ûÒì²½·µ»ØµØÖ·£¬Ç°Á½Î»±êÃ÷µØÖ·ÀàÐÍ£¬Í¬²½½»Ò×ÇëÌî¿Õ¡£
-     *                   Èç¹û¸ÃÓò·Ç¿Õ, ÊÖ»úÖ§¸¶·µ»Ø½»Ò×½á¹û£¨²ÎÕÕ6.2£©µ½¸ÃµØÖ·, 
-     *                   ÉÌ»§ÊÕµ½½á¹ûºó·µ»ØÈ·ÈÏÐÅÏ¢£¨²ÎÕÕ5.8£©£¬Èç¹û·µ»ØµØÖ·ÎªServletµØÖ·£¬
-     *                   ÔòÖ±½Ó·µ»Ø¡°0000¡±´ú±íÉÌ»§½ÓÊÕ½á¹û³É¹¦£¬ÎÞÐè·µ»ØÒ³Ãæ.
-     *                   ÈÎºÎÕý³£Ò³Ãæ·µ»Ø¾ù±íÊ¾½ÓÊÕ½á¹û³É¹¦¡£
+     * @param reference ç³»ç»Ÿå‚è€ƒå·ï¼Œ åŽŸå€¼è¿”å›žã€‚
+     * @param description è®¢å•æè¿°, é•¿åº¦ä¸è¦è¶…è¿‡50ä¸ªå­—ï¼Œå‰ä¸¤ä½å¯ä»¥é…ç½®è¯­éŸ³åˆæˆç±»åž‹ã€‚
+     *          â€œ00â€	ä¸­æ–‡
+     *          â€œ01â€	ç²¤è¯­
+     *          â€œ02â€	è‹±æ–‡
+     * @param remark è®¢å•å¤‡æ³¨
+     * @param payNow æ˜¯å¦åŠæ—¶æ”¯ä»˜
+     * @param returnUrl è®¢å•æ”¯ä»˜ç»“æžœå¼‚æ­¥è¿”å›žåœ°å€ï¼Œå‰ä¸¤ä½æ ‡æ˜Žåœ°å€ç±»åž‹ï¼ŒåŒæ­¥äº¤æ˜“è¯·å¡«ç©ºã€‚
+     *                   å¦‚æžœè¯¥åŸŸéžç©º, æ‰‹æœºæ”¯ä»˜è¿”å›žäº¤æ˜“ç»“æžœï¼ˆå‚ç…§6.2ï¼‰åˆ°è¯¥åœ°å€, 
+     *                   å•†æˆ·æ”¶åˆ°ç»“æžœåŽè¿”å›žç¡®è®¤ä¿¡æ¯ï¼ˆå‚ç…§5.8ï¼‰ï¼Œå¦‚æžœè¿”å›žåœ°å€ä¸ºServletåœ°å€ï¼Œ
+     *                   åˆ™ç›´æŽ¥è¿”å›žâ€œ0000â€ä»£è¡¨å•†æˆ·æŽ¥æ”¶ç»“æžœæˆåŠŸï¼Œæ— éœ€è¿”å›žé¡µé¢.
+     *                   ä»»ä½•æ­£å¸¸é¡µé¢è¿”å›žå‡è¡¨ç¤ºæŽ¥æ”¶ç»“æžœæˆåŠŸã€‚
      *
-     *           ¡°01¡±	SocketÒì²½·µ»Ø½ÓÊÕµØÖ·(ÔÝ²»Ö§³Ö) ÄÚÈÝ¸ñÊ½£º[IP|PORT]
-     *           ¡°02¡±	HttpÒì²½·µ»Ø½ÓÊÕµØÖ· ÄÚÈÝ¸ñÊ½£º[URL]
-     *           ¡°03¡±	WebServiceÒì²½·µ»Ø½ÓÊÕµØÖ·,ÄÚÈÝ¸ñÊ½£º[URL|NAMESPACE]
-     *           ¡°04¡±	HttpÍ¬²½/Òì²½·µ»Ø½ÓÊÕµØÖ·,ÄÚÈÝ¸ñÊ½£º[URL|URL]
-     *           ¡°05¡±	CAÇ©ÃûXMLÒì²½·µ»Ø½ÓÊÕµØÖ·, ÄÚÈÝ¸ñÊ½[URL]
-     *           ¡°06¡±	XMLÒì²½·µ»Ø½ÓÊÕµØÖ·, ÄÚÈÝ¸ñÊ½[URL]
+     *           â€œ01â€	Socketå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€(æš‚ä¸æ”¯æŒ) å†…å®¹æ ¼å¼ï¼š[IP|PORT]
+     *           â€œ02â€	Httpå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€ å†…å®¹æ ¼å¼ï¼š[URL]
+     *           â€œ03â€	WebServiceå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€,å†…å®¹æ ¼å¼ï¼š[URL|NAMESPACE]
+     *           â€œ04â€	HttpåŒæ­¥/å¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€,å†…å®¹æ ¼å¼ï¼š[URL|URL]
+     *           â€œ05â€	CAç­¾åXMLå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€, å†…å®¹æ ¼å¼[URL]
+     *           â€œ06â€	XMLå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€, å†…å®¹æ ¼å¼[URL]
      *      
-     * @param transData Ìá¹©ÒµÎñ½»»»Êý¾Ý°üÀ¨ÒøÐÐ¿ª»§ÐÕÃû£¬¿ª»§Ö¤¼þ£¬¿ª»§ÒøÐÐËùÔÚÊ¡ÊÐ£¬¿ª»§Ö¤¼þÀàÐÍµÈ£¬×Ö¶ÎÖ®¼äÒÔ¡®|¡¯·Ö¸î, ÎÞÓÃÁô¿Õ¼´¿É
-     *          1	¿ª»§ÐÕÃû            ÒøÐÐ¿¨¿ª»§ÐÕÃû
-     *          2	¿ª»§Ö¤¼þºÅÂë        ÒøÐÐ¿¨¿ª»§Ö¤¼þºÅÂë
-     *          3	¿ª»§ÒøÐÐËùÔÚÊ¡ÊÐ    Ê¡ÊÐÒÑ¶ººÅ·Ö¸î£¬±ÈÈç¡°¹ã¶«Ê¡£¬ÉîÛÚÊÐ¡±, ¡®±±¾©ÊÐ¡¯
-     *          4	¿ª»§Ö¤¼þÀàÐÍ        ÒøÐÐ¿¨¿ª»§Ö¤¼þÀàÐÍ£¬²ÎÕÕ7.2ËµÃ÷
-     *          5	¶©µ¥ÊÜÒæÈËÐÕÃû      Èç»úÆ±³Ë»úÈË, ¶à¸öÊÜÒæÈËÒÔ¶ººÅ·Ö¸î,¶ÔÓÚÊÜÒæÈË½Ï¶àµÄÇé¿ö,ÖÁÉÙÌîÁ½¸ö,Èç¹ûÊÜÒæÈË°üÀ¨¿ª»§ÈË,Ðè°üº¬ÔÚÄÚ.
-     *          6	³Ö¿¨ÈËIPµØÖ·        ³Ö¿¨ÈËµÇÂ½ÉÌ»§ÍøÕ¾µÄIPµØÖ·
-     *          7	¿ª»§Ö¤¼þµØÖ·        ¿ª»§Ö¤¼þµØÖ·²»ÐèÈ«²¿Ìá¹©,½ØÈ¡ÖÁ½ÖµÀ¼´¿É,³£¼û½ÖµÀ¹Ø¼ü×Ö°üÀ¨£ºÂ·/½ÖµÀ/½Ö/ºúÍ¬/µÀ/Ìõ/Àï/Õò/Ïç/´å/×¯/Åª/Ïï/Õ¬/ß—/ÍÍ/Ïï/Õ¯/×é/¶Ó/Ô°/Ôº
-     *          8	ÊÜÒæÈËÊÖ»úºÅ	   ÊÜÒæÈËÊÖ»úºÅ(ÊÖ»ú³äÖµ±ØÌî)
-     *          9	²úÆ·ÏúÊÛµØ	   Ê¡ÊÐÒÑ¶ººÅ·Ö¸î£¬±ÈÈç¡°¹ã¶«Ê¡£¬ÉîÛÚÊÐ¡±, ¡®±±¾©ÊÐ¡¯(ÍÅ¹º±ØÌî)
-     *          10	¿ª»§ÒøÐÐµÇ¼ÇÊÖ»úºÅ  (5.2Éí·ÝÑéÖ¤,½»Ò×²Î¿¼±êÃ÷ÒªÌîµÄ±ØÌî)
-     *          11	ÆäËûÐÐÒµ·ç¿ØÊý¾Ý    ÀýÈç£º
+     * @param transData æä¾›ä¸šåŠ¡äº¤æ¢æ•°æ®åŒ…æ‹¬é“¶è¡Œå¼€æˆ·å§“åï¼Œå¼€æˆ·è¯ä»¶ï¼Œå¼€æˆ·é“¶è¡Œæ‰€åœ¨çœå¸‚ï¼Œå¼€æˆ·è¯ä»¶ç±»åž‹ç­‰ï¼Œå­—æ®µä¹‹é—´ä»¥â€˜|â€™åˆ†å‰², æ— ç”¨ç•™ç©ºå³å¯
+     *          1	å¼€æˆ·å§“å            é“¶è¡Œå¡å¼€æˆ·å§“å
+     *          2	å¼€æˆ·è¯ä»¶å·ç         é“¶è¡Œå¡å¼€æˆ·è¯ä»¶å·ç 
+     *          3	å¼€æˆ·é“¶è¡Œæ‰€åœ¨çœå¸‚    çœå¸‚å·²é€—å·åˆ†å‰²ï¼Œæ¯”å¦‚â€œå¹¿ä¸œçœï¼Œæ·±åœ³å¸‚â€, â€˜åŒ—äº¬å¸‚â€™
+     *          4	å¼€æˆ·è¯ä»¶ç±»åž‹        é“¶è¡Œå¡å¼€æˆ·è¯ä»¶ç±»åž‹ï¼Œå‚ç…§7.2è¯´æ˜Ž
+     *          5	è®¢å•å—ç›Šäººå§“å      å¦‚æœºç¥¨ä¹˜æœºäºº, å¤šä¸ªå—ç›Šäººä»¥é€—å·åˆ†å‰²,å¯¹äºŽå—ç›Šäººè¾ƒå¤šçš„æƒ…å†µ,è‡³å°‘å¡«ä¸¤ä¸ª,å¦‚æžœå—ç›ŠäººåŒ…æ‹¬å¼€æˆ·äºº,éœ€åŒ…å«åœ¨å†….
+     *          6	æŒå¡äººIPåœ°å€        æŒå¡äººç™»é™†å•†æˆ·ç½‘ç«™çš„IPåœ°å€
+     *          7	å¼€æˆ·è¯ä»¶åœ°å€        å¼€æˆ·è¯ä»¶åœ°å€ä¸éœ€å…¨éƒ¨æä¾›,æˆªå–è‡³è¡—é“å³å¯,å¸¸è§è¡—é“å…³é”®å­—åŒ…æ‹¬ï¼šè·¯/è¡—é“/è¡—/èƒ¡åŒ/é“/æ¡/é‡Œ/é•‡/ä¹¡/æ‘/åº„/å¼„/å··/å®…/ï¿½/å±¯/å··/å¯¨/ç»„/é˜Ÿ/å›­/é™¢
+     *          8	å—ç›Šäººæ‰‹æœºå·	   å—ç›Šäººæ‰‹æœºå·(æ‰‹æœºå……å€¼å¿…å¡«)
+     *          9	äº§å“é”€å”®åœ°	   çœå¸‚å·²é€—å·åˆ†å‰²ï¼Œæ¯”å¦‚â€œå¹¿ä¸œçœï¼Œæ·±åœ³å¸‚â€, â€˜åŒ—äº¬å¸‚â€™(å›¢è´­å¿…å¡«)
+     *          10	å¼€æˆ·é“¶è¡Œç™»è®°æ‰‹æœºå·  (5.2èº«ä»½éªŒè¯,äº¤æ˜“å‚è€ƒæ ‡æ˜Žè¦å¡«çš„å¿…å¡«)
+     *          11	å…¶ä»–è¡Œä¸šé£ŽæŽ§æ•°æ®    ä¾‹å¦‚ï¼š
      *                                          Apple:appid
-     *                                          ´ú¸¶:ÒøÐÐÁªÐÐºÅ|ÒøÐÐºÅ
-     *                                          ÐÅÓÃ¿¨»¹¿î:ÐÅÓÃ¿¨ºÅ|ÐÕÃû|Ö¤¼þºÅ|Ö¤¾ÝÀàÐÍ
-     * @param encryptKey ¼ÓÃÜÃÜÔ¿,24Î»,Ã¿±Ê½»Ò×Ëæ»úÉú³É, ÓÃÓÚCA½Ó¿Ú·¢ËÍ½»Ò×±¨ÎÄÊ±¼ÓÃÜ, ·µ»Ø±¨ÎÄÊ±½âÃÜ
-     * @return RespCode 0000 ±íÊ¾Ö§¸¶³É¹¦, ÆäËû´íÎóÂëÇë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨´íÎóÂëÁÐ±í¡±
+     *                                          ä»£ä»˜:é“¶è¡Œè”è¡Œå·|é“¶è¡Œå·
+     *                                          ä¿¡ç”¨å¡è¿˜æ¬¾:ä¿¡ç”¨å¡å·|å§“å|è¯ä»¶å·|è¯æ®ç±»åž‹
+     * @param encryptKey åŠ å¯†å¯†é’¥,24ä½,æ¯ç¬”äº¤æ˜“éšæœºç”Ÿæˆ, ç”¨äºŽCAæŽ¥å£å‘é€äº¤æ˜“æŠ¥æ–‡æ—¶åŠ å¯†, è¿”å›žæŠ¥æ–‡æ—¶è§£å¯†
+     * @return RespCode 0000 è¡¨ç¤ºæ”¯ä»˜æˆåŠŸ, å…¶ä»–é”™è¯¯ç è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°é”™è¯¯ç åˆ—è¡¨â€
      * @throws Exception
      */
     public PosMessage payCreditCard(String acqSsn, String accountNum, String pin,
@@ -1022,47 +1023,47 @@ public final class TransactionClient {
 
         if (!resMessage.getMac().toUpperCase().equals(
                 md5.getMD5ofStr(TransactionUtil.getMacString(resMessage) + " " + merchantPWD))) {
-            throw new Exception("·µ»Ø½á¹ûÐ£ÑéÊ§°Ü");
+            throw new Exception("è¿”å›žç»“æžœæ ¡éªŒå¤±è´¥");
         }
 
         return resMessage;
     }
 
-    /** ·Ç¼´Ê±¶©µ¥Ö§¸¶:·¢Æð·Ç¼´Ê±¶©µ¥(190001:·Ç¼´Ê±ÏÂµ¥)µÄÖ§¸¶Á÷³Ì,ÊÊÓÃÓÚÓïÒôÒ»ÏßÍ¨·½°¸.
+    /** éžå³æ—¶è®¢å•æ”¯ä»˜:å‘èµ·éžå³æ—¶è®¢å•(190001:éžå³æ—¶ä¸‹å•)çš„æ”¯ä»˜æµç¨‹,é€‚ç”¨äºŽè¯­éŸ³ä¸€çº¿é€šæ–¹æ¡ˆ.
      * 
-     * @param acqSsn ÏµÍ³¸ú×ÙºÅ
-     * @param accountNum  ³Ö¿¨ÈËÕÊºÅ£¬¿ÉÎª¿Õ£¬ÔÝÊ±Ö§³Ö 14£¬21¸ñÊ½
-     *          ¡°01¡°	½è¼Ç¿¨ºÅ
-     *          ¡°02¡±	ÐÅÓÃ¿¨ºÅ
-     *          ¡°04¡±	ÊÖ»úºÅ
-     *          ¡°05¡±	Éí·ÝÖ¤ºÅ
-     *          ¡°14¡±	ÊÖ»úºÅÂë+ÒøÐÐ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÒøÐÐ¿¨ºÅ")
-     *          ¡°21¡±	ÊÖ»úºÅÂë+ÐÅÓÃ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÐÅÓÃ¿¨ºÅ")
-     *          ¡°24¡±	ÊÖ»úºÅÂë+ÒøÐÐ¿¨ºÅ+Éí·ÝÖ¤ºÅ
-     *          ¡°31¡±	ÊÖ»úºÅÂë+ÐÅÓÃ¿¨ºÅ+Éí·ÝÖ¤ºÅ
+     * @param acqSsn ç³»ç»Ÿè·Ÿè¸ªå·
+     * @param accountNum  æŒå¡äººå¸å·ï¼Œå¯ä¸ºç©ºï¼Œæš‚æ—¶æ”¯æŒ 14ï¼Œ21æ ¼å¼
+     *          â€œ01â€œ	å€Ÿè®°å¡å·
+     *          â€œ02â€	ä¿¡ç”¨å¡å·
+     *          â€œ04â€	æ‰‹æœºå·
+     *          â€œ05â€	èº«ä»½è¯å·
+     *          â€œ14â€	æ‰‹æœºå·ç +é“¶è¡Œå¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"é“¶è¡Œå¡å·")
+     *          â€œ21â€	æ‰‹æœºå·ç +ä¿¡ç”¨å¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"ä¿¡ç”¨å¡å·")
+     *          â€œ24â€	æ‰‹æœºå·ç +é“¶è¡Œå¡å·+èº«ä»½è¯å·
+     *          â€œ31â€	æ‰‹æœºå·ç +ä¿¡ç”¨å¡å·+èº«ä»½è¯å·
      * 
-     * @param pin ½»Ò×ÃÜÂë£¬ÓïÒô²å¼þÄ£Ê½ÐèÒªÌî£¬ÓïÒôÍâºôÄ£Ê½Ìî¿Õ£¬ÐèÓÃUPOP¹«Ô¿¼ÓÃÜ£¬ Ëã·¨Çë²ÎÕÕ<<ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶>>ËµÃ÷
-     * @param amount  ¶©µ¥½ð¶î
-     * @param orderNo ¶©µ¥±àºÅ£¬ ÉÌ»§Ìá½»ÉÌ»§¶©µ¥±àºÅ£¬Ç°Á½Î»±êÃ÷ÀàÐÍ£¬Í¬Ò»¸öÉÌ»§¶©µ¥±àºÅÖ»ÄÜÖ§¸¶³É¹¦Ò»´Î£¬½»Ò×·µ»ØÊ±ÒøÁªÓïÒôÖ§¸¶¼ÓÉÏDNA¶©µ¥±àºÅ
-     *                ¡°01¡±	ÒøÁªÊÖ»úÖ§¸¶(DNA)¶©µ¥±àºÅ
-     *                ¡°02¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÍøÒ³×ÔÖúÏÂµ¥£¨WEB£©
-     *                ¡°03¡±	ÉÌ»§¶©µ¥±àºÅ£¬¿Í·þµç»°ÏÂµ¥£¨CallCenter£©
-     *                ¡°04¡±	ÉÌ»§¶©µ¥±àºÅ£¬µç»°×ÔÖúÏÂµ¥£¨IVR£©
-     *                ¡°05¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÊÖ»ú×ÔÖúÏÂµ¥£¨WAP£©
+     * @param pin äº¤æ˜“å¯†ç ï¼Œè¯­éŸ³æ’ä»¶æ¨¡å¼éœ€è¦å¡«ï¼Œè¯­éŸ³å¤–å‘¼æ¨¡å¼å¡«ç©ºï¼Œéœ€ç”¨UPOPå…¬é’¥åŠ å¯†ï¼Œ ç®—æ³•è¯·å‚ç…§<<é“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ>>è¯´æ˜Ž
+     * @param amount  è®¢å•é‡‘é¢
+     * @param orderNo è®¢å•ç¼–å·ï¼Œ å•†æˆ·æäº¤å•†æˆ·è®¢å•ç¼–å·ï¼Œå‰ä¸¤ä½æ ‡æ˜Žç±»åž‹ï¼ŒåŒä¸€ä¸ªå•†æˆ·è®¢å•ç¼–å·åªèƒ½æ”¯ä»˜æˆåŠŸä¸€æ¬¡ï¼Œäº¤æ˜“è¿”å›žæ—¶é“¶è”è¯­éŸ³æ”¯ä»˜åŠ ä¸ŠDNAè®¢å•ç¼–å·
+     *                â€œ01â€	é“¶è”æ‰‹æœºæ”¯ä»˜(DNA)è®¢å•ç¼–å·
+     *                â€œ02â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç½‘é¡µè‡ªåŠ©ä¸‹å•ï¼ˆWEBï¼‰
+     *                â€œ03â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œå®¢æœç”µè¯ä¸‹å•ï¼ˆCallCenterï¼‰
+     *                â€œ04â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç”µè¯è‡ªåŠ©ä¸‹å•ï¼ˆIVRï¼‰
+     *                â€œ05â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œæ‰‹æœºè‡ªåŠ©ä¸‹å•ï¼ˆWAPï¼‰
      * 
-     *                ¡°12¡±	ÉÌ»§¶©µ¥±àºÅ£¨WEB£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°13¡±	ÉÌ»§¶©µ¥±àºÅ£¨CallCenter£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°14¡±	ÉÌ»§¶©µ¥±àºÅ£¨IVR£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°15¡±	ÉÌ»§¶©µ¥±àºÅ£¨WAP£©+¡®|¡¯+DNA¶©µ¥±àºÅ
+     *                â€œ12â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWEBï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ13â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆCallCenterï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ14â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆIVRï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ15â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWAPï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
      * 
-     * @param reference ÏµÍ³²Î¿¼ºÅ£¬ Ô­Öµ·µ»Ø¡£
-     * @param description ¶©µ¥ÃèÊö, ³¤¶È²»Òª³¬¹ý50¸ö×Ö£¬Ç°Á½Î»¿ÉÒÔÅäÖÃÓïÒôºÏ³ÉÀàÐÍ¡£
-     *          ¡°00¡±	ÖÐÎÄ
-     *          ¡°01¡±	ÔÁÓï
-     *          ¡°02¡±	Ó¢ÎÄ
-     * @param remark ¶©µ¥±¸×¢  
-     * @param encryptKey ¼ÓÃÜÃÜÔ¿,24Î»,Ã¿±Ê½»Ò×Ëæ»úÉú³É, ÓÃÓÚCA½Ó¿Ú·¢ËÍ½»Ò×±¨ÎÄÊ±¼ÓÃÜ, ·µ»Ø±¨ÎÄÊ±½âÃÜ
-     * @return RespCode 0000 ±íÊ¾Ö§¸¶³É¹¦, ÆäËû´íÎóÂëÇë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨´íÎóÂëÁÐ±í¡±
+     * @param reference ç³»ç»Ÿå‚è€ƒå·ï¼Œ åŽŸå€¼è¿”å›žã€‚
+     * @param description è®¢å•æè¿°, é•¿åº¦ä¸è¦è¶…è¿‡50ä¸ªå­—ï¼Œå‰ä¸¤ä½å¯ä»¥é…ç½®è¯­éŸ³åˆæˆç±»åž‹ã€‚
+     *          â€œ00â€	ä¸­æ–‡
+     *          â€œ01â€	ç²¤è¯­
+     *          â€œ02â€	è‹±æ–‡
+     * @param remark è®¢å•å¤‡æ³¨  
+     * @param encryptKey åŠ å¯†å¯†é’¥,24ä½,æ¯ç¬”äº¤æ˜“éšæœºç”Ÿæˆ, ç”¨äºŽCAæŽ¥å£å‘é€äº¤æ˜“æŠ¥æ–‡æ—¶åŠ å¯†, è¿”å›žæŠ¥æ–‡æ—¶è§£å¯†
+     * @return RespCode 0000 è¡¨ç¤ºæ”¯ä»˜æˆåŠŸ, å…¶ä»–é”™è¯¯ç è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°é”™è¯¯ç åˆ—è¡¨â€
      * @throws Exception
      */
     public PosMessage payIvr(String acqSsn, String accountNum, String pin,
@@ -1095,58 +1096,58 @@ public final class TransactionClient {
 
         if (!resMessage.getMac().toUpperCase().equals(
                 md5.getMD5ofStr(TransactionUtil.getMacString(resMessage) + " " + merchantPWD))) {
-            throw new Exception("·µ»Ø½á¹ûÐ£ÑéÊ§°Ü");
+            throw new Exception("è¿”å›žç»“æžœæ ¡éªŒå¤±è´¥");
         }
 
         return resMessage;
     }
 
     /**
-     * ¶©µ¥³·Ïú£¬²¦´ò³Ö¿¨ÈËÊÖ»úÍê³É½»Ò×³·ÏúÊÚÈ¨
+     * è®¢å•æ’¤é”€ï¼Œæ‹¨æ‰“æŒå¡äººæ‰‹æœºå®Œæˆäº¤æ˜“æ’¤é”€æŽˆæƒ
      * 
-     * @param acqSsn ÏµÍ³¸ú×ÙºÅ
-     * @param accountNum  ³Ö¿¨ÈËÕÊºÅ£¬¿ÉÎª¿Õ£¬ÔÝÊ±Ö§³Ö 14£¬21¸ñÊ½
-     *          ¡°01¡°	½è¼Ç¿¨ºÅ
-     *          ¡°02¡±	ÐÅÓÃ¿¨ºÅ
-     *          ¡°04¡±	ÊÖ»úºÅ
-     *          ¡°05¡±	Éí·ÝÖ¤ºÅ
-     *          ¡°14¡±	ÊÖ»úºÅÂë+ÒøÐÐ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÒøÐÐ¿¨ºÅ")
-     *          ¡°21¡±	ÊÖ»úºÅÂë+ÐÅÓÃ¿¨ºÅ(¾ÙÀý£º"14"+"ÊÖ»úºÅ"+"|"+"ÐÅÓÃ¿¨ºÅ")
+     * @param acqSsn ç³»ç»Ÿè·Ÿè¸ªå·
+     * @param accountNum  æŒå¡äººå¸å·ï¼Œå¯ä¸ºç©ºï¼Œæš‚æ—¶æ”¯æŒ 14ï¼Œ21æ ¼å¼
+     *          â€œ01â€œ	å€Ÿè®°å¡å·
+     *          â€œ02â€	ä¿¡ç”¨å¡å·
+     *          â€œ04â€	æ‰‹æœºå·
+     *          â€œ05â€	èº«ä»½è¯å·
+     *          â€œ14â€	æ‰‹æœºå·ç +é“¶è¡Œå¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"é“¶è¡Œå¡å·")
+     *          â€œ21â€	æ‰‹æœºå·ç +ä¿¡ç”¨å¡å·(ä¸¾ä¾‹ï¼š"14"+"æ‰‹æœºå·"+"|"+"ä¿¡ç”¨å¡å·")
      * 
-     * @param pin ½»Ò×ÃÜÂë£¬ÓïÒô²å¼þÄ£Ê½ÐèÒªÌî£¬ÓïÒôÍâºôÄ£Ê½Ìî¿Õ£¬ÐèÓÃUPOP¹«Ô¿¼ÓÃÜ£¬ Ëã·¨Çë²ÎÕÕ<<ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶>>ËµÃ÷
-     * @param amount  ¶©µ¥½ð¶î
-     * @param orderNo ¶©µ¥±àºÅ£¬ ÉÌ»§Ìá½»DNA¶©µ¥±àºÅ/ÉÌ»§¶©µ¥±àºÅ£¬Ç°Á½Î»±êÃ÷ÀàÐÍ.
-     *                ¡°01¡±	ÒøÁªÊÖ»úÖ§¸¶(DNA)¶©µ¥±àºÅ
-     *                ¡°02¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÍøÒ³×ÔÖúÏÂµ¥£¨WEB£©
-     *                ¡°03¡±	ÉÌ»§¶©µ¥±àºÅ£¬¿Í·þµç»°ÏÂµ¥£¨CallCenter£©
-     *                ¡°04¡±	ÉÌ»§¶©µ¥±àºÅ£¬µç»°×ÔÖúÏÂµ¥£¨IVR£©
-     *                ¡°05¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÊÖ»ú×ÔÖúÏÂµ¥£¨WAP£©
+     * @param pin äº¤æ˜“å¯†ç ï¼Œè¯­éŸ³æ’ä»¶æ¨¡å¼éœ€è¦å¡«ï¼Œè¯­éŸ³å¤–å‘¼æ¨¡å¼å¡«ç©ºï¼Œéœ€ç”¨UPOPå…¬é’¥åŠ å¯†ï¼Œ ç®—æ³•è¯·å‚ç…§<<é“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ>>è¯´æ˜Ž
+     * @param amount  è®¢å•é‡‘é¢
+     * @param orderNo è®¢å•ç¼–å·ï¼Œ å•†æˆ·æäº¤DNAè®¢å•ç¼–å·/å•†æˆ·è®¢å•ç¼–å·ï¼Œå‰ä¸¤ä½æ ‡æ˜Žç±»åž‹.
+     *                â€œ01â€	é“¶è”æ‰‹æœºæ”¯ä»˜(DNA)è®¢å•ç¼–å·
+     *                â€œ02â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç½‘é¡µè‡ªåŠ©ä¸‹å•ï¼ˆWEBï¼‰
+     *                â€œ03â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œå®¢æœç”µè¯ä¸‹å•ï¼ˆCallCenterï¼‰
+     *                â€œ04â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç”µè¯è‡ªåŠ©ä¸‹å•ï¼ˆIVRï¼‰
+     *                â€œ05â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œæ‰‹æœºè‡ªåŠ©ä¸‹å•ï¼ˆWAPï¼‰
      * 
-     *                ¡°12¡±	ÉÌ»§¶©µ¥±àºÅ£¨WEB£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°13¡±	ÉÌ»§¶©µ¥±àºÅ£¨CallCenter£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°14¡±	ÉÌ»§¶©µ¥±àºÅ£¨IVR£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°15¡±	ÉÌ»§¶©µ¥±àºÅ£¨WAP£©+¡®|¡¯+DNA¶©µ¥±àºÅ
+     *                â€œ12â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWEBï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ13â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆCallCenterï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ14â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆIVRï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ15â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWAPï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
      * 
-     * @param reference ÏµÍ³²Î¿¼ºÅ£¬ Ô­Öµ·µ»Ø¡£
-     * @param description ¶©µ¥ÃèÊö, ³¤¶È²»Òª³¬¹ý50¸ö×Ö£¬Ç°Á½Î»¿ÉÒÔÅäÖÃÓïÒôºÏ³ÉÀàÐÍ¡£
-     *          ¡°00¡±	ÖÐÎÄ
-     *          ¡°01¡±	ÔÁÓï
-     *          ¡°02¡±	Ó¢ÎÄ
-     * @param remark ¶©µ¥³·Ïú±¸×¢
-     * @param returnUrl ¶©µ¥Ö§¸¶½á¹ûÒì²½·µ»ØµØÖ·£¬Ç°Á½Î»±êÃ÷µØÖ·ÀàÐÍ£¬Í¬²½½»Ò×ÇëÌî¿Õ¡£
-     *                   Èç¹û¸ÃÓò·Ç¿Õ, ÊÖ»úÖ§¸¶·µ»Ø½»Ò×½á¹û£¨²ÎÕÕ6.2£©µ½¸ÃµØÖ·, 
-     *                   ÉÌ»§ÊÕµ½½á¹ûºó·µ»ØÈ·ÈÏÐÅÏ¢£¨²ÎÕÕ5.8£©£¬Èç¹û·µ»ØµØÖ·ÎªServletµØÖ·£¬
-     *                   ÔòÖ±½Ó·µ»Ø¡°0000¡±´ú±íÉÌ»§½ÓÊÕ½á¹û³É¹¦£¬ÎÞÐè·µ»ØÒ³Ãæ.
-     *                   ÈÎºÎÕý³£Ò³Ãæ·µ»Ø¾ù±íÊ¾½ÓÊÕ½á¹û³É¹¦¡£
+     * @param reference ç³»ç»Ÿå‚è€ƒå·ï¼Œ åŽŸå€¼è¿”å›žã€‚
+     * @param description è®¢å•æè¿°, é•¿åº¦ä¸è¦è¶…è¿‡50ä¸ªå­—ï¼Œå‰ä¸¤ä½å¯ä»¥é…ç½®è¯­éŸ³åˆæˆç±»åž‹ã€‚
+     *          â€œ00â€	ä¸­æ–‡
+     *          â€œ01â€	ç²¤è¯­
+     *          â€œ02â€	è‹±æ–‡
+     * @param remark è®¢å•æ’¤é”€å¤‡æ³¨
+     * @param returnUrl è®¢å•æ”¯ä»˜ç»“æžœå¼‚æ­¥è¿”å›žåœ°å€ï¼Œå‰ä¸¤ä½æ ‡æ˜Žåœ°å€ç±»åž‹ï¼ŒåŒæ­¥äº¤æ˜“è¯·å¡«ç©ºã€‚
+     *                   å¦‚æžœè¯¥åŸŸéžç©º, æ‰‹æœºæ”¯ä»˜è¿”å›žäº¤æ˜“ç»“æžœï¼ˆå‚ç…§6.2ï¼‰åˆ°è¯¥åœ°å€, 
+     *                   å•†æˆ·æ”¶åˆ°ç»“æžœåŽè¿”å›žç¡®è®¤ä¿¡æ¯ï¼ˆå‚ç…§5.8ï¼‰ï¼Œå¦‚æžœè¿”å›žåœ°å€ä¸ºServletåœ°å€ï¼Œ
+     *                   åˆ™ç›´æŽ¥è¿”å›žâ€œ0000â€ä»£è¡¨å•†æˆ·æŽ¥æ”¶ç»“æžœæˆåŠŸï¼Œæ— éœ€è¿”å›žé¡µé¢.
+     *                   ä»»ä½•æ­£å¸¸é¡µé¢è¿”å›žå‡è¡¨ç¤ºæŽ¥æ”¶ç»“æžœæˆåŠŸã€‚
      *
-     *           ¡°01¡±	SocketÒì²½·µ»Ø½ÓÊÕµØÖ·(ÔÝ²»Ö§³Ö) ÄÚÈÝ¸ñÊ½£º[IP|PORT]
-     *           ¡°02¡±	HttpÒì²½·µ»Ø½ÓÊÕµØÖ· ÄÚÈÝ¸ñÊ½£º[URL]
-     *           ¡°03¡±	WebServiceÒì²½·µ»Ø½ÓÊÕµØÖ·,ÄÚÈÝ¸ñÊ½£º[URL|NAMESPACE]
-     *           ¡°04¡±	HttpÍ¬²½/Òì²½·µ»Ø½ÓÊÕµØÖ·,ÄÚÈÝ¸ñÊ½£º[URL|URL]
-     *           ¡°05¡±	CAÇ©ÃûXMLÒì²½·µ»Ø½ÓÊÕµØÖ·, ÄÚÈÝ¸ñÊ½[URL]
-     *           ¡°06¡±	XMLÒì²½·µ»Ø½ÓÊÕµØÖ·, ÄÚÈÝ¸ñÊ½[URL]
-     * @param encryptKey ¼ÓÃÜÃÜÔ¿,24Î»,Ã¿±Ê½»Ò×Ëæ»úÉú³É, ÓÃÓÚCA½Ó¿Ú·¢ËÍ½»Ò×±¨ÎÄÊ±¼ÓÃÜ, ·µ»Ø±¨ÎÄÊ±½âÃÜ     
-     * @return RespCode 0000 ±íÊ¾³·Ïú³É¹¦, ÆäËû´íÎóÂëÇë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨´íÎóÂëÁÐ±í¡±
+     *           â€œ01â€	Socketå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€(æš‚ä¸æ”¯æŒ) å†…å®¹æ ¼å¼ï¼š[IP|PORT]
+     *           â€œ02â€	Httpå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€ å†…å®¹æ ¼å¼ï¼š[URL]
+     *           â€œ03â€	WebServiceå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€,å†…å®¹æ ¼å¼ï¼š[URL|NAMESPACE]
+     *           â€œ04â€	HttpåŒæ­¥/å¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€,å†…å®¹æ ¼å¼ï¼š[URL|URL]
+     *           â€œ05â€	CAç­¾åXMLå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€, å†…å®¹æ ¼å¼[URL]
+     *           â€œ06â€	XMLå¼‚æ­¥è¿”å›žæŽ¥æ”¶åœ°å€, å†…å®¹æ ¼å¼[URL]
+     * @param encryptKey åŠ å¯†å¯†é’¥,24ä½,æ¯ç¬”äº¤æ˜“éšæœºç”Ÿæˆ, ç”¨äºŽCAæŽ¥å£å‘é€äº¤æ˜“æŠ¥æ–‡æ—¶åŠ å¯†, è¿”å›žæŠ¥æ–‡æ—¶è§£å¯†     
+     * @return RespCode 0000 è¡¨ç¤ºæ’¤é”€æˆåŠŸ, å…¶ä»–é”™è¯¯ç è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°é”™è¯¯ç åˆ—è¡¨â€
      * @throws Exception
      */
     public PosMessage refund(String acqSsn, String accountNum, String pin,
@@ -1174,33 +1175,33 @@ public final class TransactionClient {
         PosMessage resMessage = this.transact(request, encryptKey);
         if (!resMessage.getMac().toUpperCase().equals(
                 md5.getMD5ofStr(TransactionUtil.getMacString(resMessage) + " " + merchantPWD))) {
-            throw new Exception("·µ»Ø½á¹ûÐ£ÑéÊ§°Ü");
+            throw new Exception("è¿”å›žç»“æžœæ ¡éªŒå¤±è´¥");
         }
 
         return resMessage;
     }
 
     /**
-     * ¶©µ¥½É·Ñ³åÕý£¬ÎÞÐè²¦´ò³Ö¿¨ÈËÊÖ»úÍê³É½»Ò×ÊÚÈ¨
+     * è®¢å•ç¼´è´¹å†²æ­£ï¼Œæ— éœ€æ‹¨æ‰“æŒå¡äººæ‰‹æœºå®Œæˆäº¤æ˜“æŽˆæƒ
      * 
-     * @param acqSsn Ô­½»Ò×ÏµÍ³¸ú×ÙºÅ
-     * @param transDatetime Ô­½»Ò×´«ÊäÈÕÆÚ
-     * @param orderNo ¶©µ¥±àºÅ, ÉÌ»§Ìá½»DNA¶©µ¥±àºÅ/ÉÌ»§¶©µ¥±àºÅ£¬Ç°Á½Î»±êÃ÷ÀàÐÍ.
-     *                ¡°01¡±	ÒøÁªÊÖ»úÖ§¸¶(DNA)¶©µ¥±àºÅ
-     *                ¡°02¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÍøÒ³×ÔÖúÏÂµ¥£¨WEB£©
-     *                ¡°03¡±	ÉÌ»§¶©µ¥±àºÅ£¬¿Í·þµç»°ÏÂµ¥£¨CallCenter£©
-     *                ¡°04¡±	ÉÌ»§¶©µ¥±àºÅ£¬µç»°×ÔÖúÏÂµ¥£¨IVR£©
-     *                ¡°05¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÊÖ»ú×ÔÖúÏÂµ¥£¨WAP£©
+     * @param acqSsn åŽŸäº¤æ˜“ç³»ç»Ÿè·Ÿè¸ªå·
+     * @param transDatetime åŽŸäº¤æ˜“ä¼ è¾“æ—¥æœŸ
+     * @param orderNo è®¢å•ç¼–å·, å•†æˆ·æäº¤DNAè®¢å•ç¼–å·/å•†æˆ·è®¢å•ç¼–å·ï¼Œå‰ä¸¤ä½æ ‡æ˜Žç±»åž‹.
+     *                â€œ01â€	é“¶è”æ‰‹æœºæ”¯ä»˜(DNA)è®¢å•ç¼–å·
+     *                â€œ02â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç½‘é¡µè‡ªåŠ©ä¸‹å•ï¼ˆWEBï¼‰
+     *                â€œ03â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œå®¢æœç”µè¯ä¸‹å•ï¼ˆCallCenterï¼‰
+     *                â€œ04â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç”µè¯è‡ªåŠ©ä¸‹å•ï¼ˆIVRï¼‰
+     *                â€œ05â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œæ‰‹æœºè‡ªåŠ©ä¸‹å•ï¼ˆWAPï¼‰
      * 
-     *                ¡°12¡±	ÉÌ»§¶©µ¥±àºÅ£¨WEB£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°13¡±	ÉÌ»§¶©µ¥±àºÅ£¨CallCenter£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°14¡±	ÉÌ»§¶©µ¥±àºÅ£¨IVR£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°15¡±	ÉÌ»§¶©µ¥±àºÅ£¨WAP£©+¡®|¡¯+DNA¶©µ¥±àºÅ
+     *                â€œ12â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWEBï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ13â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆCallCenterï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ14â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆIVRï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ15â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWAPï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
      * 
-     * @param reference ÏµÍ³²Î¿¼ºÅ£¬ Ô­Öµ·µ»Ø¡£
-     * @param remark ¶©µ¥³·Ïú±¸×¢
-     * @param encryptKey ¼ÓÃÜÃÜÔ¿,24Î»,Ã¿±Ê½»Ò×Ëæ»úÉú³É, ÓÃÓÚCA½Ó¿Ú·¢ËÍ½»Ò×±¨ÎÄÊ±¼ÓÃÜ, ·µ»Ø±¨ÎÄÊ±½âÃÜ
-     * @return RespCode 0000 ±íÊ¾³åÕý½»Ò×³É¹¦, ÆäËû´íÎóÂëÇë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨´íÎóÂëÁÐ±í¡±
+     * @param reference ç³»ç»Ÿå‚è€ƒå·ï¼Œ åŽŸå€¼è¿”å›žã€‚
+     * @param remark è®¢å•æ’¤é”€å¤‡æ³¨
+     * @param encryptKey åŠ å¯†å¯†é’¥,24ä½,æ¯ç¬”äº¤æ˜“éšæœºç”Ÿæˆ, ç”¨äºŽCAæŽ¥å£å‘é€äº¤æ˜“æŠ¥æ–‡æ—¶åŠ å¯†, è¿”å›žæŠ¥æ–‡æ—¶è§£å¯†
+     * @return RespCode 0000 è¡¨ç¤ºå†²æ­£äº¤æ˜“æˆåŠŸ, å…¶ä»–é”™è¯¯ç è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°é”™è¯¯ç åˆ—è¡¨â€
      */
     public PosMessage quash(String acqSsn, String transDatetime, String orderNo, String remark, String encryptKey) throws Exception {
 
@@ -1222,32 +1223,32 @@ public final class TransactionClient {
         PosMessage resMessage = this.transact(request, encryptKey);
         if (!resMessage.getMac().toUpperCase().equals(
                 md5.getMD5ofStr(TransactionUtil.getMacString(resMessage) + " " + merchantPWD))) {
-            throw new Exception("·µ»Ø½á¹ûÐ£ÑéÊ§°Ü");
+            throw new Exception("è¿”å›žç»“æžœæ ¡éªŒå¤±è´¥");
         }
 
         return resMessage;
     }
 
     /**
-     * µ÷ÕËÍË»õÉêÇë,ÇåËãÈÕÆÚÖ®ÍâµÄÈ«¶îÍË»õ»òÇåËãÈÕÆÚÖ®ÄÚ²¿·ÖÍË»õÉêÇë£¬µ÷ÕÊÍË»õÔÚÉêÇëµ±ÈÕ¿ÉÒÔµÇÂ¼ÒøÁªÊÖ»úÈÏÖ¤Ö§¸¶ºóÍËÈ¡ÏûÉêÇë£¬¸ôÈÕÏµÍ³½«×Ô¶¯´¦Àí¡£
+     * è°ƒè´¦é€€è´§ç”³è¯·,æ¸…ç®—æ—¥æœŸä¹‹å¤–çš„å…¨é¢é€€è´§æˆ–æ¸…ç®—æ—¥æœŸä¹‹å†…éƒ¨åˆ†é€€è´§ç”³è¯·ï¼Œè°ƒå¸é€€è´§åœ¨ç”³è¯·å½“æ—¥å¯ä»¥ç™»å½•é“¶è”æ‰‹æœºè®¤è¯æ”¯ä»˜åŽé€€å–æ¶ˆç”³è¯·ï¼Œéš”æ—¥ç³»ç»Ÿå°†è‡ªåŠ¨å¤„ç†ã€‚
      * 
-     * @param acqSsn ÏµÍ³¸ú×ÙºÅ
-     * @param orderNo ¶©µ¥±àºÅ£¬ ÉÌ»§Ìá½»DNA¶©µ¥±àºÅ/ÉÌ»§¶©µ¥±àºÅ£¬Ç°Á½Î»±êÃ÷ÀàÐÍ.
-     *                ¡°01¡±	ÒøÁªÊÖ»úÖ§¸¶(DNA)¶©µ¥±àºÅ
-     *                ¡°02¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÍøÒ³×ÔÖúÏÂµ¥£¨WEB£©
-     *                ¡°03¡±	ÉÌ»§¶©µ¥±àºÅ£¬¿Í·þµç»°ÏÂµ¥£¨CallCenter£©
-     *                ¡°04¡±	ÉÌ»§¶©µ¥±àºÅ£¬µç»°×ÔÖúÏÂµ¥£¨IVR£©
-     *                ¡°05¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÊÖ»ú×ÔÖúÏÂµ¥£¨WAP£©
+     * @param acqSsn ç³»ç»Ÿè·Ÿè¸ªå·
+     * @param orderNo è®¢å•ç¼–å·ï¼Œ å•†æˆ·æäº¤DNAè®¢å•ç¼–å·/å•†æˆ·è®¢å•ç¼–å·ï¼Œå‰ä¸¤ä½æ ‡æ˜Žç±»åž‹.
+     *                â€œ01â€	é“¶è”æ‰‹æœºæ”¯ä»˜(DNA)è®¢å•ç¼–å·
+     *                â€œ02â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç½‘é¡µè‡ªåŠ©ä¸‹å•ï¼ˆWEBï¼‰
+     *                â€œ03â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œå®¢æœç”µè¯ä¸‹å•ï¼ˆCallCenterï¼‰
+     *                â€œ04â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç”µè¯è‡ªåŠ©ä¸‹å•ï¼ˆIVRï¼‰
+     *                â€œ05â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œæ‰‹æœºè‡ªåŠ©ä¸‹å•ï¼ˆWAPï¼‰
      * 
-     *                ¡°12¡±	ÉÌ»§¶©µ¥±àºÅ£¨WEB£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°13¡±	ÉÌ»§¶©µ¥±àºÅ£¨CallCenter£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°14¡±	ÉÌ»§¶©µ¥±àºÅ£¨IVR£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°15¡±	ÉÌ»§¶©µ¥±àºÅ£¨WAP£©+¡®|¡¯+DNA¶©µ¥±àºÅ
+     *                â€œ12â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWEBï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ13â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆCallCenterï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ14â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆIVRï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ15â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWAPï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
      * 
-     * @param transData ³Ö¿¨ÈË¿ª»§Ãû³Æ+¡°|¡±+³Ö¿¨ÈË¿ª»§ÒøÐÐ, Èç¹ûÎª¿Õ£¬DNA×Ô¶¯¶ÁÈ¡ÏµÍ³¼ÇÂ¼ÐÅÏ¢.
-     * @param remark ¶©µ¥µ÷ÕÊ±¸×¢
-     * @param encryptKey ¼ÓÃÜÃÜÔ¿,24Î»,Ã¿±Ê½»Ò×Ëæ»úÉú³É, ÓÃÓÚCA½Ó¿Ú·¢ËÍ½»Ò×±¨ÎÄÊ±¼ÓÃÜ, ·µ»Ø±¨ÎÄÊ±½âÃÜ
-     * @return RespCode 0000 ±íÊ¾ÉêÇë³É¹¦, ÆäËû´íÎóÂëÇë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨´íÎóÂëÁÐ±í¡±
+     * @param transData æŒå¡äººå¼€æˆ·åç§°+â€œ|â€+æŒå¡äººå¼€æˆ·é“¶è¡Œ, å¦‚æžœä¸ºç©ºï¼ŒDNAè‡ªåŠ¨è¯»å–ç³»ç»Ÿè®°å½•ä¿¡æ¯.
+     * @param remark è®¢å•è°ƒå¸å¤‡æ³¨
+     * @param encryptKey åŠ å¯†å¯†é’¥,24ä½,æ¯ç¬”äº¤æ˜“éšæœºç”Ÿæˆ, ç”¨äºŽCAæŽ¥å£å‘é€äº¤æ˜“æŠ¥æ–‡æ—¶åŠ å¯†, è¿”å›žæŠ¥æ–‡æ—¶è§£å¯†
+     * @return RespCode 0000 è¡¨ç¤ºç”³è¯·æˆåŠŸ, å…¶ä»–é”™è¯¯ç è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°é”™è¯¯ç åˆ—è¡¨â€
      */
     public PosMessage adjustApply(String acqSsn, String orderNo, String remark, String transData, String encryptKey) throws Exception {
 
@@ -1269,31 +1270,31 @@ public final class TransactionClient {
         PosMessage resMessage = this.transact(request, encryptKey);
         if (!resMessage.getMac().toUpperCase().equals(
                 md5.getMD5ofStr(TransactionUtil.getMacString(resMessage) + " " + merchantPWD))) {
-            throw new Exception("·µ»Ø½á¹ûMACÐ£ÑéÊ§°Ü");
+            throw new Exception("è¿”å›žç»“æžœMACæ ¡éªŒå¤±è´¥");
         }
 
         return resMessage;
     }
 
-    /** µ÷ÕËÍË»õ²éÑ¯
+    /** è°ƒè´¦é€€è´§æŸ¥è¯¢
      * 
-     * @param acqSsn ÉêÇëÊ±µÄÏµÍ³¸ú×ÙºÅ
-     * @param transDateTime ÉêÇëÊ±µÄ´«ÊäÈÕÆÚºÍÊ±¼ä
-     * @param orderNo ¶©µ¥±àºÅ£¬ ÉÌ»§Ìá½»DNA¶©µ¥±àºÅ/ÉÌ»§¶©µ¥±àºÅ£¬Ç°Á½Î»±êÃ÷ÀàÐÍ.
-     *                ¡°01¡±	ÒøÁªÊÖ»úÖ§¸¶(DNA)¶©µ¥±àºÅ
-     *                ¡°02¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÍøÒ³×ÔÖúÏÂµ¥£¨WEB£©
-     *                ¡°03¡±	ÉÌ»§¶©µ¥±àºÅ£¬¿Í·þµç»°ÏÂµ¥£¨CallCenter£©
-     *                ¡°04¡±	ÉÌ»§¶©µ¥±àºÅ£¬µç»°×ÔÖúÏÂµ¥£¨IVR£©
-     *                ¡°05¡±	ÉÌ»§¶©µ¥±àºÅ£¬ÊÖ»ú×ÔÖúÏÂµ¥£¨WAP£©
+     * @param acqSsn ç”³è¯·æ—¶çš„ç³»ç»Ÿè·Ÿè¸ªå·
+     * @param transDateTime ç”³è¯·æ—¶çš„ä¼ è¾“æ—¥æœŸå’Œæ—¶é—´
+     * @param orderNo è®¢å•ç¼–å·ï¼Œ å•†æˆ·æäº¤DNAè®¢å•ç¼–å·/å•†æˆ·è®¢å•ç¼–å·ï¼Œå‰ä¸¤ä½æ ‡æ˜Žç±»åž‹.
+     *                â€œ01â€	é“¶è”æ‰‹æœºæ”¯ä»˜(DNA)è®¢å•ç¼–å·
+     *                â€œ02â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç½‘é¡µè‡ªåŠ©ä¸‹å•ï¼ˆWEBï¼‰
+     *                â€œ03â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œå®¢æœç”µè¯ä¸‹å•ï¼ˆCallCenterï¼‰
+     *                â€œ04â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œç”µè¯è‡ªåŠ©ä¸‹å•ï¼ˆIVRï¼‰
+     *                â€œ05â€	å•†æˆ·è®¢å•ç¼–å·ï¼Œæ‰‹æœºè‡ªåŠ©ä¸‹å•ï¼ˆWAPï¼‰
      * 
-     *                ¡°12¡±	ÉÌ»§¶©µ¥±àºÅ£¨WEB£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°13¡±	ÉÌ»§¶©µ¥±àºÅ£¨CallCenter£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°14¡±	ÉÌ»§¶©µ¥±àºÅ£¨IVR£©+¡®|¡¯+DNA¶©µ¥±àºÅ
-     *                ¡°15¡±	ÉÌ»§¶©µ¥±àºÅ£¨WAP£©+¡®|¡¯+DNA¶©µ¥±àºÅ
+     *                â€œ12â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWEBï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ13â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆCallCenterï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ14â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆIVRï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
+     *                â€œ15â€	å•†æˆ·è®¢å•ç¼–å·ï¼ˆWAPï¼‰+â€˜|â€™+DNAè®¢å•ç¼–å·
      * 
-     * @param transData ³Ö¿¨ÈË¿ª»§Ãû³Æ+¡°|¡±+³Ö¿¨ÈË¿ª»§ÒøÐÐ, Èç¹ûÎª¿Õ£¬DNA×Ô¶¯¶ÁÈ¡ÏµÍ³¼ÇÂ¼ÐÅÏ¢.
-     * @param encryptKey ¼ÓÃÜÃÜÔ¿,24Î»,Ã¿±Ê½»Ò×Ëæ»úÉú³É, ÓÃÓÚCA½Ó¿Ú·¢ËÍ½»Ò×±¨ÎÄÊ±¼ÓÃÜ, ·µ»Ø±¨ÎÄÊ±½âÃÜ
-     * @return RespCode 0000 ±íÊ¾²éÑ¯³É¹¦, ÆäËû´íÎóÂëÇë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨´íÎóÂëÁÐ±í¡±
+     * @param transData æŒå¡äººå¼€æˆ·åç§°+â€œ|â€+æŒå¡äººå¼€æˆ·é“¶è¡Œ, å¦‚æžœä¸ºç©ºï¼ŒDNAè‡ªåŠ¨è¯»å–ç³»ç»Ÿè®°å½•ä¿¡æ¯.
+     * @param encryptKey åŠ å¯†å¯†é’¥,24ä½,æ¯ç¬”äº¤æ˜“éšæœºç”Ÿæˆ, ç”¨äºŽCAæŽ¥å£å‘é€äº¤æ˜“æŠ¥æ–‡æ—¶åŠ å¯†, è¿”å›žæŠ¥æ–‡æ—¶è§£å¯†
+     * @return RespCode 0000 è¡¨ç¤ºæŸ¥è¯¢æˆåŠŸ, å…¶ä»–é”™è¯¯ç è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°é”™è¯¯ç åˆ—è¡¨â€
      * @throws Exception 
      */
     public PosMessage adjustQuery(String acqSsn, String transDateTime, String orderNo, String encryptKey) throws Exception {
@@ -1315,17 +1316,17 @@ public final class TransactionClient {
         PosMessage resMessage = this.transact(request, encryptKey);
         if (!resMessage.getMac().toUpperCase().equals(
                 md5.getMD5ofStr(TransactionUtil.getMacString(resMessage) + " " + merchantPWD))) {
-            throw new Exception("·µ»Ø½á¹ûMACÐ£ÑéÊ§°Ü");
+            throw new Exception("è¿”å›žç»“æžœMACæ ¡éªŒå¤±è´¥");
         }
 
         return resMessage;
     }
 
-    /** ½»Ò×´¦Àí, ¸ù¾ÝTransactionType·ÃÎÊÏàÓ¦µÄ·þÎñ½Ó¿Ú,²¢·µ»Ø´¦Àí½á¹û.
+    /** äº¤æ˜“å¤„ç†, æ ¹æ®TransactionTypeè®¿é—®ç›¸åº”çš„æœåŠ¡æŽ¥å£,å¹¶è¿”å›žå¤„ç†ç»“æžœ.
      * 
-     * @param request ÇëÇó²ÎÊý, Çë²ÎÕÕ<<ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶>>, 4.1½»Ò×²ÎÊýËµÃ÷.
-     * @param encryptKey ¼ÓÃÜÃÜÔ¿,24Î»,Ã¿±Ê½»Ò×Ëæ»úÉú³É, ÓÃÓÚCA½Ó¿Ú·¢ËÍ½»Ò×±¨ÎÄÊ±¼ÓÃÜ, ·µ»Ø±¨ÎÄÊ±½âÃÜ
-     * @return Çë²ÎÕÕ<<ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶>>, µÚ5ÕÂ½»Ò×±¨ÎÄËµÃ÷.
+     * @param request è¯·æ±‚å‚æ•°, è¯·å‚ç…§<<é“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ>>, 4.1äº¤æ˜“å‚æ•°è¯´æ˜Ž.
+     * @param encryptKey åŠ å¯†å¯†é’¥,24ä½,æ¯ç¬”äº¤æ˜“éšæœºç”Ÿæˆ, ç”¨äºŽCAæŽ¥å£å‘é€äº¤æ˜“æŠ¥æ–‡æ—¶åŠ å¯†, è¿”å›žæŠ¥æ–‡æ—¶è§£å¯†
+     * @return è¯·å‚ç…§<<é“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ>>, ç¬¬5ç« äº¤æ˜“æŠ¥æ–‡è¯´æ˜Ž.
      * @throws Exception 
      */
     public PosMessage transact(PosMessage request, String encryptKey) throws Exception {
@@ -1340,9 +1341,9 @@ public final class TransactionClient {
         }
     }
 
-    /** ÒøÁªÓïÒôÖ§¸¶WebServiceµÚÈý·½½»Ò×½Ó¿ÚÇëÇó·½·¨
-     * @param request Çë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶.doc¡±
-     * @return PosMessage Çë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶.doc¡±
+    /** é“¶è”è¯­éŸ³æ”¯ä»˜WebServiceç¬¬ä¸‰æ–¹äº¤æ˜“æŽ¥å£è¯·æ±‚æ–¹æ³•
+     * @param request è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ.docâ€
+     * @return PosMessage è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ.docâ€
      * @throws Exception 
      */
     public PosMessage transactWS(PosMessage request) throws Exception {
@@ -1371,10 +1372,10 @@ public final class TransactionClient {
         }
     }
 
-    /** ÒøÁªÓïÒôÖ§¸¶XML CAÇ©ÃûµÚÈý·½½»Ò×½Ó¿ÚÇëÇó·½·¨
-     * @param request Çë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶.doc¡±
-     * @param encryptKey ¼ÓÃÜÃÜÔ¿,24Î»,Ã¿±Ê½»Ò×Ëæ»úÉú³É
-     * @return PosMessage Çë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶.doc¡±
+    /** é“¶è”è¯­éŸ³æ”¯ä»˜XML CAç­¾åç¬¬ä¸‰æ–¹äº¤æ˜“æŽ¥å£è¯·æ±‚æ–¹æ³•
+     * @param request è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ.docâ€
+     * @param encryptKey åŠ å¯†å¯†é’¥,24ä½,æ¯ç¬”äº¤æ˜“éšæœºç”Ÿæˆ
+     * @return PosMessage è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ.docâ€
      * @throws Exception 
      */
     public PosMessage transactCA(PosMessage request, String encryptKey) throws Exception {
@@ -1400,7 +1401,7 @@ public final class TransactionClient {
 
             String xml = TransactionUtil.posMessageToXml(request);
             ToolKit.writeLog(TransactionClient.class.getName(), "transactCA.xml", xml);
-            com.ruyicai.charge.dna.v2.ca.RSAProvider rsa = new com.ruyicai.charge.dna.v2.ca.RSAProvider();
+            RSAProvider rsa = new RSAProvider();
             xml = rsa.sign(encryptKey, xml, this.getServerCert());
             xml = Strings.padLeft(xml.length() + "", 6) + xml;
             ToolKit.writeLog(TransactionClient.class.getName(), "transactCA.sign", xml);
@@ -1433,10 +1434,10 @@ public final class TransactionClient {
         }
     }
 
-    /** ÒøÁªÓïÒôÖ§¸¶XML CAÇ©ÃûµÚÈý·½½»Ò×½Ó¿ÚÇëÇó·½·¨
-     * @param request Çë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶.doc¡±
-     * @param encryptKey ¼ÓÃÜÃÜÔ¿,24Î»,Ã¿±Ê½»Ò×Ëæ»úÉú³É
-     * @return PosMessage Çë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶.doc¡±
+    /** é“¶è”è¯­éŸ³æ”¯ä»˜XML CAç­¾åç¬¬ä¸‰æ–¹äº¤æ˜“æŽ¥å£è¯·æ±‚æ–¹æ³•
+     * @param request è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ.docâ€
+     * @param encryptKey åŠ å¯†å¯†é’¥,24ä½,æ¯ç¬”äº¤æ˜“éšæœºç”Ÿæˆ
+     * @return PosMessage è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ.docâ€
      * @throws Exception 
      */
     public VpcMessage transactVPC(VpcMessage request) throws Exception {
@@ -1514,9 +1515,9 @@ public final class TransactionClient {
         }
     }
 
-    /** ÒøÁªÓïÒôÖ§¸¶XMLµÚÈý·½½»Ò×½Ó¿ÚÇëÇó·½·¨
-     * @param request Çë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶.doc¡±
-     * @return PosMessage Çë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶.doc¡±
+    /** é“¶è”è¯­éŸ³æ”¯ä»˜XMLç¬¬ä¸‰æ–¹äº¤æ˜“æŽ¥å£è¯·æ±‚æ–¹æ³•
+     * @param request è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ.docâ€
+     * @return PosMessage è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ.docâ€
      * @throws Exception 
      */
     public PosMessage transactXML(PosMessage request) throws Exception {
@@ -1566,9 +1567,9 @@ public final class TransactionClient {
         }
     }
 
-    /** ÒøÁªÓïÒôÖ§¸¶XMLµÚÈý·½SOCKET½»Ò×½Ó¿ÚÇëÇó·½·¨
-     * @param request Çë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶.doc¡±
-     * @return PosMessage Çë²ÎÕÕ¡°ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶.doc¡±
+    /** é“¶è”è¯­éŸ³æ”¯ä»˜XMLç¬¬ä¸‰æ–¹SOCKETäº¤æ˜“æŽ¥å£è¯·æ±‚æ–¹æ³•
+     * @param request è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ.docâ€
+     * @return PosMessage è¯·å‚ç…§â€œé“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æŽ¥å£è§„èŒƒ.docâ€
      * @throws Exception 
      */
     public PosMessage transactSocketXML(PosMessage request) throws Exception {
