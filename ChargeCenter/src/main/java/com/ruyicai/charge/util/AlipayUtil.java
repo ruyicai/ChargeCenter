@@ -72,7 +72,7 @@ public class AlipayUtil {
         	String out_trade_no,String total_fee,String payment_type,
         	String seller_email,String notify_url,String is_ivr_pay,
         	String receive_mobile,String key,String sign_type,
-        	String show_url,String quantity,String input_charset) {
+        	String show_url,String quantity,String input_charset, String extendParam) {
     	
 		Map params = new HashMap();
 		params.put("service", service);
@@ -90,6 +90,8 @@ public class AlipayUtil {
 		params.put("show_url", show_url);
 
 		params.put("_input_charset", input_charset);
+		
+		params.put("extend_param", extendParam);
 
 		String prestr = "";
 
@@ -163,7 +165,7 @@ public class AlipayUtil {
     		String partner,String key,String show_url, 
     		String body, String total_fee, String payment_type,
     		String seller_email, String subject ,String notify_url, 
-    		String return_url,String paymethod,String  defaultbank,String token) {//, String it_b_pay
+    		String return_url,String paymethod,String  defaultbank,String token, String extendParam) {//, String it_b_pay
 
         Map params = new HashMap();
         params.put("service", service);
@@ -186,6 +188,7 @@ public class AlipayUtil {
         if(token != null && !"".equals(token)){
         	params.put("token", token);
         }
+        params.put("extend_param", extendParam);
         logger.info("params="+params.toString());
         String prestr = "";
 

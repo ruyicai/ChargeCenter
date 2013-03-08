@@ -400,6 +400,9 @@ public class ChargeconfigService {
 		} else if (key.equals("batchpayfailprocess")) {
 			memo = "lottery支付宝批量付款失败处理";
 			value = ConfigUtil.getConfig("lottery.properties", key);
+		} else if (key.equals("findByUserno")) {
+			memo = "lottery根据用户编号获取用户信息";
+			value = ConfigUtil.getConfig("lottery.properties", key);
 		} else {
 			logger.error("Chargeconfig key=" + key + "不存在");
 			return cc;

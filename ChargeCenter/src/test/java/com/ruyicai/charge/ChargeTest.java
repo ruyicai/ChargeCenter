@@ -1,6 +1,7 @@
 package com.ruyicai.charge;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +18,9 @@ import com.ruyicai.charge.chinapay.tradequery.ChinapayTradequery;
 import com.ruyicai.charge.chinapay.tradequery.PaymentType;
 import com.ruyicai.charge.chinapay.tradequery.TradeStatus;
 import com.ruyicai.charge.dna.pay.DNATransactionClientService;
+import com.ruyicai.charge.service.ZfbService;
 import com.ruyicai.charge.util.ConfigUtil;
+import com.ruyicai.charge.util.DateUtil;
 import com.ruyicai.charge.util.JsonUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -26,6 +29,7 @@ import com.ruyicai.charge.util.JsonUtil;
 public class ChargeTest {
 	@Autowired
 	DNATransactionClientService dnaTransactionClientService;
+	
 	
 	@Test
 	public void test() throws Exception {

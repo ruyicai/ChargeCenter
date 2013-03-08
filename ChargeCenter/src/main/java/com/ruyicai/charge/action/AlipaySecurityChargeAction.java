@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ruyicai.charge.alipay.security.RSASignature;
 import com.ruyicai.charge.service.ChargeconfigService;
-import com.ruyicai.charge.util.ConfigUtil;
 import com.ruyicai.charge.util.ErrorCode;
 import com.ruyicai.charge.util.HttpRequest;
 import com.ruyicai.charge.util.JsonUtil;
@@ -30,7 +29,7 @@ public class AlipaySecurityChargeAction implements ServletRequestAware,
 	private Logger logger = Logger.getLogger(AlipaySecurityChargeAction.class);
 	@Autowired
 	ChargeconfigService chargeconfigService;
-
+	
 	public void setJsonString(String jsonString) {
 		this.jsonString = jsonString;
 	}
@@ -156,6 +155,7 @@ public class AlipaySecurityChargeAction implements ServletRequestAware,
 			String orderInfo = getOrderInfo(ttransactionId, amt);
 			String sign = sign(orderInfo);
 			logger.info("支付宝安全支付充值->orderInfo=" + orderInfo + "；sign=" + sign);
+						
 			String signString = getSignString(orderInfo, sign);			
 			
 			this.printJson(errorCode, signString);
@@ -225,7 +225,7 @@ public class AlipaySecurityChargeAction implements ServletRequestAware,
 	private String getSignString(String orderInfo, String sign) {
 		StringBuffer signString = new StringBuffer();
 		signString.append(orderInfo).append("&sign=\"").append(sign).append("\"&");
-		signString.append("sign_type=\"RSA\"");		
+		signString.append("sign_type=\"RSA\"");	
 		logger.info("signString:" + signString.toString());		
 		return signString.toString();
 	}
