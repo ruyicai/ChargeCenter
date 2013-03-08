@@ -26,9 +26,9 @@ import com.ruyicai.charge.alipay.client.security.XMapUtil;
 import com.ruyicai.charge.consts.TransactionType;
 import com.ruyicai.charge.nineteenpay.NineteenPayService;
 import com.ruyicai.charge.service.ChargeconfigService;
+import com.ruyicai.charge.service.ZfbService;
 import com.ruyicai.charge.shenzhoufu.ShenzhoufuChargeService;
 import com.ruyicai.charge.util.AlipayUtil;
-import com.ruyicai.charge.util.ConfigUtil;
 import com.ruyicai.charge.util.ErrorCode;
 import com.ruyicai.charge.util.HttpRequest;
 import com.ruyicai.charge.util.JsonUtil;
@@ -50,6 +50,8 @@ public class ChargeAction implements ServletRequestAware, ServletResponseAware {
 	YeePayWebCardService yeePayWebCardService;
 	@Autowired
 	CardTypeManager cardTypeManager;
+	@Autowired
+	ZfbService zfbService;
 
 	private HttpServletRequest request;
 	private HttpServletResponse response;
@@ -262,8 +264,10 @@ public class ChargeAction implements ServletRequestAware, ServletResponseAware {
 				logger.info("构造请求地址参数 --- ");
 				String ttransactionid = mapResult.get("value").toString();
 				retMap.put("transation_id", ttransactionid);
+				
+				String extendParam = zfbService.getZfbExtendParam(userno);
 				ItemUrl = AlipayUtil.CreateUrl2(yuyinurl, service, partnerid, goods, desc, ttransactionid, total_fee, payment_type, 
-						sell_email, notifyUrl, is_ivr_pay, receive_mobile, key, sign_type, returnUrl, quantity, input_charset);
+						sell_email, notifyUrl, is_ivr_pay, receive_mobile, key, sign_type, returnUrl, quantity, input_charset, extendParam);
 				logger.info("构造请求地址返回 ItemUrl=" + ItemUrl);
 			}
 			
@@ -362,8 +366,10 @@ public class ChargeAction implements ServletRequestAware, ServletResponseAware {
 						+ ",key=" + key + ",body=" + body + ",total_fee=" + total_fee + "," + "payment_type=" + payment_type 
 						+ ",seller_email=" + seller_email + ",subject=" + subject + ",show_url=" + show_url + "," + "notify_url=" + notify_url 
 						+ ",return_url=" + return_url + ",paymethod=" + paymethod + ",defaultbank=" + defaultbank + ",token=" + token);
+				
+				String extendParam = zfbService.getZfbExtendParam(userno);
 				String requrl = AlipayUtil.CreateUrl(zfbwebhttps_url, service, sign_type, out_trade_no, input_charset, partner, key, show_url, 
-						body, total_fee, payment_type, seller_email, subject, notify_url, return_url, paymethod, defaultbank, token);				
+						body, total_fee, payment_type, seller_email, subject, notify_url, return_url, paymethod, defaultbank, token, extendParam);				
 				logger.info("requrl=" + requrl);// 日志提示
 				
 				retMap.put("transation_id", ttransactionid);
@@ -559,7 +565,7 @@ public class ChargeAction implements ServletRequestAware, ServletResponseAware {
 				Map<String, String> authParams = tongYong.prepareAuthParamsMap(request, requestToken, call_back_url, chargeconfigService.getChargeconfig("partnerId"));// 第二次请求参数构造
 				String authSign = tongYong.sign(authParams);// 第二次授权并执行参数签名
 				authParams.put("sign", authSign);
-
+				
 				logger.info("支付宝Wap充值->第二次授权并执行请求的地址参数 authParams=" + authParams);
 				String redirectURL = "";// 构造好第二次请求地址
 				try {

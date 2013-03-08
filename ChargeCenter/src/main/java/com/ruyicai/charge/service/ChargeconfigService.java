@@ -400,6 +400,21 @@ public class ChargeconfigService {
 		} else if (key.equals("DNAV2ReturnUrl")) {
 			memo = "易联支付异步地址";
 			value = ConfigUtil.getConfig("charge.properties", key);
+		} else if (key.equals("batchpaysetbatchno")) {
+			memo = "lottery支付宝批量付款设置批次号";
+			value = ConfigUtil.getConfig("lottery.properties", key);
+		} else if (key.equals("batchpaysuccessprocess")) {
+			memo = "lottery支付宝批量付款成功处理";
+			value = ConfigUtil.getConfig("lottery.properties", key);
+		} else if (key.equals("checkcashdetailids")) {
+			memo = "lottery支付宝批量付款校验提现";
+			value = ConfigUtil.getConfig("lottery.properties", key);
+		} else if (key.equals("batchpayfailprocess")) {
+			memo = "lottery支付宝批量付款失败处理";
+			value = ConfigUtil.getConfig("lottery.properties", key);
+		} else if (key.equals("findByUserno")) {
+			memo = "lottery根据用户编号获取用户信息";
+			value = ConfigUtil.getConfig("lottery.properties", key);
 		} else {
 			logger.error("Chargeconfig key=" + key + "不存在");
 			return cc;

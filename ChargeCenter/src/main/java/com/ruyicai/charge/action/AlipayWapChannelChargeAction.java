@@ -31,7 +31,6 @@ import com.ruyicai.charge.alipay.wap.channel.RSASignature;
 import com.ruyicai.charge.alipay.wap.channel.ResponseResult;
 import com.ruyicai.charge.alipay.wap.channel.WapChannelUtil;
 import com.ruyicai.charge.service.ChargeconfigService;
-import com.ruyicai.charge.util.ConfigUtil;
 import com.ruyicai.charge.util.ErrorCode;
 import com.ruyicai.charge.util.HttpRequest;
 import com.ruyicai.charge.util.JsonUtil;
@@ -210,6 +209,7 @@ public class AlipayWapChannelChargeAction implements ServletRequestAware,
 			
 			String authSign = sign(authParams,signAlgo, WapChannelUtil.RSA_PRIVATE);//对调用授权请求数据签名
 			authParams.put("sign", authSign);
+					
 			String redirectURL = getRedirectUrl(authParams, reqUrl);;
 		
 			if (!StringUtil.isNotBlank(redirectURL)) {

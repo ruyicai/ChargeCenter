@@ -545,28 +545,14 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<database.url>jdbc:oracle:thin:@192.168.0.92:1521:xe</database.url>
-				<database.driverClassName>oracle.jdbc.OracleDriver</database.driverClassName>
-				<database.username>jrtsch</database.username>
-				<database.password>jrtsch</database.password>
-				<database.initialSize>0</database.initialSize>
-				<database.maxActive>20</database.maxActive>
-				<database.maxIdle>100</database.maxIdle>
-				<database.minIdle>0</database.minIdle>
-				<database.maxWait>10000</database.maxWait>
-				<database.removeAbandoned>true</database.removeAbandoned>
-				<database.removeAbandonedTimeout>60</database.removeAbandonedTimeout>
-				<database.logAbandoned>true</database.logAbandoned>
-				<database.validationQuery>select 1 from dual</database.validationQuery>
-				<database.testOnBorrow>true</database.testOnBorrow>
-				<database.systemUser>system</database.systemUser>
-				<database.systemPassword>123456</database.systemPassword>
-				<database.url.mysql>jdbc:mysql://localhost:3306/chargecenter?characterEncoding=utf-8</database.url.mysql>
+				<maven.test.skip>true</maven.test.skip>
+				<sys.target>test</sys.target>
+				<database.url.mysql>jdbc:mysql://192.168.0.92:3306/chargecenter?characterEncoding=utf-8</database.url.mysql>
 				<database.driverClassName.mysql>com.mysql.jdbc.Driver</database.driverClassName.mysql>
-				<database.username.mysql>root</database.username.mysql>
-				<database.password.mysql>zhengshuli</database.password.mysql>
-				<tlot.id.prefix>TE</tlot.id.prefix>
-				<memcache.client.ip>localhost:12000</memcache.client.ip>
+				<database.username.mysql>jrtConsole</database.username.mysql>
+				<database.password.mysql>jrtConsole</database.password.mysql>
+				<tlot.id.prefix>LX</tlot.id.prefix>
+				<memcache.client.ip>192.168.15.15:12000</memcache.client.ip>
 			</properties>
 		</profile>
 		<profile>
@@ -583,22 +569,6 @@
 				</resources>
 			</build>
 			<properties>
-				<database.url>jdbc:oracle:thin:@192.168.15.10:1521:jrtdb</database.url>
-				<database.driverClassName>oracle.jdbc.OracleDriver</database.driverClassName>
-				<database.username>jrtsch</database.username>
-				<database.password>jrtsch</database.password>
-				<database.initialSize>0</database.initialSize>
-				<database.maxActive>20</database.maxActive>
-				<database.maxIdle>100</database.maxIdle>
-				<database.minIdle>0</database.minIdle>
-				<database.maxWait>10000</database.maxWait>
-				<database.removeAbandoned>true</database.removeAbandoned>
-				<database.removeAbandonedTimeout>60</database.removeAbandonedTimeout>
-				<database.logAbandoned>true</database.logAbandoned>
-				<database.validationQuery>select 1 from dual</database.validationQuery>
-				<database.testOnBorrow>true</database.testOnBorrow>
-				<database.systemUser>system</database.systemUser>
-				<database.systemPassword>123456</database.systemPassword>
 				<maven.test.skip>true</maven.test.skip>
 				<sys.target>test</sys.target>
 				<database.url.mysql>jdbc:mysql://192.168.15.10:3306/chargecenter?characterEncoding=utf-8</database.url.mysql>
@@ -610,6 +580,30 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>118</id>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+						<filtering>true</filtering>
+					</resource>
+					<resource>
+						<directory>conf/118</directory>
+					</resource>
+				</resources>
+			</build>
+			<properties>
+				<sys.target>prelaunch118</sys.target>
+				<maven.test.skip>true</maven.test.skip>
+				<database.url.mysql>jdbc:mysql://192.168.0.92:3306/chargecenter?characterEncoding=utf-8</database.url.mysql>
+				<database.driverClassName.mysql>com.mysql.jdbc.Driver</database.driverClassName.mysql>
+				<database.username.mysql>jrtConsole</database.username.mysql>
+				<database.password.mysql>jrtConsole</database.password.mysql>
+				<tlot.id.prefix>TE</tlot.id.prefix>
+				<memcache.client.ip>192.168.0.92:12000</memcache.client.ip>
+			</properties>
+		</profile>
+		<profile>
 			<id>beijing</id>
 			<build>
 				<resources>
@@ -618,35 +612,19 @@
 						<filtering>true</filtering>
 					</resource>
 					<resource>
-						<directory>conf/laoxie</directory>
+						<directory>conf/beijing</directory>
 					</resource>
 				</resources>
 			</build>
 			<properties>
-				<database.url>jdbc:oracle:thin:@192.168.190.4:1521:jrtdb</database.url>
-				<database.driverClassName>oracle.jdbc.OracleDriver</database.driverClassName>
-				<database.username>jrtsch</database.username>
-				<database.password>jrtsch</database.password>
-				<database.initialSize>0</database.initialSize>
-				<database.maxActive>20</database.maxActive>
-				<database.maxIdle>100</database.maxIdle>
-				<database.minIdle>0</database.minIdle>
-				<database.maxWait>10000</database.maxWait>
-				<database.removeAbandoned>true</database.removeAbandoned>
-				<database.removeAbandonedTimeout>60</database.removeAbandonedTimeout>
-				<database.logAbandoned>true</database.logAbandoned>
-				<database.validationQuery>select 1 from dual</database.validationQuery>
-				<database.testOnBorrow>true</database.testOnBorrow>
-				<database.systemUser>system</database.systemUser>
-				<database.systemPassword>123456</database.systemPassword>
 				<maven.test.skip>true</maven.test.skip>
 				<sys.target>beijing</sys.target>
-				<database.url.mysql>jdbc:mysql://localhost:3306/chargecenter?characterEncoding=utf-8</database.url.mysql>
+				<database.url.mysql>jdbc:mysql://192.168.99.120:3306/chargecenter?characterEncoding=utf-8</database.url.mysql>
 				<database.driverClassName.mysql>com.mysql.jdbc.Driver</database.driverClassName.mysql>
-				<database.username.mysql>root</database.username.mysql>
-				<database.password.mysql>zhengshu</database.password.mysql>
-				<tlot.id.prefix>LX</tlot.id.prefix>
-				<memcache.client.ip>localhost:12000</memcache.client.ip>
+				<database.username.mysql>jrtConsole</database.username.mysql>
+				<database.password.mysql>jrtConsole</database.password.mysql>
+				<tlot.id.prefix>BJ</tlot.id.prefix>
+				<memcache.client.ip>192.168.99.30:12000,192.168.99.31:12000</memcache.client.ip>
 			</properties>
 		</profile>
 	</profiles>

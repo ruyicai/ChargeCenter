@@ -15,19 +15,11 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.ruyicai.charge.alipay.batchpay.BatchPayCode;
 import com.ruyicai.charge.alipay.batchpay.CheckURL;
 import com.ruyicai.charge.alipay.batchpay.SignatureHelper;
 import com.ruyicai.charge.alipay.tradequery.AlipayConfig;
-import com.ruyicai.charge.consts.CashDetailState;
-import com.ruyicai.charge.consts.CashDetailType;
-import com.ruyicai.charge.domain.Talibatchpay;
-import com.ruyicai.charge.domain.Tcashdetail;
-import com.ruyicai.charge.exception.RuyicaiException;
 import com.ruyicai.charge.service.ChargeconfigService;
-import com.ruyicai.charge.service.FundService;
 import com.ruyicai.charge.util.ConfigUtil;
-import com.ruyicai.charge.util.DateUtil;
 import com.ruyicai.charge.util.ErrorCode;
 import com.ruyicai.charge.util.HttpRequest;
 import com.ruyicai.charge.util.JsonUtil;
@@ -40,8 +32,6 @@ public class BatchpayNotifyAction implements ServletRequestAware, ServletRespons
 	private String jsonString;
 	private Logger logger = Logger.getLogger(BatchpayNotifyAction.class);
 	
-	@Autowired
-	private FundService fundService;
 	@Autowired
 	ChargeconfigService chargeconfigService;
 	
@@ -130,7 +120,19 @@ public class BatchpayNotifyAction implements ServletRequestAware, ServletRespons
 			//Talibatchpay.modifyTalibatchpay(batchNo, DateUtil.parse(notifyTime), notifyType, notifyId, signType, successDetails, failDetails);
 			
 			if (!StringUtil.isEmpty(successDetails)) {
-				fundService.batchpaySuccessProcess(successDetails);	
+				String url = chargeconfigService.getChargeconfig("batchpaysuccessprocess");
+				StringBuffer param = new StringBuffer();
+				param.append("successdetails=").append(successDetails);
+				logger.info("支付宝批量付款->成功处理：url=" + url + ", param=" + param.toString());
+				String result = HttpRequest.doPostRequest(url, param.toString());			
+				logger.info("支付宝批量付款->返回 result=" + result);
+				Map<String, Object> mapResult = JsonUtil.transferJson2Map(result);
+				String errorCode = mapResult.containsKey("errorCode")? mapResult.get("errorCode").toString() : "";
+		
+				if (!"0".equals(errorCode)) {				
+					logger.info("支付宝批量付款->成功处理出现错误 errorCode=" + errorCode);	
+					return null;
+				}
 			}
 			
 			boolean flag = true;
@@ -154,47 +156,20 @@ public class BatchpayNotifyAction implements ServletRequestAware, ServletRespons
 	
 	private boolean batchpayFailProcess(String failDetails) throws IOException{
 		boolean ret = true;
-		String[] records = failDetails.split(AlipayConfig.BATCHPAY_DELIMITER_1);
-		for (String record : records) {
-			String[] items = record.split(AlipayConfig.BATCHPAY_DELIMITER_2);
-			Tcashdetail tcashdetail = Tcashdetail.findTcashdetail(items[0]);
-			if (null == tcashdetail) {
-				logger.info("提现记录为空，提现id=" + items[0]);
-				throw new RuyicaiException(ErrorCode.Taccountdetail_Empty);
-			}
-			if (tcashdetail.getState().equals(CashDetailState.Chenggong.value())) {
-				logger.info("该提现已成功，提现id=" + items[0]);
-				//throw new RuyicaiException(ErrorCode.BatchPay_AlreadySuccess);
-				continue;
-			}			
-			if (!tcashdetail.getType().equals(CashDetailType.Zhifubao.value())){
-				logger.info("该提现类型为非支付宝提现，提现id=" + items[0]);
-				throw new RuyicaiException(ErrorCode.BatchPay_cashdetailTypeNotAlipay);
-			}
-			if (!tcashdetail.getState().equals(CashDetailState.Shenghezhong.value())) {
-				logger.info("该提现非已审核状态，提现id=" + items[0]);
-				//throw new RuyicaiException(ErrorCode.BatchPay_cashdetailStateNotShenghezhong);
-				continue;
-			}
-			
-			logger.info("该提现id=" + items[0] + "失败，被驳回，原因：" + items[5]);	
-			
-			
-			StringBuffer param = new StringBuffer();
-			param.append("cashdetailId=").append(items[0]).append("&rejectreason=").append(BatchPayCode.getMemo(items[5]));
-			String url = ConfigUtil.getConfig("lottery.properties", "bohuiTcashDetail");
-			logger.info("支付宝批量付款通知处理->失败处理：url=" + url + ",param=" + param.toString());	
-		 
-			String result = HttpRequest.doPostRequest(url, param.toString());			
-			logger.info("支付宝批量付款通知处理->失败处理，返回 result=" + result);
-			Map<String, Object> mapResult = JsonUtil.transferJson2Map(result);
-			String errorCode = mapResult.containsKey("errorCode")? mapResult.get("errorCode").toString() : "";
-	
-			if (!ErrorCode.OK.value.equals(errorCode)) {				
-				logger.info("支付宝批量付款通知处理->失败处理，该提现id=" + items[0] + "失败, errorCode=" + errorCode);				
-				ret = false;
-			} 
-		}
+		StringBuffer param = new StringBuffer();
+		param.append("faildetails=").append(failDetails);
+		String url = ConfigUtil.getConfig("lottery.properties", "batchpayfailprocess");
+		logger.info("支付宝批量付款通知处理->失败处理：url=" + url + ",param=" + param.toString());	
+	 
+		String result = HttpRequest.doPostRequest(url, param.toString());			
+		logger.info("支付宝批量付款通知处理->失败处理，返回 result=" + result);
+		Map<String, Object> mapResult = JsonUtil.transferJson2Map(result);
+		String errorCode = mapResult.containsKey("errorCode")? mapResult.get("errorCode").toString() : "";
+
+		if (!ErrorCode.OK.value.equals(errorCode)) {				
+			logger.info("支付宝批量付款通知处理->失败处理失败, errorCode=" + errorCode);				
+			ret = false;
+		} 
 		
 		return ret;
 	}
