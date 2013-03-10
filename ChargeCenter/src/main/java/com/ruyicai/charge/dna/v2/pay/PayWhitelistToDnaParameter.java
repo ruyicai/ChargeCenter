@@ -226,4 +226,10 @@ public class PayWhitelistToDnaParameter {
 	public void setOrderid(String orderid) {
 		this.orderid = orderid;
 	}
+
+	String getAccountNumber() {
+		String accountNum = "14" + getUserPhoneNumber() + "|"
+				+ getUserCardNumber(); // 借记卡
+		return accountNum;
+	}
 }

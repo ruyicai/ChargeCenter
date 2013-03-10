@@ -3,11 +3,12 @@ package com.ruyicai.charge.dna.v2.thirdpart;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 
+import com.ruyicai.charge.dna.v2.common.Formatter;
 import com.ruyicai.charge.dna.v2.common.Strings;
 import com.ruyicai.charge.dna.v2.common.Utilities;
 
 
-/** ÒøÁªÓïÒôÖ§¸¶½Ó¿Ú²ÎÊı·â×°Àà£¬²ÎÊıËµÃ÷Çë²ÎÕÕ<<ÒøÁªÓïÒôÖ§¸¶Æ½Ì¨½Ó¿Ú¹æ·¶>>ÎÄµµ¡£
+/** é“¶è”è¯­éŸ³æ”¯ä»˜æ¥å£å‚æ•°å°è£…ç±»ï¼Œå‚æ•°è¯´æ˜è¯·å‚ç…§<<é“¶è”è¯­éŸ³æ”¯ä»˜å¹³å°æ¥å£è§„èŒƒ>>æ–‡æ¡£ã€‚
  * @author Administrator
  *
  */
@@ -20,7 +21,7 @@ public class PosMessage implements Serializable
     public static int ProcCode_Length = 4;
 
     /**
-     * @return ½»Ò×´úÂë	ProcCode	Char	4	M	M	4001
+     * @return äº¤æ˜“ä»£ç 	ProcCode	Char	4	M	M	4001
      */
     public String getProcCode()
     {
@@ -32,7 +33,7 @@ public class PosMessage implements Serializable
      */
     public void setProcCode(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mProcCode = value.trim();
@@ -45,7 +46,7 @@ public class PosMessage implements Serializable
     public static int BitMap_Length = 64;
 
     /**
-     * @return ½»Ò×´úÂë	ProcCode	Char	4	M	M	4001
+     * @return äº¤æ˜“ä»£ç 	ProcCode	Char	4	M	M	4001
      */
     public byte[] getBitMap()
     {
@@ -57,7 +58,7 @@ public class PosMessage implements Serializable
      */
     public void setBitMap(byte[] value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mBitMap = value;
@@ -68,7 +69,7 @@ public class PosMessage implements Serializable
     private String mAccountNum = "";
 
     /**
-     * @return 2 	ÓÃ»§ÕËºÅ	a..2000(LLLLVAR) 	M	M 	ÌîĞ´ÊÖ»úºÅ
+     * @return 2 	ç”¨æˆ·è´¦å·	a..2000(LLLLVAR) 	M	M 	å¡«å†™æ‰‹æœºå·
      */
     public String getAccountNum()
     {
@@ -80,7 +81,7 @@ public class PosMessage implements Serializable
      */
     public void setAccountNum(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mAccountNum = value;
@@ -93,7 +94,7 @@ public class PosMessage implements Serializable
     public static int ProcessCode_Length = 6;
 
     /**
-     * @return 3 	´¦ÀíÂë	N6 	M 	M 	¡°190000¡±
+     * @return 3 	å¤„ç†ç 	N6 	M 	M 	â€œ190000â€
      */
     public String getProcessCode()
     {
@@ -105,7 +106,7 @@ public class PosMessage implements Serializable
      */
     public void setProcessCode(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mProcessCode = value;
@@ -118,7 +119,7 @@ public class PosMessage implements Serializable
     public static int Amount_Length = 12;
 
     /**
-     * @return 4 	½»Ò×½ğ¶î	N12 	M 	M 
+     * @return 4 	äº¤æ˜“é‡‘é¢	N12 	M 	M 
      */
     public String getAmount()
     {
@@ -130,21 +131,21 @@ public class PosMessage implements Serializable
      */
     public void setAmount(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mAmount = value;
 //        if (mAmount.length() > Amount_Length)
 //            throw new RuntimeException(
 //                "Invalid PosMessage.Amount.length(): " + mAmount.length());
-        mAmount = com.ruyicai.charge.dna.v2.common.Strings.padLeft(mAmount, '0', Amount_Length);
+        mAmount = Strings.padLeft(mAmount, '0', Amount_Length);
         this.getBitMap()[3] = 0x01;
     }
     private String mCurCode = "";
     public static int CurCode_Length = 2;
 
     /**
-     * @return 7 	´«ÊäÈÕÆÚºÍÊ±¼ä	N10(MMDDhhmmss) 	M 	M  
+     * @return 7 	ä¼ è¾“æ—¥æœŸå’Œæ—¶é—´	N10(MMDDhhmmss) 	M 	M  
      */
     public String getCurCode()
     {
@@ -156,7 +157,7 @@ public class PosMessage implements Serializable
      */
     public void setCurCode(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mCurCode = value;
@@ -169,7 +170,7 @@ public class PosMessage implements Serializable
     public static int TransDatetime_Length = 10;
 
     /**
-     * @return 7 	´«ÊäÈÕÆÚºÍÊ±¼ä	N10(MMDDhhmmss) 	M 	M  
+     * @return 7 	ä¼ è¾“æ—¥æœŸå’Œæ—¶é—´	N10(MMDDhhmmss) 	M 	M  
      */
     public String getTransDatetime()
     {
@@ -181,7 +182,7 @@ public class PosMessage implements Serializable
      */
     public void setTransDatetime(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mTransDatetime = value;
@@ -194,7 +195,7 @@ public class PosMessage implements Serializable
     public static int AcqSsn_Length = 6;
 
     /**
-     * @return 11	ÏµÍ³¸ú×ÙºÅ(Á÷Ë®ºÅ)	n6	M	M
+     * @return 11	ç³»ç»Ÿè·Ÿè¸ªå·(æµæ°´å·)	n6	M	M
      */
     public String getAcqSsn()
     {
@@ -206,7 +207,7 @@ public class PosMessage implements Serializable
      */
     public void setAcqSsn(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mAcqSsn = value;
@@ -219,7 +220,7 @@ public class PosMessage implements Serializable
     public static int Ltime_Length = 6;
 
     /**
-     * @return 12	±¾µØ½»Ò×Ê±¼ä	n6(hhmmss)	M	M
+     * @return 12	æœ¬åœ°äº¤æ˜“æ—¶é—´	n6(hhmmss)	M	M
      */
     public String getLtime()
     {
@@ -232,7 +233,7 @@ public class PosMessage implements Serializable
      */
     public void setLtime(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mLtime = value.trim();
@@ -245,7 +246,7 @@ public class PosMessage implements Serializable
     public static int Ldate_Length = 4;
 
     /**
-     * @return 13	±¾µØ½»Ò×ÈÕÆÚ	n4(MMDD)	M	M
+     * @return 13	æœ¬åœ°äº¤æ˜“æ—¥æœŸ	n4(MMDD)	M	M
      */
     public String getLdate()
     {
@@ -257,7 +258,7 @@ public class PosMessage implements Serializable
      */
     public void setLdate(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mLdate = value;
@@ -271,7 +272,7 @@ public class PosMessage implements Serializable
     public static int SettleDate_Length = 4;
 
     /**
-     * @return 15 	ÇåËãÈÕÆÚ	N4 		M+ 
+     * @return 15 	æ¸…ç®—æ—¥æœŸ	N4 		M+ 
      */
     public String getSettleDate()
     {
@@ -283,7 +284,7 @@ public class PosMessage implements Serializable
      */
     public void setSettleDate(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mSettleDate = value;
@@ -309,7 +310,7 @@ public class PosMessage implements Serializable
      */
     public void setUpsNo(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mUpsNo = value;
@@ -335,7 +336,7 @@ public class PosMessage implements Serializable
      */
     public void setTsNo(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mTsNo = value;
@@ -361,12 +362,12 @@ public class PosMessage implements Serializable
      */
     public void setReference(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         
         if (value.length() < Reference_Length)
-            value = com.ruyicai.charge.dna.v2.common.Strings.padRight(value, Reference_Length);
+            value = Strings.padRight(value, Reference_Length);
         mReference = value;
 //        if (mReference.length() != Reference_Length)
 //            throw new RuntimeException(
@@ -389,7 +390,7 @@ public class PosMessage implements Serializable
      */
     public void setReturnAddress(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mReturnAddress = value;
@@ -403,7 +404,7 @@ public class PosMessage implements Serializable
     public static int RespCode_Length = 4;
 
     /**
-     * @return 39	ÏìÓ¦Âë	An2		M
+     * @return 39	å“åº”ç 	An2		M
      */
     public String getRespCode()
     {
@@ -415,7 +416,7 @@ public class PosMessage implements Serializable
      */
     public void setRespCode(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mRespCode = value;
@@ -427,7 +428,7 @@ public class PosMessage implements Serializable
     private String mRemark;
 
     /**
-     * @return 40	±¸×¢	ans¡­200(LLLVAR)		C	
+     * @return 40	å¤‡æ³¨	ansâ€¦200(LLLVAR)		C	
      */
     public String getRemark()
     {
@@ -440,7 +441,7 @@ public class PosMessage implements Serializable
      */
     public void setRemark(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mRemark = value;
@@ -451,7 +452,7 @@ public class PosMessage implements Serializable
     public static int TerminalNo_Length = 8;
 
     /**
-     * @return 41	ÊÜ¿¨»úÖÕ¶Ë±êÊ¶Âë	Ans8	M	M	
+     * @return 41	å—å¡æœºç»ˆç«¯æ ‡è¯†ç 	Ans8	M	M	
      */
     public String getTerminalNo()
     {
@@ -463,7 +464,7 @@ public class PosMessage implements Serializable
      */
     public void setTerminalNo(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mTerminalNo = value;
@@ -476,7 +477,7 @@ public class PosMessage implements Serializable
     public static int MerchantNo_Length = 17;
 
     /**
-     * @return 42 	ÊÜ¿¨·½±êÊ¶Âë	ans17 	M 	M 	ÉÌ»§ÀàĞÍ£¨2£©+ÌîĞ´ÉÌ»§ºÅ	£¨15£©
+     * @return 42 	å—å¡æ–¹æ ‡è¯†ç 	ans17 	M 	M 	å•†æˆ·ç±»å‹ï¼ˆ2ï¼‰+å¡«å†™å•†æˆ·å·	ï¼ˆ15ï¼‰
      */
     public String getMerchantNo()
     {
@@ -488,11 +489,11 @@ public class PosMessage implements Serializable
      */
     public void setMerchantNo(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         if (value.length() < MerchantNo_Length)
-            value = com.ruyicai.charge.dna.v2.common.Strings.padRight(value, MerchantNo_Length);
+            value = Strings.padRight(value, MerchantNo_Length);
         mMerchantNo = value;
 
 //        if (mMerchantNo.length() != MerchantNo_Length)
@@ -503,7 +504,7 @@ public class PosMessage implements Serializable
     private String mOrderNo = "";
 
     /**
-     * 43	¶©µ¥±àºÅ	ans40	M	M	ÀàĞÍ£¨n2£©+¶©µ¥±àºÅ
+     * 43	è®¢å•ç¼–å·	ans40	M	M	ç±»å‹ï¼ˆn2ï¼‰+è®¢å•ç¼–å·
      */
     public String getOrderNo()
     {
@@ -515,7 +516,7 @@ public class PosMessage implements Serializable
      */
     public void setOrderNo(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mOrderNo = value;
@@ -540,7 +541,7 @@ public class PosMessage implements Serializable
      */
     public void setOrderState(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mOrderState = value;
@@ -553,7 +554,7 @@ public class PosMessage implements Serializable
     private String mDescription;
 
     /**
-     * @return 40	Description	ans¡­200(LLLVAR)		C	
+     * @return 40	Description	ansâ€¦200(LLLVAR)		C	
      */
     public String getDescription()
     {
@@ -565,7 +566,7 @@ public class PosMessage implements Serializable
      */
     public void setDescription(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mDescription = value;
@@ -588,7 +589,7 @@ public class PosMessage implements Serializable
      */
     public void setValidTime(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mValidTime = value;
@@ -614,7 +615,7 @@ public class PosMessage implements Serializable
      */
     public void setOrderType(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mOrderType = value;
@@ -627,7 +628,7 @@ public class PosMessage implements Serializable
     private String mTransData;
 
     /**
-     * @return 48	½»»»Êı¾İ	ans¡­200(LLLVAR)		C	µ±39ÓòÎª¡°00¡±Ê±±ØÑ¡
+     * @return 48	äº¤æ¢æ•°æ®	ansâ€¦200(LLLVAR)		C	å½“39åŸŸä¸ºâ€œ00â€æ—¶å¿…é€‰
      */
     public String getTransData()
     {
@@ -639,7 +640,7 @@ public class PosMessage implements Serializable
      */
     public void setTransData(String value)
     {
-        if (com.ruyicai.charge.dna.v2.common.Strings.isNullOrEmpty(value))
+        if (Strings.isNullOrEmpty(value))
             return;
 
         mTransData = value;
@@ -652,7 +653,7 @@ public class PosMessage implements Serializable
     public static int Pin_Length = 32;
 
     /**
-     * @return 63	¸öÈËÃÜÂë	an32 	M 
+     * @return 63	ä¸ªäººå¯†ç 	an32 	M 
      */
     public String getPin()
     {
@@ -677,7 +678,7 @@ public class PosMessage implements Serializable
     public static int LoginPin_Length = 32;
 
     /**
-     * @return 63 	µÇÂ½ÃÜÂë	B64 	M 
+     * @return 63 	ç™»é™†å¯†ç 	B64 	M 
      */
     public String getLoginPin()
     {
@@ -1011,7 +1012,7 @@ public class PosMessage implements Serializable
         sb.append("Class=" + this.getClass().getSimpleName() + "\n");
         sb.append("ProcCode=" + this.getProcCode() + "\n");
 
-        sb.append("BitMap=" + com.ruyicai.charge.dna.v2.common.Formatter.formatBytes(this.getBitMap()) + "\n");
+        sb.append("BitMap=" + Formatter.formatBytes(this.getBitMap()) + "\n");
         if (this.getBitMap()[1] == 0x01)
             sb.append("AccountNum=" + this.getAccountNum() + "\n");
         if (this.getBitMap()[2] == 0x01)
@@ -1045,7 +1046,7 @@ public class PosMessage implements Serializable
         if (this.getBitMap()[40] == 0x01)
             sb.append("TerminalNo=" + this.getTerminalNo() + "\n");
         if (this.getBitMap()[41] == 0x01)
-            sb.append("MerchantNo=" + com.ruyicai.charge.dna.v2.common.Strings.formatPassword(this.getMerchantNo(), 5, 5) + "\n");
+            sb.append("MerchantNo=" + Strings.formatPassword(this.getMerchantNo(), 5, 5) + "\n");
         if (this.getBitMap()[42] == 0x01)
             sb.append("OrderNo=" + this.getOrderNo() + "\n");
         if (this.getBitMap()[43] == 0x01)
@@ -1067,4 +1068,9 @@ public class PosMessage implements Serializable
         sb.append("]");
         return sb.toString();
     }
+
+	public boolean needSecondAcountQuery() {
+		return getRespCode().equals("T438") || getRespCode().equals("T437")
+				|| getRespCode().equals("T404");
+	}
 }

@@ -48,33 +48,29 @@ public final class DNATransactionClientService {
 			// 构造TransactionClient，连接方式设置为CA
 			TransactionClient tm = createRSATransactionClient();
 			// 第一次身份验证
-			PosMessage pm = tm.accountQuery(getSerialNO(), getAccountNumber(payParam),
+			PosMessage pm = tm.accountQuery(getSerialNO(), payParam.getAccountNumber(),
 					"||||||||||", Strings.random(24));
 
 			// 订单信息，金额，描述，备注，订单号。
-			String orderAmount = (Float.parseFloat(payParam.getAmt()) / 100) + "";
 			String transactionId = "";
-			if (Float.parseFloat(orderAmount) > Float.parseFloat(pm.getAmount())) {
+			if (Float.parseFloat(payParam.getAmount()) > Float.parseFloat(pm.getAmount())) {
 				LOGGER.info("该银行卡超过当日交易金额上限，请明天再交易\r\n");
 			}
 			// 白名单用户开始支付流程
 			else if (pm.getRespCode().equals("0000")) {
 				transactionId = saveTransactionRecord(payParam);
-				String merOrderNo = "12" + transactionId;
 				// 白名单支付 transdata第一位需要传用户名
-				pm = pay(tm, payParam, payParam.getUserName() + "||||||||||", transactionId,
-						orderAmount);
+				pm = pay(tm, payParam, payParam.getUserName() + "||||||||||", transactionId);
 			}
 			// T438：系统交易过的新卡，需要提供持卡人信息；；T437：系统未交易过的新卡，需要提供持卡人信息；T404系统不支持的卡
-			else if (pm.getRespCode().equals("T438") || pm.getRespCode().equals("T437")
-					|| pm.getRespCode().equals("T404")) {
+			else if (pm.needSecondAcountQuery()) {
 				String transData = getTransData(payParam, pm);
 				LOGGER.info("transData=" + transData);
 				// 为交易过的新卡第二次身份验证
-				tm.accountQuery(getSerialNO(), getAccountNumber(payParam), transData,
+				tm.accountQuery(getSerialNO(), payParam.getAccountNumber(), transData,
 						Strings.random(24));
 				transactionId = saveTransactionRecord(payParam);
-				pm = pay(tm, payParam, transData, transactionId, orderAmount);
+				pm = pay(tm, payParam, transData, transactionId);
 			}
 			// 黑名单T432退出支付流程
 			else if (pm.getRespCode().equals("T432")) {
@@ -82,7 +78,6 @@ public final class DNATransactionClientService {
 			} else if (pm.getRespCode().equals("T436")) {
 				LOGGER.info("该银行卡交易时间受限，请明天八点以后再交易\r\n");
 			}
-
 			LOGGER.info("DNA生产服务器处理完成， 返回代码=" + pm.getRespCode() + "，结果=" + pm.getRemark());
 			result.put("pm", pm);
 			result.put("transactionId", transactionId);
@@ -97,7 +92,7 @@ public final class DNATransactionClientService {
 	}
 
 	private PosMessage pay(TransactionClient tm, PayWhitelistToDnaParameter payParam,
-			String transData, String transactionId, String orderAmount) throws Exception {
+			String transData, String transactionId) throws Exception {
 		// 交易密钥, 随机生成, 用于加密解密报文
 		String encryptKey = Strings.random(24);// RSA密钥，区分新旧CA方式，新CA方式就是RSA
 		// 交易结果CA证书异步返回测试地址， 请修改为商户服务器提供的地址, 类型＋地址, 请参照<<银联语音支付平台接口规范>>
@@ -105,18 +100,12 @@ public final class DNATransactionClientService {
 		// 是否即时支付,一线通选非即时支付
 		boolean payNow = true;
 		String merOrderNo = "12" + transactionId;
-		PosMessage pm = tm.pay(getSerialNO(), getAccountNumber(payParam), DEFAULT_PARAM_VALUE,
-				orderAmount, merOrderNo, "reference", ORDER_DESC, DEFAULT_PARAM_VALUE, payNow,
+		PosMessage pm = tm.pay(getSerialNO(), payParam.getAccountNumber(), DEFAULT_PARAM_VALUE,
+				payParam.getAmount(), merOrderNo, "reference", ORDER_DESC, DEFAULT_PARAM_VALUE, payNow,
 				returnUrl, transData, encryptKey);
 		// XXX 和易联测试接口临时添加，正式产品去掉这次调用
 		orderQuery(merOrderNo);
 		return pm;
-	}
-
-	private String getAccountNumber(PayWhitelistToDnaParameter payParam) {
-		String accountNum = "14" + payParam.getUserPhoneNumber() + "|"
-				+ payParam.getUserCardNumber(); // 借记卡
-		return accountNum;
 	}
 
 	private StringBuffer getSaveTransactionParam(PayWhitelistToDnaParameter payParam) {
