@@ -334,6 +334,9 @@ public class ChargeconfigService {
 		} else if (key.equals("DNAWebServiceName")) {
 			memo = "DNA生产服务器命名空间";
 			value = ConfigUtil.getConfig("charge.properties", key);
+		} else if (key.equals("DnaPayStoreFile")) {
+			memo = "DNA证书文件地址";
+			value = ConfigUtil.getConfig("charge.properties", key);
 		} else if (key.equals("DnaPayStorePassword")) {
 			memo = "DNA证书密钥";
 			value = ConfigUtil.getConfig("charge.properties", key);
@@ -345,6 +348,12 @@ public class ChargeconfigService {
 			value = ConfigUtil.getConfig("charge.properties", key);
 		} else if (key.equals("DNATerminalNo")) {
 			memo = "DNA系统终端编号";
+			value = ConfigUtil.getConfig("charge.properties", key);
+		} else if (key.equals("DNACAEnabled")) {
+			memo = "DNA证书支持";
+			value = ConfigUtil.getConfig("charge.properties", key);
+		} else if (key.equals("DNAOrderDescription")) {
+			memo = "DNA订单描述";
 			value = ConfigUtil.getConfig("charge.properties", key);
 		} else if (key.equals("lakala.merid")) {
 			memo = "拉卡拉充值商户编号";
