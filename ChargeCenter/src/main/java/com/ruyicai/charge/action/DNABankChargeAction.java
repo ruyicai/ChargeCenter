@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.ruyicai.charge.dna.pay.DNATransactionClientService;
 import com.ruyicai.charge.dna.thirdpart.PosMessage;
@@ -28,6 +30,7 @@ import com.ruyicai.charge.util.StringUtil;
  * 扩展参数expand:开户人姓名,开卡人开卡证件号,开户行所在地,开卡证件所在地,接电话手机号,白名单标识
  */
 public class DNABankChargeAction  implements ServletRequestAware, ServletResponseAware {
+	private static final String DNA_VERSION_V2 = "V2";
 	private HttpServletRequest request;
 	private HttpServletResponse response;	
 	private String jsonString;
@@ -36,6 +39,12 @@ public class DNABankChargeAction  implements ServletRequestAware, ServletRespons
 	ChargeconfigService chargeconfigService;
 	@Autowired 
 	DNATransactionClientService dnaTransactionClientService;
+	
+	@Resource(name="newwaydna")
+	com.ruyicai.charge.dna.v2.pay.DNATransactionClientService dnaTransactionClientServicev2;
+	
+	@Value("${dna.version}")
+	private String dnaVersion;
 	
 	public void setJsonString(String jsonString) {
 		this.jsonString = jsonString;
@@ -336,19 +345,31 @@ public class DNABankChargeAction  implements ServletRequestAware, ServletRespons
 			String type = "2";// 交易类型：用户充值
 
 			// 接听DNA语音电话的手机号码是accessMobile而不是mobileCode
-//			Map map = dnaTransactionClientService.payWhitelistToDna(new PayWhitelistToDnaParameter(accessMobile, cardNumber, amount+ "", userName, documentNumber,
-//					accountAddress, ip, documentAddress, key, userno, accesstype, cardType, bankId,
-//					type, amt, channel, subchannel, ladderpresentflag, continuebettype, orderid));
-			Map map = dnaTransactionClientService.payWhitelistToDna(accessMobile, cardNumber, amount+ "", userName, documentNumber,
-					accountAddress, ip, documentAddress, key, userno, accesstype, cardType, bankId,
-				type, amt, channel, subchannel, ladderpresentflag, continuebettype, orderid);
-			errorCode = (String) map.get("errorCode");
-			if (errorCode.equals(ErrorCode.OK.value)) {
-				PosMessage pm = (PosMessage) map.get("pm");
-				transactionId = (String) map.get("transactionId");
-				errorCode = pm.getRespCode();// DNA返回码
-				remark = pm.getRemark(); // DNA充值结果描述信息				
+			Map map = null;
+			if (DNA_VERSION_V2.equals(dnaVersion)){
+				map = dnaTransactionClientServicev2.payWhitelistToDna(new PayWhitelistToDnaParameter(accessMobile, cardNumber, amount+ "", userName, documentNumber,
+						accountAddress, ip, documentAddress, key, userno, accesstype, cardType, bankId,
+						type, amt, channel, subchannel, ladderpresentflag, continuebettype, orderid));
+				errorCode = (String) map.get("errorCode");
+				if (errorCode.equals(ErrorCode.OK.value)) {
+					com.ruyicai.charge.dna.v2.thirdpart.PosMessage pm = (com.ruyicai.charge.dna.v2.thirdpart.PosMessage) map.get("pm");
+					transactionId = (String) map.get("transactionId");
+					errorCode = pm.getRespCode();// DNA返回码
+					remark = pm.getRemark(); // DNA充值结果描述信息				
+				}
+			}else {
+				map = dnaTransactionClientService.payWhitelistToDna(accessMobile, cardNumber, amount+ "", userName, documentNumber,
+						accountAddress, ip, documentAddress, key, userno, accesstype, cardType, bankId,
+						type, amt, channel, subchannel, ladderpresentflag, continuebettype, orderid);
+				errorCode = (String) map.get("errorCode");
+				if (errorCode.equals(ErrorCode.OK.value)) {
+					PosMessage pm = (PosMessage) map.get("pm");
+					transactionId = (String) map.get("transactionId");
+					errorCode = pm.getRespCode();// DNA返回码
+					remark = pm.getRemark(); // DNA充值结果描述信息				
+				}
 			}
+			
 			if (errorCode.equals("00A3")) {// 充值受理成功;
 				logger.info("DNA银行卡充值->充值受理成功，平台生成交易记录成功");
 			} else {

@@ -104,7 +104,7 @@ public final class DNATransactionClientService {
 		// 交易密钥, 随机生成, 用于加密解密报文
 		String encryptKey = Strings.random(24);// RSA密钥，区分新旧CA方式，新CA方式就是RSA
 		// 交易结果CA证书异步返回测试地址， 请修改为商户服务器提供的地址, 类型＋地址, 请参照<<银联语音支付平台接口规范>>
-		String returnUrl = chargeconfigService.getChargeconfig("DNAReturnUrl");//DNAV2ReturnUrl
+		String returnUrl = chargeconfigService.getChargeconfig("DNAV2ReturnUrl");//DNAV2ReturnUrl
 		// 是否即时支付,一线通选非即时支付
 		boolean payNow = true;
 		String merOrderNo = "12" + transactionId;
