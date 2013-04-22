@@ -580,6 +580,30 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>laoxie</id>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+						<filtering>true</filtering>
+					</resource>
+					<resource>
+						<directory>conf/laoxie</directory>
+					</resource>
+				</resources>
+			</build>
+			<properties>
+				<maven.test.skip>true</maven.test.skip>
+				<sys.target>test</sys.target>
+				<database.url.mysql>jdbc:mysql://192.168.190.105:3306/chargecenter?characterEncoding=utf-8</database.url.mysql>
+				<database.driverClassName.mysql>com.mysql.jdbc.Driver</database.driverClassName.mysql>
+				<database.username.mysql>jrtConsole</database.username.mysql>
+				<database.password.mysql>jrtConsole</database.password.mysql>
+				<tlot.id.prefix>LX</tlot.id.prefix>
+				<memcache.client.ip>192.168.190.102:12000,192.168.190.103:12000</memcache.client.ip>
+			</properties>
+		</profile>
+		<profile>
 			<id>118</id>
 			<build>
 				<resources>

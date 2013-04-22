@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -34,7 +35,14 @@ public final class DNATransactionClientService {
 
 	private static final String DEFAULT_PARAM_VALUE = StringUtils.EMPTY;
 	private static final String ORDER_DESC = "博雅彩账户充值";
+	
+	private static ResourceBundle systemsetting = ResourceBundle.getBundle("systemsetting");
 
+	// 加载易联支付证书
+	static{
+		System.setProperty("javax.net.ssl.trustStore", systemsetting.getString("javax.net.ssl.trustStore"));
+		System.setProperty("javax.net.ssl.trustStorePassword",systemsetting.getString("javax.net.ssl.trustStorePassword"));
+	}
 	/**
 	 * DNA支付
 	 * 
@@ -103,8 +111,6 @@ public final class DNATransactionClientService {
 		PosMessage pm = tm.pay(getSerialNO(), payParam.getAccountNumber(), DEFAULT_PARAM_VALUE,
 				payParam.getAmount(), merOrderNo, "reference", ORDER_DESC, DEFAULT_PARAM_VALUE, payNow,
 				returnUrl, transData, encryptKey);
-		// XXX 和易联测试接口临时添加，正式产品去掉这次调用
-		orderQuery(merOrderNo);
 		return pm;
 	}
 
@@ -130,7 +136,7 @@ public final class DNATransactionClientService {
 		String ipAddress = payParam.getIp().equals("") ? "127.0.0.1" : payParam.getIp(); // 持卡人登录IP地址．
 		String idCardAddress = payParam.getDocumentAddress().equals("") ? "身份证地址" : payParam
 				.getDocumentAddress(); // 身份证地址,截取至街道
-		String bankPhoneNumber = "13423105530";
+		String bankPhoneNumber = payParam.getUserPhoneNumber();
 		// 根据第一次查卡返回Reference填写业务数据transData进行第二次查卡
 		String[] reference = pm.getReference().trim().split("\\|");
 		String newuserName = (reference.length > 0 && reference[0].equals("1")) ? payParam
@@ -206,8 +212,8 @@ public final class DNATransactionClientService {
 		TransactionClient tm = new TransactionClient(rsapayUrl, nameSpace);
 		tm.setTransactionType(TransactionType.CA);
 		tm.setServerCert(chargeconfigService.getChargeconfig("GDYILIAN_CERT_PUB_64"));
-		tm.setMerchantNo("02" + "202020000040"); // 商户类型+商户编号
-		tm.setMerchantPassWD("123456"); // 商户Mac密钥
+		tm.setMerchantNo("02" + chargeconfigService.getChargeconfig("DNAMerchantNo")); // 商户类型+商户编号
+		tm.setMerchantPassWD(chargeconfigService.getChargeconfig("DNAMerchantPw")); // 商户Mac密钥
 		tm.setTerminalNo(chargeconfigService.getChargeconfig("DNATerminalNo")); // 商户终端编号
 		return tm;
 	}
